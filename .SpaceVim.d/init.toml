@@ -1,6 +1,6 @@
 #=============================================================================
 # basic.toml --- basic configuration example for SpaceVim
-# Copyright (c) 2016-2020 Wang Shidong & Contributors
+# Copyright (c) 2016-2017 Wang Shidong & Contributors
 # Author: Wang Shidong < wsdjeg at 163.com >
 # URL: https://spacevim.org
 # License: GPLv3
@@ -28,9 +28,9 @@
     # Enable vim compatible mode, avoid changing origin vim key bindings
     vimcompatible = true
 
-    # User options
+    # user settings
     bootstrap_before = "myspacevim#before"
-    default_indent = 4
+    default_incident = 4
     expand_tab = true
 
 # Enable autocomplete layer
@@ -44,9 +44,15 @@ name = 'shell'
 default_position = 'top'
 default_height = 30
 
-# User layers
 [[layers]]
 name = "sudo"
 
 [[layers]]
-    name = "lang#python"
+name = "tmux"
+
+[[layers]]
+name = "lang#python"
+
+[[custom_plugin]]
+repo = "godlygeek/tabular"
+merged = false
