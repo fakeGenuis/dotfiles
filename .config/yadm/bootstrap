@@ -1,0 +1,6 @@
+#!/bin/bash
+
+TPM_PATH="$HOME/.tmux/plugins/tpm"
+[ -d "$TPM_PATH" ] || {
+  git clone https://github.com/tmux-plugins/tpm "$TPM_PATH"
+}
