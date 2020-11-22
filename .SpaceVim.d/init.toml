@@ -36,8 +36,8 @@ auto_completion_tab_key_behavior = "cycle"
 
 [[layers]]
 name = 'shell'
-default_position = 'top'
-default_height = 30
+default_position = 'float'
+default_height = 20
 
 # -- user settings --
 [[layers]]
