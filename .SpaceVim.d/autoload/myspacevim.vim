@@ -1,4 +1,4 @@
-func! myspacevim#before() abort                                                                                                         
+function! myspacevim#before() abort
   set wrap                                                                                                                           
   au FileType vim set nowrap
-endf
+endfunction
