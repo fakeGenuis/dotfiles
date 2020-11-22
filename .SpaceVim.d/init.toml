@@ -1,6 +1,6 @@
 #=============================================================================
 # basic.toml --- basic configuration example for SpaceVim
-# Copyright (c) 2016-2017 Wang Shidong & Contributors
+# Copyright (c) 2016-2020 Wang Shidong & Contributors
 # Author: Wang Shidong < wsdjeg at 163.com >
 # URL: https://spacevim.org
 # License: GPLv3
@@ -19,7 +19,7 @@
     # Disable statusline separator, if you want to use other value, please
     # install nerd fonts
     statusline_separator = "nil"
-    statusline_inactive_separator = "bar"
+    statusline_iseparator = "bar"
     buffer_index_type = 4
     windows_index_type = 3
     enable_tabline_filetype_icon = false
@@ -27,11 +27,6 @@
     statusline_unicode_symbols = false
     # Enable vim compatible mode, avoid changing origin vim key bindings
     vimcompatible = true
-
-    # user settings
-    bootstrap_before = "myspacevim#before"
-    default_incident = 4
-    expand_tab = true
 
 # Enable autocomplete layer
 [[layers]]
@@ -44,6 +39,7 @@ name = 'shell'
 default_position = 'top'
 default_height = 30
 
+# -- user settings --
 [[layers]]
 name = "sudo"
 
@@ -56,3 +52,9 @@ name = "lang#python"
 [[custom_plugin]]
 repo = "godlygeek/tabular"
 merged = false
+
+[options]
+    bootstrap_before = 'myspacevim#before'
+    bootstrap_after = 'myspacevim#after'
+    default_incident = 4
+    expand_tab = true
