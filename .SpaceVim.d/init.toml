@@ -49,6 +49,13 @@ name = "tmux"
 [[layers]]
 name = "lang#python"
 
+[[layers]]
+  name = "lang#c"
+  enable_clang_syntax_highlight = true
+
+[[layers]]
+  name = "format"
+
 [[custom_plugin]]
 repo = "godlygeek/tabular"
 merged = false
