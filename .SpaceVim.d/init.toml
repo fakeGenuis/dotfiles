@@ -15,16 +15,16 @@
     colorscheme_bg = "dark"
     # Disable guicolors in basic mode, many terminal do not support 24bit
     # true colors
-    enable_guicolors = false
+    enable_guicolors = true
     # Disable statusline separator, if you want to use other value, please
     # install nerd fonts
     statusline_separator = "nil"
     statusline_iseparator = "bar"
     buffer_index_type = 4
     windows_index_type = 3
-    enable_tabline_filetype_icon = false
-    enable_statusline_mode = false
-    statusline_unicode_symbols = false
+    enable_tabline_filetype_icon = true
+    enable_statusline_mode = true
+    statusline_unicode_symbols = true
     # Enable vim compatible mode, avoid changing origin vim key bindings
     vimcompatible = true
 
@@ -37,7 +37,8 @@ auto_completion_tab_key_behavior = "cycle"
 [[layers]]
 name = 'shell'
 default_position = 'float'
-default_height = 20
+default_shell = 'terminal'
+default_height = 15
 
 # -- user settings --
 [[layers]]
@@ -59,6 +60,11 @@ name = "lang#python"
 [[custom_plugin]]
 repo = "godlygeek/tabular"
 merged = false
+
+[[layers]]
+  name = "colorscheme"
+  random_theme = true
+  frequency = "15m"
 
 [options]
     bootstrap_before = 'myspacevim#before'
