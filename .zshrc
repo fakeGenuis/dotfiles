@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/seed/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -107,6 +107,18 @@ function send2PRD {
 	local Spath="${2:-~/Downloads/}"
 	scp "$1" PRD:"$Spath"
 }
+function proxy {
+	case $1 in 
+		-on)
+			LANip=$(ipconfig.exe | awk '/Wi-Fi/,0' | grep "IPv4" | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}")
+			export ALL_PROXY="socks5://$LANip:8364"
+			;;
+		-off)
+			unset ALL_PROXY
+			;;
+		*) echo $ALL_PROXY;;
+	esac
+}
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -125,6 +137,13 @@ alias gitlogpretty="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset 
 alias GetMyIP="curl -L tool.lu/ip"
 alias tunnel2lab="autossh -D 20881 -fCN lab"
 alias FreqCommand="history | awk '{print \$4}' | sort | uniq -c | sort -rn | head"
+alias emax='
+export DISPLAY=:0.0
+export LIBGL_ALWAYS_INDIRECT=1
+setxkbmap -layout us
+setsid emacs
+emacs
+'
 
 # Environment varibles
 # Fuck microsoft, even with this can not start code in wsl path
@@ -132,7 +151,8 @@ alias FreqCommand="history | awk '{print \$4}' | sort | uniq -c | sort -rn | hea
 # export VSCODE_IPC_HOOK_CLI=$(ls -t /tmp/vscode-ipc-*.sock | head -1)
 addToPATH "/mnt/c/Users/Who/scoop/apps/vscode/current/bin"
 # god! Microsoft is the best linux developer, scoop add shim for code.cmd that made above mistake
-addToPATH "/home/seed/.local/bin"
+addToPATH "$HOME/.local/bin"
+addToPATH "$HOME/.emacs.d/bin"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
