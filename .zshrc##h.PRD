@@ -97,7 +97,13 @@ function send2PRL {
 	scp "$1" PRL:"$Spath"
 }
 fip(){
-	[ -z "$1" ] && fp=$PWD || fp=$(realpath "$1")
+	[ -z "$1" ] && fp=$PWD || {
+    if [[ ! -e "$1" ]]; then
+      echo "File not exist!"
+      return
+    fi
+    fp=$(realpath "$1")
+  }
 	echo -n $fp | xsel -b
 	echo $fp
 }
@@ -142,6 +148,7 @@ alias mma="mathematica"
 alias mg5_v282="$sfwdir/MG5_aMC_v2_8_2/bin/mg5_aMC"
 
 addToPATH "$HOME/.local/bin"
+addToPATH "$HOME/.emacs.d/bin"
 addToPATH "$sfwdir/madanalysis5/bin"
 addToPATH "$sfwdir/MG5_aMC_v2_6_7/bin"
 addToPATH "$sfwdir/MG5_aMC_v2_6_7/MadSpin"
