@@ -148,4 +148,4 @@ configuration {
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
-@import "/home/arx/.config/rofi/themes/man9ourah.rasi"
+@import "/usr/share/rofi/themes/paper-float.rasi"
