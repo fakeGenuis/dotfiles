@@ -152,8 +152,9 @@ addToPATH "$HOME/.emacs.d/bin"
 addToPATH "$sfwdir/madanalysis5/bin"
 addToPATH "$sfwdir/MG5_aMC_v2_6_7/bin"
 addToPATH "$sfwdir/MG5_aMC_v2_6_7/MadSpin"
+addToPATH "$sfwdir/lhapdf-6.3.0/bin"
 
 # About lhapdf
-export LHAPDF_DATA_PATH=$LHAPDF_DATA_PATH:"$sfwdir/lhapdf/share/LHAPDF"
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$sfwdir/lhapdf/lib"
-export PYTHONPATH=$PYTHONPATH:"$sfwdir/lhapdf/lib/python2.7/site-packages"
+export LHAPDF_DATA_PATH=$LHAPDF_DATA_PATH:"$sfwdir/lhapdf-6.3.0/share/LHAPDF"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$sfwdir/lhapdf-6.3.0/lib"
+export PYTHONPATH=$PYTHONPATH:"$sfwdir/lhapdf-6.3.0/lib/python2.7/site-packages"
