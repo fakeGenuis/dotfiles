@@ -1,1 +1,1 @@
-l.fish##d.arch
+l.fish##c.Arch
