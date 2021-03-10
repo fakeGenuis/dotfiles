@@ -1,4 +1,4 @@
 # Defined in - @ line 1
-function l --wraps='exa -l' --description 'alias l=exa -l'
-  exa -l $argv;
+function l --wraps='exa' --description 'alias l=exa'
+  exa $argv;
 end
