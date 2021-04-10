@@ -1,4 +1,4 @@
-function fip --description "copy absolute path of file to clipboard"
+function cpf --description "copy absolute path of file to clipboard"
   if not set -q argv[1]
     set fp $PWD
   else
