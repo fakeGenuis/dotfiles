@@ -6,7 +6,7 @@ set -g theme_powerline_fonts yes
 set -g theme_title_display_process yes
 
 # emacs vterm shell-side configuration
-if test "$INSIDE_EMACS" = 'vterm' -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm-fish.fish"
+if test "$INSIDE_EMACS" = 'vterm' -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
    source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
 end
 
