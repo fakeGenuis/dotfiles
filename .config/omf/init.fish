@@ -8,6 +8,9 @@ set -g theme_title_display_process yes
 # emacs vterm shell-side configuration
 if test "$INSIDE_EMACS" = 'vterm' -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
    source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
+   function fish_title
+       echo (status current-command) ':' (pwd)
+   end
 end
 
 # https://www.emacswiki.org/emacs/TrampMode
