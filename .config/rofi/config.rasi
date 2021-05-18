@@ -1,5 +1,5 @@
 configuration {
-	modi: "window,run,ssh,drun,keys,file-browser,blocks";
+	modi: "window,run,ssh,drun,keys,file-browser";
 	width: 30;
 	lines: 15;
 /*	columns: 1;*/
@@ -25,7 +25,7 @@ configuration {
 /*	drun-show-actions: false;*/
 /*	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";*/
 /*	drun-url-launcher: "xdg-open";*/
-	disable-history: true;
+	disable-history: false;
 	ignored-prefixes: "";
 /*	sort: false;*/
 /*	sorting-method: "normal";*/
