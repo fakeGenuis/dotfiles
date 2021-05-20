@@ -1,4 +1,4 @@
-# Defined in - @ line 1
-function v --wraps=vim --description 'alias v=vim'
-  vim  $argv;
+# Defined via `source`
+function v --wraps=neovim --description 'alias v=neovim'
+  neovim $argv; 
 end
