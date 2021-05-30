@@ -2,7 +2,7 @@ configuration {
 	modi: "window,run,ssh,drun,keys,file-browser";
 	width: 30;
 	lines: 15;
-/*	columns: 1;*/
+	columns: 1;
 	font: "Comic Relief 16";
 	bw: 1;
 /*	location: 0;*/
@@ -151,4 +151,4 @@ configuration {
 /*	me-accept-entry: "MouseDPrimary";*/
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 }
-@import "themes/menu.rasi"
+@import "themes/afreidz.rasi"
