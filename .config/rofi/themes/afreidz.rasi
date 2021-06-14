@@ -1,0 +1,54 @@
+/*-*- mode: css; -*-*/
+/* https://github.com/afreidz/dots */
+* {
+  background-color: transparent;
+  text-color: #333538;
+  spacing: 0;
+}
+
+mainbox {
+  padding: 10px;
+  border-radius: 7px;
+  background-color: #C9DDFCB3;
+}
+
+inputbar {
+  border: 00;
+  children: [prompt,entry];
+  background-color: #C9DDFCB3;
+  border-radius: 7;
+}
+
+prompt {
+  padding: 5px;
+  border: 00;
+}
+
+textbox {
+  border: 0;
+  padding: 10px;
+}
+
+entry {
+  padding: 10px;
+  font: "UbuntuMono Nerd Font Mono";
+}
+
+listview {
+  lines: 6;
+  cycle: true;
+  dynamic: true;
+  margin: 10px 0;
+  scrollbar: false;
+  require-input: true;
+}
+
+element {
+  border: 0;
+  padding: 10px;
+}
+
+element selected {
+  background-color: #C9DDFCB3;
+  border-radius: 7;
+}
