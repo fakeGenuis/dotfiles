@@ -1,6 +1,18 @@
 #!/bin/bash
 
+yay -S awesome-git\
+	picom-ibhagwan-git\
+	rofi\
+	ttf-material-icons-git\
+	ttf-sarasa-gothic
+	
 TPM_PATH="$HOME/.tmux/plugins/tpm"
 [ -d "$TPM_PATH" ] || {
   git clone https://github.com/tmux-plugins/tpm "$TPM_PATH"
+}
+
+LAIN_PATH="$HOME/softwares/lain"
+[ -d "$LAIN_PATH" ] || {
+  git clone https://github.com/lcpz/lain.git "$LAIN_PATH"
+  ln -s "$LAIN_PATH" "$HOME/.config/awesome/lain"
 }
