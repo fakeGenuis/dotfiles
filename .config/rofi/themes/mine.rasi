@@ -39,7 +39,7 @@ inputbar {
 }
 
 prompt {
-  text-color: LightSkyBlue;
+  text-color: DodgerBlue;
   padding: 5px;
   border-radius: @radius;
   font: "Material Icons 24";
