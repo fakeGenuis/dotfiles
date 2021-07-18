@@ -16,7 +16,7 @@ end
 # https://www.emacswiki.org/emacs/TrampMode
 # https://stackoverflow.com/a/37421917
 # fish with tramp
-if test $TERM = "dumb"
+if test "$TERM" = "dumb"
     function fish_prompt
         echo "\$ "
     end
