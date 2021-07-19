@@ -1,10 +1,25 @@
 #!/bin/bash
 
-yay -S awesome-git\
-	picom-ibhagwan-git\
-	rofi\
-	ttf-material-icons-git\
-	ttf-sarasa-gothic
+paru -S --needed exa fd ripgrep\
+	cmake python3 python-pip\
+	xclip maim\
+	gnuplot\
+	neofetch\
+	nerd-fonts-mononoki\
+	whitesur-gtk-theme-git\
+	tela-icon-theme-git\
+	bibata-cursor-theme-bin\
+	noto-fonts noto-fonts-emoji
+	# awesome-git\
+	# picom-ibhagwan-git\
+	# rofi\
+	# ttf-material-icons-git\
+	# ttf-sarasa-gothic
+
+pip install isort\
+	pipenv\
+	nose\
+	pytest
 	
 TPM_PATH="$HOME/.tmux/plugins/tpm"
 [ -d "$TPM_PATH" ] || {
