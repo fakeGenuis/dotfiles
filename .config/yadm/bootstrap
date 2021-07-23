@@ -1,21 +1,25 @@
 #!/bin/bash
 
-paru -S --needed exa fd ripgrep\
-	cmake python3 python-pip\
+paru -S --needed\
+	cmake python3 python-pip base-devel man\
+  exa fd ripgrep\ # required by doom emacs
+  ttf-dejavu ttf-liberation terminus-font noto-fonts-emoji\ # basic fonts
+	nerd-fonts-{mononoki,cascadia-code,inconsolata,ubuntu-mono}\ # coding fonts
+  ttf-material-design-icons-git ttf-material-design-icons-desktop-git\ # icon fonts
+  wqy-microhei ttf-arphic-ukai noto-fonts-cjk\ # zh fonts
+	whitesur-gtk-theme-git tela-icon-theme-git bibata-cursor-theme-bin\
+  p7zip\
+	inetutils\ # hostname command
 	xclip maim\
 	gnuplot\
-	neofetch\
-	nerd-fonts-mononoki\
-	whitesur-gtk-theme-git\
-	tela-icon-theme-git\
-	bibata-cursor-theme-bin\
-	noto-fonts noto-fonts-emoji
+	neofetch
 	# awesome-git\
 	# picom-ibhagwan-git\
 	# rofi\
 	# ttf-material-icons-git\
 	# ttf-sarasa-gothic
 
+# required by doom emacs
 pip install isort\
 	pipenv\
 	nose\
@@ -31,3 +35,30 @@ LAIN_PATH="$HOME/softwares/lain"
   git clone https://github.com/lcpz/lain.git "$LAIN_PATH"
   ln -s "$LAIN_PATH" "$HOME/.config/awesome/lain"
 }
+
+PARU_PATH="$HOME/softwares/paru"
+[ -d "$PARU_PATH" ] || {
+  git clone https://aur.archlinux.org/paru.git "$PARU_PATH"
+  cd "$PARU_PATH" || return 1
+  makepkg -si
+}
+
+COMICSHANNS_PATH="$HOME/softwares/paru"
+[ -d "$COMICSHANNS_PATH" ] || {
+  git clone https://github.com/shannpersand/comic-shanns.git "$COMICSHANNS_PATH"
+  cd "$COMICSHANNS_PATH" || return 1
+  cp v2/* ~/.local/share/fonts
+}
+
+AGAVE_PATH="$HOME/softwares/agave"
+[ -d "$AGAVE_PATH" ] || {
+  cd ~/softwares && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Agave.zip
+  7z x Agave.zip -o"$AGAVE_PATH"
+  cd "$AGAVE_PATH" && fd Windows -x rm && cp $(ls | grep -v Windows) ~/.local/share/fonts
+}
+
+
+#generate all system wide authorized keys, needed for sshd to run
+#ssh-keygen -A
+#generate a ssh key if not exist (add public key to github).
+#ssh-keygen
