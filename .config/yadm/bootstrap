@@ -2,17 +2,16 @@
 
 paru -S --needed\
 	cmake python3 python-pip base-devel man\
-  exa fd ripgrep\ # required by doom emacs
   ttf-dejavu ttf-liberation terminus-font noto-fonts-emoji\ # basic fonts
 	nerd-fonts-{mononoki,cascadia-code,inconsolata,ubuntu-mono}\ # coding fonts
   ttf-material-design-icons-git ttf-material-design-icons-desktop-git\ # icon fonts
   wqy-microhei ttf-arphic-ukai noto-fonts-cjk\ # zh fonts
-	whitesur-gtk-theme-git tela-icon-theme-git bibata-cursor-theme-bin\
-  p7zip\
+	whitesur-gtk-theme-git tela-icon-theme-git bibata-cursor-theme-bin\ # themes
+  exa fd ripgrep\ # required by doom emacs
+  clang glslang\ # emacs cc lsp
+  p7zip xclip maim\ # system uitls
 	inetutils\ # hostname command
-	xclip maim\
-	gnuplot\
-	neofetch
+	gnuplot neofetch
 	# awesome-git\
 	# picom-ibhagwan-git\
 	# rofi\
@@ -43,7 +42,7 @@ PARU_PATH="$HOME/softwares/paru"
   makepkg -si
 }
 
-COMICSHANNS_PATH="$HOME/softwares/paru"
+COMICSHANNS_PATH="$HOME/softwares/comic-shanns"
 [ -d "$COMICSHANNS_PATH" ] || {
   git clone https://github.com/shannpersand/comic-shanns.git "$COMICSHANNS_PATH"
   cd "$COMICSHANNS_PATH" || return 1
