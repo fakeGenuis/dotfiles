@@ -21,3 +21,5 @@ if test "$TERM" = "dumb"
         echo "\$ "
     end
 end
+
+function fish_greeting; end
