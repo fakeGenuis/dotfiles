@@ -2,19 +2,19 @@
 
 paru -S --needed\
 	cmake python3 python-pip base-devel man\
-  ttf-dejavu ttf-liberation terminus-font\ # basic fonts
+	ttf-dejavu ttf-liberation terminus-font\ # basic fonts
 	nerd-fonts-{mononoki,cascadia-code,inconsolata,ubuntu-mono}\ # coding fonts
-  noto-fonts-emoji ttf-material-design-icons-git ttf-material-design-icons-desktop-git\ # icon fonts
-  wqy-microhei wqy-zenhei ttf-arphic-ukai noto-fonts-cjk\ # zh fonts
-  ttf-symbola otf-symbola quivira\ # emacs unicode package
+	noto-fonts-emoji ttf-material-design-icons-git ttf-material-design-icons-desktop-git\ # icon fonts
+	wqy-microhei wqy-zenhei ttf-arphic-ukai noto-fonts-cjk\ # zh fonts
+	ttf-symbola otf-symbola quivira\ # emacs unicode package
 	whitesur-gtk-theme-git tela-icon-theme-git bibata-cursor-theme-bin\ # themes
-  exa fd ripgrep\ # required by doom emacs
-  direnv prettier calng-format-static-bin\ # required by doom emacs plugins
-  mu isync\ # mu4e
-  clang glslang\ # cc lsp
-  p7zip xclip maim\ # system uitls
+	exa fd ripgrep\ # required by doom emacs
+	direnv prettier calng-format-static-bin\ # required by doom emacs plugins
+	mu isync\ # mu4e
+	clang glslang\ # cc lsp
+	p7zip xclip maim\ # system uitls
 	inetutils\ # hostname command
-  tmux ranger\
+	tmux ranger\
 	gnuplot neofetch
 	# awesome-git\
 	# picom-ibhagwan-git\
@@ -24,39 +24,39 @@ paru -S --needed\
 
 # required by doom emacs
 pip install\
-  black pyls\ # lsp relate
-  isort pipenv nose pytest
+	black python-lsp-server\ # lsp relate
+	isort pipenv nose pytest pyflakes
 	
 TPM_PATH="$HOME/.tmux/plugins/tpm"
 [ -d "$TPM_PATH" ] || {
-  git clone https://github.com/tmux-plugins/tpm "$TPM_PATH"
+	git clone https://github.com/tmux-plugins/tpm "$TPM_PATH"
 }
 
 LAIN_PATH="$HOME/softwares/lain"
 [ -d "$LAIN_PATH" ] || {
-  git clone https://github.com/lcpz/lain.git "$LAIN_PATH"
-  ln -s "$LAIN_PATH" "$HOME/.config/awesome/lain"
+	git clone https://github.com/lcpz/lain.git "$LAIN_PATH"
+	ln -s "$LAIN_PATH" "$HOME/.config/awesome/lain"
 }
 
 PARU_PATH="$HOME/softwares/paru"
 [ -d "$PARU_PATH" ] || {
-  git clone https://aur.archlinux.org/paru.git "$PARU_PATH"
-  cd "$PARU_PATH" || return 1
-  makepkg -si
+	git clone https://aur.archlinux.org/paru.git "$PARU_PATH"
+	cd "$PARU_PATH" || return 1
+	makepkg -si
 }
 
 COMICSHANNS_PATH="$HOME/softwares/comic-shanns"
 [ -d "$COMICSHANNS_PATH" ] || {
-  git clone https://github.com/shannpersand/comic-shanns.git "$COMICSHANNS_PATH"
-  cd "$COMICSHANNS_PATH" || return 1
-  cp v2/* ~/.local/share/fonts
+	git clone https://github.com/shannpersand/comic-shanns.git "$COMICSHANNS_PATH"
+	cd "$COMICSHANNS_PATH" || return 1
+	cp v2/* ~/.local/share/fonts
 }
 
 AGAVE_PATH="$HOME/softwares/agave"
 [ -d "$AGAVE_PATH" ] || {
-  cd ~/softwares && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Agave.zip
-  7z x Agave.zip -o"$AGAVE_PATH"
-  cd "$AGAVE_PATH" && fd Windows -x rm && cp $(ls | grep -v Windows) ~/.local/share/fonts
+	cd ~/softwares && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Agave.zip
+	7z x Agave.zip -o"$AGAVE_PATH"
+	cd "$AGAVE_PATH" && fd Windows -x rm && cp $(ls | grep -v Windows) ~/.local/share/fonts
 }
 
 
