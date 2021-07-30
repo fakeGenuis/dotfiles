@@ -1,30 +1,25 @@
 #!/bin/bash
 
-paru -S --needed\
-	cmake python3 python-pip base-devel man\
-	ttf-dejavu ttf-liberation terminus-font\ # basic fonts
-	nerd-fonts-{mononoki,cascadia-code,inconsolata,ubuntu-mono}\ # coding fonts
-	noto-fonts-emoji ttf-material-design-icons-git ttf-material-design-icons-desktop-git\ # icon fonts
-	wqy-microhei wqy-zenhei ttf-arphic-ukai noto-fonts-cjk\ # zh fonts
-	ttf-symbola otf-symbola quivira\ # emacs unicode package
-	whitesur-gtk-theme-git tela-icon-theme-git bibata-cursor-theme-bin\ # themes
-	exa fd ripgrep\ # required by doom emacs
-	direnv prettier calng-format-static-bin\ # required by doom emacs plugins
-	mu isync\ # mu4e
-	clang glslang\ # cc lsp
-	p7zip xclip maim\ # system uitls
-	inetutils\ # hostname command
-	tmux ranger\
-	gnuplot neofetch
-	# awesome-git\
-	# picom-ibhagwan-git\
-	# rofi\
-	# ttf-material-icons-git\
+paru -S --needed cmake python3 python-pip base-devel man\
+ ttf-dejavu ttf-liberation terminus-font\
+ nerd-fonts-{mononoki,cascadia-code,inconsolata,ubuntu-mono}\
+ noto-fonts-emoji ttf-material-design-icons-git ttf-material-design-icons-desktop-git\
+ wqy-microhei wqy-zenhei ttf-arphic-ukai noto-fonts-cjk\
+ ttf-symbola otf-symbola quivira\
+ whitesur-gtk-theme-git tela-icon-theme-git bibata-cursor-theme-bin\
+ fd ripgrep\
+ gnuplot direnv-bin shellcheck-bin prettier clang-format-static-bin\
+ mu isync\
+ clang glslang\
+ p7zip xclip maim\
+ inetutils\
+ exa tmux ranger neofetch
+	# awesome-git picom-ibhagwan-git rofi\
 	# ttf-sarasa-gothic
 
 # required by doom emacs
 pip install\
-	black python-lsp-server\ # lsp relate
+	black python-lsp-server\
 	isort pipenv nose pytest pyflakes
 	
 TPM_PATH="$HOME/.tmux/plugins/tpm"
