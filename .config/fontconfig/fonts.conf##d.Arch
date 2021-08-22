@@ -26,7 +26,7 @@
          <string>serif</string>
      </test>
      <edit name="family" mode="prepend" binding="strong">
-         <string>Comic Shanns</string>
+         <string>DejaVu Serif</string>
      </edit>
  </match>
  <match target="pattern">
@@ -42,7 +42,7 @@
          <string>monospace</string>
      </test>
      <edit name="family" mode="prepend" binding="strong">
-         <string>agave Nerd Fonts</string>
+         <string>FiraCode Nerd Fonts</string>
      </edit>
  </match>
  <!-- 中文默认字体使用思源宋体,不使用 Noto Sans CJK SC 是因为这个字体会在特定情况下显示片假字. -->
@@ -54,7 +54,7 @@
    <string>serif</string>
   </test>
   <edit name="family" mode="prepend">
-   <string>ukai</string>
+   <string>AR PL New Kai</string>
   </edit>
  </match>
  <match>
@@ -65,7 +65,7 @@
    <string>sans-serif</string>
   </test>
   <edit name="family" mode="prepend">
-   <string>WenQuanYi Zen Hei</string>
+   <string>WenQuanYi Micro Hei</string>
   </edit>
  </match>
  <match>
@@ -76,7 +76,7 @@
    <string>monospace</string>
   </test>
   <edit name="family" mode="prepend">
-   <string>WenQuanYi Zen Hei Mono</string>
+   <string>Sarasa Mono SC</string>
   </edit>
  </match>
  <!-- 把Linux没有的中文字体映射到已有字体，这样当这些字体未安装时会有替代字体 -->
@@ -85,7 +85,7 @@
    <string>SimHei</string>
   </test>
   <edit name="family" binding="same" mode="assign">
-   <string>WenQuanYi Zen Hei</string>
+   <string>WenQuanYi Micro Hei</string>
   </edit>
  </match>
  <match target="pattern">
@@ -93,7 +93,7 @@
    <string>SimSun</string>
   </test>
   <edit name="family" binding="same" mode="assign">
-   <string>WenQuanYi Zen Hei</string>
+   <string>Source Han Serif SC</string>
   </edit>
  </match>
  <match target="pattern">
@@ -101,7 +101,7 @@
    <string>FangSong</string>
   </test>
   <edit name="family" binding="same" mode="assign">
-   <string>WenQuanYi Zen Hei</string>
+   <string>AR PL UMing CN</string>
   </edit>
  </match>
  <!-- Load local system customization file -->
