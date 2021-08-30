@@ -1,10 +1,10 @@
 #!/bin/bash
 
-paru -S --needed cmake python3 python-pip base-devel man\
- ttf-dejavu ttf-liberation terminus-font\
- nerd-fonts-{mononoki,cascadia-code,inconsolata,ubuntu-mono}\
- noto-fonts-emoji ttf-material-design-icons-git ttf-material-design-icons-desktop-git\
- wqy-microhei wqy-zenhei ttf-arphic-ukai noto-fonts-cjk\
+paru -S --needed cmake python3 python-pip base-devel man neovim\
+ ttf-{dejavu,liberation} terminus-font\
+ nerd-fonts-{mononoki,cascadia-code,inconsolata,ubuntu-mono,fira-code}\
+ noto-fonts-emoji ttf-{material-design-icons-git,material-design-icons-desktop-git}\
+ wqy-microhei wqy-zenhei ttf-{arphic-ukai,arphic-uming,sarasa-gothic} noto-fonts-cjk adobe-source-han-{sans-otc-fonts,serif-otc-fonts}\
  ttf-symbola otf-symbola quivira\
  whitesur-gtk-theme-git tela-icon-theme-git bibata-cursor-theme-bin\
  fd ripgrep\
