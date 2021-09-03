@@ -23,3 +23,11 @@ if test "$TERM" = "dumb"
 end
 
 function fish_greeting; end
+
+function ranger
+    if test -z "$RANGER_LEVEL"
+        /usr/bin/ranger "$argv"
+    else
+        exit
+    end
+end
