@@ -1,0 +1,82 @@
+{
+    "entries" : {
+        "Chinese" : {
+            "name" : "Chinese",
+            "icon" : null,
+            "comment" : null,
+            "index" : 3,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Sarasa Gothic SC",
+                "Noto Sans Mono CJK SC",
+                "Noto Serif CJK SC",
+                "WenQuanYi Micro Hei Mono",
+                "AR PL UKai CN",
+                "Sarasa Mono SC",
+                "Sarasa UI SC"
+            ],
+            "size" : 7
+        },
+        "Reading" : {
+            "name" : "Reading",
+            "icon" : null,
+            "comment" : null,
+            "index" : 1,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Noto Sans CJK SC",
+                "Sarasa Gothic SC",
+                "WenQuanYi Micro Hei"
+            ],
+            "size" : 3
+        },
+        "Menu" : {
+            "name" : "Menu",
+            "icon" : null,
+            "comment" : null,
+            "index" : 2,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Sarasa UI SC",
+                "Comic Shanns"
+            ],
+            "size" : 2
+        },
+        "Code" : {
+            "name" : "Code",
+            "icon" : null,
+            "comment" : null,
+            "index" : 0,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "mononoki Nerd Font Mono",
+                "agave Nerd Font",
+                "FiraCode Nerd Font",
+                "FuraCode Nerd Font"
+            ],
+            "size" : 4
+        },
+        "Icons" : {
+            "name" : "Icons",
+            "icon" : null,
+            "comment" : null,
+            "index" : 4,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Material Design Icons",
+                "Twemoji"
+            ],
+            "size" : 2
+        }
+    }
+}
