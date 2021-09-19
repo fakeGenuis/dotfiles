@@ -1,9 +1,9 @@
 [Settings]
 gtk-theme-name=WhiteSur-light-pink
-gtk-icon-theme-name=Tela-pink
+gtk-icon-theme-name=Papirus
 gtk-cursor-theme-name=Bibata-Modern-Ice
 gtk-cursor-theme-size=0
-gtk-font-name=Noto Sans CJK 11
+gtk-font-name=Noto Sans SC 11
 gtk-enable-event-sounds=1
 gtk-enable-input-feedback-sounds=1
 gtk-menu-images=1
