@@ -6,8 +6,8 @@
 * {
   spacing: 0.3em;
   radius: 0.3em;
-  font: "FantasqueSansMono Nerd Font 17";
-  icon-font: "Material Design Icons 24";
+  font: "Mononoki Nerd Font Mono 17";
+  icon-font: "Material Design Icons 22";
 
   text-color: #333538ff;
   background-color: transparent;
@@ -36,7 +36,7 @@ inputbar {
 prompt {
   vertical-align: 0.5;
   horizontal-align: 0.5;
-  padding: 0px 6px;
+  padding: 0px 9px;
   font: @icon-font;
   text-color: @selected-text-color;
   background-color: @selected-background;

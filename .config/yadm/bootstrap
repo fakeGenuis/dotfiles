@@ -1,12 +1,11 @@
 #!/bin/bash
 
 paru -S --needed cmake python3 python-pip base-devel man neovim\
- ttf-{dejavu,liberation} terminus-font\
- nerd-fonts-{mononoki,cascadia-code,inconsolata,ubuntu-mono,fira-code}\
- noto-fonts-emoji ttf-{material-design-icons-git,material-design-icons-desktop-git}\
- wqy-microhei wqy-zenhei ttf-{arphic-ukai,arphic-uming,sarasa-gothic} noto-fonts-cjk adobe-source-han-{sans-otc-fonts,serif-otc-fonts}\
- ttf-symbola otf-symbola quivira\
- whitesur-gtk-theme-git tela-icon-theme-git bibata-cursor-theme-bin\
+ nerd-fonts-{mononoki,fira-code}\
+ wqy-microhei ttf-{arphic-ukai,sarasa-gothic} noto-fonts-cjk\
+ ttf-twemoji ttf-material-design-icons-git\
+ whitesur-gtk-theme-git papirus-icon-theme-git bibata-cursor-theme-bin\
+ fcitx5-im fcitx5-rime rime-cloverpinyin fcitx5-nord\
  fd ripgrep\
  gnuplot direnv-bin shellcheck-bin prettier clang-format-static-bin\
  mu isync\
@@ -15,7 +14,6 @@ paru -S --needed cmake python3 python-pip base-devel man neovim\
  inetutils\
  exa tmux ranger neofetch
 	# awesome-git picom-ibhagwan-git rofi\
-	# ttf-sarasa-gothic
 
 # required by doom emacs
 pip install\
