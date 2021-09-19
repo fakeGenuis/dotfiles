@@ -5,6 +5,7 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'dracula/vim', { 'as': 'dracula' }
 
 call plug#end()
 
@@ -28,4 +29,5 @@ let g:lightline = {
   \ }
 
 syntax on
-colorscheme onedark
+"colorscheme onedark
+colorscheme dracula

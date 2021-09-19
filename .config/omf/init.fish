@@ -1,9 +1,6 @@
-# color themes
-set -g theme_date_format "+%a %H:%M"
-set -g theme_nerd_fonts yes
-set -g theme_color_scheme nord
-set -g theme_powerline_fonts yes
-set -g theme_title_display_process yes
+# color themes relate
+# spacefish
+set -g SPACEFISH_TIME_SHOW true
 
 # emacs vterm shell-side configuration
 if test "$INSIDE_EMACS" = 'vterm' -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
