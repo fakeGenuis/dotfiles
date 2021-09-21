@@ -1,5 +1,22 @@
 {
     "entries" : {
+        "Serif" : {
+            "name" : "Serif",
+            "icon" : null,
+            "comment" : null,
+            "index" : 5,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Gentium Book Plus",
+                "Gentium Plus",
+                "Linux Libertine",
+                "Source Serif Pro",
+                "Standard Symbols PS"
+            ],
+            "size" : 5
+        },
         "Chinese" : {
             "name" : "Chinese",
             "icon" : null,
@@ -19,20 +36,21 @@
             ],
             "size" : 7
         },
-        "Reading" : {
-            "name" : "Reading",
+        "Code (mono)" : {
+            "name" : "Code (mono)",
             "icon" : null,
             "comment" : null,
-            "index" : 1,
+            "index" : 0,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
-                "Noto Sans CJK SC",
-                "Sarasa Gothic SC",
-                "WenQuanYi Micro Hei"
+                "mononoki Nerd Font Mono",
+                "agave Nerd Font",
+                "FiraCode Nerd Font",
+                "FuraCode Nerd Font"
             ],
-            "size" : 3
+            "size" : 4
         },
         "Menu" : {
             "name" : "Menu",
@@ -48,22 +66,6 @@
             ],
             "size" : 2
         },
-        "Code" : {
-            "name" : "Code",
-            "icon" : null,
-            "comment" : null,
-            "index" : 0,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "mononoki Nerd Font Mono",
-                "agave Nerd Font",
-                "FiraCode Nerd Font",
-                "FuraCode Nerd Font"
-            ],
-            "size" : 4
-        },
         "Icons" : {
             "name" : "Icons",
             "icon" : null,
@@ -77,6 +79,23 @@
                 "Twemoji"
             ],
             "size" : 2
+        },
+        "Reading (sans)" : {
+            "name" : "Reading (sans)",
+            "icon" : null,
+            "comment" : null,
+            "index" : 1,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Noto Sans CJK SC",
+                "Sarasa Gothic SC",
+                "Cantarell",
+                "Linux Biolinum",
+                "Open Sans"
+            ],
+            "size" : 5
         }
     }
 }
