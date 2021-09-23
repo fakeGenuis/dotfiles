@@ -75,6 +75,7 @@ error_symbol = "[➜](bold red)"
 disabled = true
 
 [battery]
+disabled = false
 full_symbol = "🔋 "
 charging_symbol = "⚡ "
 discharging_symbol = "💀 "
@@ -84,3 +85,20 @@ disabled = false
 format = '🕙[$time]($style) '
 time_format = "%T"
 utc_time_offset = "+8"
+
+[shell]
+disabled = true
+fish_indicator = ""
+powershell_indicator = ""
+unknown_indicator = "mystery shell"
+
+[shlvl]
+disabled = false
+format = "[$symbol$shlvl]($style) "
+symbol = "↕️"
+
+[memory_usage]
+disabled = true
+
+[status]
+disabled = false
