@@ -1,0 +1,6 @@
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+end
+set -gx GDK_SCALE 2 #GWSL
+set -gx DISPLAY (cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0 #GWSL
+set -gx PULSE_SERVER tcp:(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}') #GWSL
