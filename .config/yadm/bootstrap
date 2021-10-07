@@ -1,21 +1,21 @@
 #!/bin/bash
 
 paru -S --needed cmake python3 python-pip base-devel man\
-    neovim emacs\
-    polkit-kde-agent\
+    cronie docker docker-compose xray-bin yadm proxychains-ng bitwarden-cli\
+    xorg-server awesome-git light-locker lightdm lightdm-webkit-theme-aether light-locker-settings nvidia nvidia-dkms nvidia-settings  picom-ibhagwan-git\
+    alacritty dracula-alacritty-git geckodriver gparted nextcloud-client pamac-aur qv2ray-dev-git rofi spectacle xcolor zotero miktex-git neovim emacs\
+    polkit-kde-agent gnome-keyring\
     ttf-linux-libertine gentium-plus-font adobe-source-serif-fonts\
     nerd-fonts-{mononoki,fira-code}\
     wqy-microhei ttf-{arphic-ukai,sarasa-gothic}\
     ttf-twemoji ttf-material-design-icons-git ttf-symbola\
     whitesur-gtk-theme-git papirus-icon-theme-git bibata-cursor-theme-bin\
     fcitx5-im fcitx5-rime rime-cloverpinyin fcitx5-nord\
-    fd ripgrep\
+    fd ripgrep exa bat\
     clang glslang\
     gnuplot direnv-bin shellcheck-bin prettier clang-format-static-bin\
     mu isync\
-    p7zip xclip maim\
-    inetutils\
-    exa tmux ranger neofetch
+    bpytop feh p7zip xclip maim xsel inetutils tmux ranger neofetch starship trash-cli unrar wget
 # awesome-git picom-ibhagwan-git rofi\
 
 # required by doom emacs
