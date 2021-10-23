@@ -11,10 +11,10 @@ configuration {
 /*	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";*/
 /*	run-command: "{cmd}";*/
 /*	run-list-command: "";*/
-/*	run-shell-command: "{terminal} -e {cmd}";*/
+	run-shell-command: "{terminal} -e {cmd}";
 /*	window-command: "wmctrl -i -R {window}";*/
 /*	window-match-fields: "all";*/
-/*	 icon-theme: "Papirus";*/
+	icon-theme: "Papirus";
 /*	drun-match-fields: "name,generic,exec,categories,keywords";*/
 /*	drun-categories: ;*/
 /*	drun-show-actions: false;*/
@@ -77,7 +77,7 @@ configuration {
 	kb-remove-char-back: "BackSpace";
 	kb-remove-to-eol: "";
 /*	kb-remove-to-sol: "Control+u";*/
-	kb-accept-entry: "Return,KP_Enter";
+	kb-accept-entry: "Alt+l,Return,KP_Enter";
 /*	kb-accept-custom: "Control+Return";*/
 /*	kb-accept-custom-alt: "Control+Shift+Return";*/
 /*	kb-accept-alt: "Shift+Return";*/
@@ -87,8 +87,8 @@ configuration {
 	kb-mode-complete: "";
 /*	kb-row-left: "Control+Page_Up";*/
 /*	kb-row-right: "Control+Page_Down";*/
-	kb-row-up: "Up,Control+k";
-	kb-row-down: "Down,Control+j";
+	kb-row-up: "Up,Alt+k";
+	kb-row-down: "Down,Alt+j";
 /*	kb-row-tab: "Tab";*/
 /*	kb-page-prev: "Page_Up";*/
 /*	kb-page-next: "Page_Down";*/
@@ -100,16 +100,16 @@ configuration {
 /*	kb-toggle-case-sensitivity: "grave,dead_grave";*/
 /*	kb-toggle-sort: "Alt+grave";*/
 /*	kb-cancel: "Escape,Control+g,Control+bracketleft";*/
-/*	kb-custom-1: "Alt+1";*/
-/*	kb-custom-2: "Alt+2";*/
-/*	kb-custom-3: "Alt+3";*/
-/*	kb-custom-4: "Alt+4";*/
-/*	kb-custom-5: "Alt+5";*/
-/*	kb-custom-6: "Alt+6";*/
-/*	kb-custom-7: "Alt+7";*/
-/*	kb-custom-8: "Alt+8";*/
-/*	kb-custom-9: "Alt+9";*/
-/*	kb-custom-10: "Alt+0";*/
+	kb-custom-1: "Control+1";
+	kb-custom-2: "Control+2";
+	kb-custom-3: "Control+3";
+	kb-custom-4: "Control+4";
+	kb-custom-5: "Control+5";
+	kb-custom-6: "Control+6";
+	kb-custom-7: "Control+7";
+	kb-custom-8: "Control+8";
+	kb-custom-9: "Control+9";
+	kb-custom-10: "Control+0";
 /*	kb-custom-11: "Alt+exclam";*/
 /*	kb-custom-12: "Alt+at";*/
 /*	kb-custom-13: "Alt+numbersign";*/
@@ -119,16 +119,16 @@ configuration {
 /*	kb-custom-17: "Alt+ampersand";*/
 /*	kb-custom-18: "Alt+asterisk";*/
 /*	kb-custom-19: "Alt+parenleft";*/
-	kb-select-1: "Control+1";
-	kb-select-2: "Control+2";
-	kb-select-3: "Control+3";
-	kb-select-4: "Control+4";
-	kb-select-5: "Control+5";
-	kb-select-6: "Control+6";
-	kb-select-7: "Control+7";
-/*	kb-select-8: "Super+8";*/
-/*	kb-select-9: "Super+9";*/
-/*	kb-select-10: "Super+0";*/
+	kb-select-1: "Alt+1";
+	kb-select-2: "Alt+2";
+	kb-select-3: "Alt+3";
+	kb-select-4: "Alt+4";
+	kb-select-5: "Alt+5";
+	kb-select-6: "Alt+6";
+	kb-select-7: "Alt+7";
+	kb-select-8: "Alt+8";
+	kb-select-9: "Alt+9";
+	kb-select-10: "Alt+0";
 /*	ml-row-left: "ScrollLeft";*/
 /*	ml-row-right: "ScrollRight";*/
 /*	ml-row-up: "ScrollUp";*/
