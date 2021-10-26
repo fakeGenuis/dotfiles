@@ -12,13 +12,14 @@ end
 function fish_greeting
 end
 
-function ranger
-    if test -z "$RANGER_LEVEL"
-        /usr/bin/ranger "$argv"
-    else
-        exit
-    end
-end
+# https://wiki.archlinux.org/title/Ranger#Preventing_nested_ranger_instances
+# not safe when inside tmux, $RANGER_LEVEL == 1, tmux bug? 
+# function ranger
+#     if test -n "$RANGER_LEVEL"
+#         echo -n "You are in ranger level "; set_color red; echo "$RANGE_LEVEL"; set_color normal;
+#     end
+#     /usr/bin/ranger "$argv"
+# end
 
 # https://www.emacswiki.org/emacs/TrampMode
 # https://stackoverflow.com/a/37421917

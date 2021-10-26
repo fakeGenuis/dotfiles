@@ -2,10 +2,10 @@ format = """
 $time\
 $username\
 $hostname\
-$shlvl\
 $singularity\
 $kubernetes\
 $directory\
+$shlvl\
 $vcsh\
 $git_branch\
 $git_commit\
@@ -94,8 +94,10 @@ unknown_indicator = "mystery shell"
 
 [shlvl]
 disabled = false
-format = "[$symbol$shlvl]($style) "
-symbol = "↕️"
+format = "[$symbol]($style) "
+repeat = true
+style = "bold red"
+symbol = ""
 
 [memory_usage]
 disabled = true
