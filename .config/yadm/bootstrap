@@ -1,45 +1,50 @@
 #!/bin/bash
 
-paru -S --needed cmake python3 python-pip base-devel man\
-    cronie docker docker-compose xray-bin yadm proxychains-ng bitwarden-cli\
-    xorg-server awesome-git light-locker lightdm lightdm-webkit-theme-aether light-locker-settings nvidia nvidia-dkms nvidia-settings picom-ibhagwan-git\
-    alacritty dracula-alacritty-git geckodriver gparted nextcloud-client pamac-aur qv2ray-dev-git rofi spectacle xcolor zotero miktex-git neovim emacs\
-    polkit-kde-agent gnome-keyring\
-    ttf-linux-libertine gentium-plus-font adobe-source-serif-fonts\
-    nerd-fonts-{mononoki,fira-code}\
-    wqy-microhei ttf-{arphic-ukai,sarasa-gothic}\
-    ttf-twemoji ttf-material-design-icons-git ttf-symbola\
-    whitesur-gtk-theme-git papirus-icon-theme-git bibata-cursor-theme-bin\
-    fcitx5-im fcitx5-rime rime-cloverpinyin fcitx5-nord\
-    fd ripgrep exa bat\
-    clang glslang\
-    gnuplot direnv-bin shellcheck-bin prettier clang-format-static-bin\
-    mu isync\
-    bpytop feh p7zip xclip maim xsel inetutils tmux ranger neofetch starship trash-cli unrar wget
-# awesome-git picom-ibhagwan-git rofi\
-
-# required by doom emacs
-#pip install\
-#    black python-lsp-server\
-#    isort pipenv nose pytest pyflakes
-
-TPM_PATH="$HOME/.tmux/plugins/tpm"
-[ -d "$TPM_PATH" ] || {
-    git clone https://github.com/tmux-plugins/tpm "$TPM_PATH"
-}
-
-LAIN_PATH="$HOME/Softwares/lain"
-[ -d "$LAIN_PATH" ] || {
-    git clone https://github.com/lcpz/lain.git "$LAIN_PATH"
-    ln -s "$LAIN_PATH" "$HOME/.config/awesome/lain"
-}
-
+sudo pacman -S base-devel git
 PARU_PATH="$HOME/Softwares/paru"
 [ -d "$PARU_PATH" ] || {
     git clone https://aur.archlinux.org/paru.git "$PARU_PATH"
     cd "$PARU_PATH" || return 1
     makepkg -si
 }
+
+paru -S --needed\
+    `# terminal and shell utilities`\
+    alacritty dracula-alacritty-git p7zip unrar wget inetutils\
+    xclip xsel tmux ranger neofetch starship trash-cli\
+    cronie docker docker-compose yadm feh\
+    `# proxy`\
+    xray-bin proxychains-ng qv2ray-dev-git\
+    `# X and windows manager`\
+    xorg-server awesome-git lain-git nvidia nvidia-dkms nvidia-settings picom-ibhagwan-git\
+    `# display manager and screen locker`\
+    lightdm lightdm-webkit-theme-aether i3lock-color xidlehook\
+    `# gtk theme and icon`\
+    whitesur-gtk-theme-git papirus-icon-theme-git bibata-cursor-theme-bin\
+    `# English fonts`\
+    ttf-linux-libertine gentium-plus-font adobe-source-serif-fonts\
+    `# coding fonts`\
+    nerd-fonts-{mononoki,fira-code}\
+    `# Chinese fonts`\
+    wqy-microhei ttf-{arphic-ukai,sarasa-gothic}\
+    `# symbol and unicode fonts`\
+    ttf-twemoji ttf-material-design-icons-git ttf-symbola\
+    `# input method`\
+    fcitx5-im fcitx5-rime rime-cloverpinyin fcitx5-nord\
+    `# editors`\
+    neovim emacs\
+    `# base develop`\
+    geckodriver cmake man clang glslang\
+    python-{3,pip,keyring,matplotlib,pandas,pylint,seaborn,selenium,tqdm,yaml}\
+    `# system tools`\
+    polkit-kde-agent gnome-keyring redshift pamac-aur rofi spectacle gparted xcolor feh\
+    `# better alternative command`\
+    fd ripgrep exa bat bpytop\
+    `# doom emacs extension`\
+    gnuplot direnv-bin shellcheck-bin prettier clang-format-static-bin mu isync\
+    python-{black,isort,lsp-server,nose,pipenv,pyflakes,pytest}\
+    `# others`\
+    miktex-git nextcloud-client zotero
 
 COMICSHANNS_PATH="$HOME/Softwares/comic-shanns"
 [ -d "$COMICSHANNS_PATH" ] || {
