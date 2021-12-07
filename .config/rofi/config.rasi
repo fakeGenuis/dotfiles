@@ -42,7 +42,6 @@ configuration {
 	scroll-method: 0;
 	window-format: "{w}  {t}";
 /*	click-to-exit: true;*/
-	theme: "themes/default.rasi";
 /*	max-history-size: 25;*/
 	combi-hide-mode-prefix: true;
 /*	matching-negate-char: '-' /* unsupported */;*/
@@ -152,3 +151,4 @@ configuration {
       sorting-method:    "name";
   }
 }
+@theme "themes/default.rasi"
