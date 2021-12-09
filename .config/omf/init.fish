@@ -7,6 +7,9 @@ if test "$INSIDE_EMACS" = vterm -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
     function fish_title
         echo (status current-command) ':' (pwd)
     end
+    function e
+        emacsclient $argv
+    end
 end
 
 function fish_greeting
