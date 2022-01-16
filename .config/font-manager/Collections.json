@@ -44,10 +44,13 @@
             "families" : [
                 "mononoki Nerd Font Mono",
                 "agave Nerd Font",
-                "FiraCode Nerd Font",
-                "FuraCode Nerd Font"
+                "FuraCode Nerd Font",
+                "CaskaydiaCove Nerd Font",
+                "CodeNewRoman Nerd Font",
+                "BQN386 Unicode",
+                "UbuntuMono Nerd Font"
             ],
-            "size" : 4
+            "size" : 7
         },
         "Serif" : {
             "name" : "Serif",
