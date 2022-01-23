@@ -1,67 +1,81 @@
-#!/bin/bash
+#!/bin/fish
 
-sudo pacman -S base-devel git
-PARU_PATH="$HOME/Softwares/paru"
-[ -d "$PARU_PATH" ] || {
+sudo pacman -S --needed base-devel git yadm python
+set PARU_PATH "$HOME/.local/lib/paru"
+which paru &>/dev/null || begin
     git clone https://aur.archlinux.org/paru.git "$PARU_PATH"
-    cd "$PARU_PATH" || return 1
+    cd "$PARU_PATH" || exit 1
     makepkg -si
-}
+end
 
-paru -S --needed\
-    `# terminal and shell utilities`\
-    alacritty dracula-alacritty-git p7zip unrar wget inetutils\
-    xclip xsel tmux ranger neofetch starship trash-cli\
-    cronie docker docker-compose yadm feh\
-    `# proxy`\
-    xray-bin proxychains-ng qv2ray-dev-git\
-    `# X and windows manager`\
-    xorg-server awesome-git lain-git nvidia nvidia-dkms nvidia-settings picom-ibhagwan-git\
-    `# display manager and screen locker`\
-    lightdm lightdm-webkit-theme-aether i3lock-color xidlehook\
-    `# gtk theme and icon`\
-    whitesur-gtk-theme-git papirus-icon-theme-git bibata-cursor-theme-bin\
-    `# English fonts`\
-    ttf-linux-libertine gentium-plus-font adobe-source-serif-fonts\
-    `# coding fonts`\
-    nerd-fonts-{mononoki,fira-code}\
-    `# Chinese fonts`\
-    wqy-microhei ttf-{arphic-ukai,sarasa-gothic}\
-    `# symbol and unicode fonts`\
-    ttf-twemoji ttf-material-design-icons-git ttf-symbola\
-    `# input method`\
-    fcitx5-im fcitx5-rime rime-cloverpinyin fcitx5-nord\
-    `# editors`\
-    neovim emacs\
-    `# base develop`\
-    geckodriver cmake man clang glslang\
-    python-{3,pip,keyring,matplotlib,pandas,pylint,seaborn,selenium,tqdm,yaml}\
-    `# system tools`\
-    polkit-kde-agent gnome-keyring redshift pamac-aur rofi spectacle gparted xcolor feh\
-    `# better alternative command`\
-    fd ripgrep exa bat bpytop\
-    `# doom emacs extension`\
-    gnuplot direnv-bin shellcheck-bin prettier clang-format-static-bin mu isync\
-    python-{black,isort,lsp-server,nose,pipenv,pyflakes,pytest}\
-    `# others`\
-    miktex-git nextcloud-client zotero
+which powershell.exe &>/dev/null && set is_wsl true || set is_wsl false
+echo "is wsl: " $is_wsl
+ls /sys/class/power_supply/BAT* &>/dev/null && set is_laptop true || set is_laptop false
+echo "is laptop: " $is_laptop
 
-COMICSHANNS_PATH="$HOME/Softwares/comic-shanns"
-[ -d "$COMICSHANNS_PATH" ] || {
+set 2install
+
+# terminal
+set -a 2install alacritty dracula-alacritty-git
+# useful shell utilities
+set -a 2install p7zip unrar wget inetutils xclip xsel tmux ranger neofetch starship trash-cli
+# editors
+set -a 2install neovim emacs
+# doom emacs extension (main for lsp)
+set -a 2install mu isync shellcheck-bin prettier clang-format-static-bin gnuplot
+set -a 2install pyright python-{black,isort,lsp-server,nose,pipenv,pyflakes,pytest}
+# better alternative command
+set -a 2install fd ripgrep exa bat bpytop
+# gtk theme and icon
+set -a 2install whitesur-gtk-theme-git papirus-icon-theme-git bibata-cursor-theme-bin
+# English serif and sans-serif fonts
+set -a 2install ttf-linux-libertine gentium-plus-font adobe-source-serif-fonts
+# coding fonts
+set -a 2install nerd-fonts-{mononoki,fira-code,ubuntu-mono}
+# Chinese fonts
+set -a 2install wqy-microhei ttf-{arphic-ukai,sarasa-gothic}
+# symbol and unicode fonts
+set -a 2install otf-fira-code-symbol
+
+# wsl have built in x server so display and windows manager are not needed
+if not $is_wsl
+    # X and windows manager
+    set -a 2install xorg-server awesome-git lain-git nvidia nvidia-dkms nvidia-settings picom-ibhagwan-git
+    # display manager and screen locker
+    set -a 2install lightdm lightdm-webkit-theme-aether i3lock-color xidlehook
+    # gui system tools
+    set -a 2install redshift pamac-aur rofi gparted xcolor feh
+    set -a 2install polkit-kde-agent gnome-keyring
+    # input method
+    set -a 2install fcitx5-im fcitx5-rime rime-cloverpinyin fcitx5-nord
+    # proxy
+    set -a 2install xray-bin proxychains-ng qv2ray-dev-git
+    # symbol and unicode fonts for desktop environment
+    set -a 2install ttf-material-design-icons-git ttf-symbola ttf-twemoji
+    # others
+    set -a 2install miktex-git nextcloud-client zotero
+end
+
+# laptop cannot afford heavy task
+if not $is_laptop
+    # basic development
+    set -a 2install geckodriver cmake man clang glslang
+    set -a 2install cronie docker docker-compose
+    set -a 2install python-{pip,keyring,matplotlib,pandas,pylint,seaborn,selenium,tqdm,yaml}
+end
+
+paru -S --needed $2install
+
+set COMICSHANNS_PATH "$HOME/.local/lib/commic_shanns"
+fc-list | grep "comic shanns" &>/dev/null || begin
     git clone https://github.com/shannpersand/comic-shanns.git "$COMICSHANNS_PATH"
-    cd "$COMICSHANNS_PATH" || return 1
+    cd "$COMICSHANNS_PATH" || exit 1
     cp v2/* ~/.local/share/fonts
-}
+end
 
-AGAVE_PATH="$HOME/Softwares/agave"
-[ -d "$AGAVE_PATH" ] || {
+set AGAVE_PATH "$HOME/.local/lib/agave"
+fc-list | grep agave &>/dev/null || begin
     cd ~/Softwares && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Agave.zip
     7z x Agave.zip -o"$AGAVE_PATH"
-    cd "$AGAVE_PATH" && fd Windows -x rm && cp $(ls | grep -v Windows) ~/.local/share/fonts
-}
-
-
-#generate all system wide authorized keys, needed for sshd to run
-#ssh-keygen -A
-#generate a ssh key if not exist (add public key to github).
-#ssh-keygen
+    cd "$AGAVE_PATH" && fd Windows -x rm && cp (ls | grep -v Windows) ~/.local/share/fonts
+end
