@@ -94,10 +94,10 @@ unknown_indicator = "mystery shell"
 
 [shlvl]
 disabled = false
-format = "[$symbol]($style) "
-repeat = true
+format = "[$symbol$shlvl]($style) "
+repeat = false
 style = "bold red"
-symbol = ""
+symbol = "↕ "
 
 [memory_usage]
 disabled = true
