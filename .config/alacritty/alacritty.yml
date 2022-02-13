@@ -13,6 +13,7 @@ env:
   TERM: xterm-256color
 #TERM: alacritty
 window:
+  opacity: 0.75
   # Allow terminal applications to change Alacritty's window title.
   dynamic_title: true
   # Window dimensions (changes require restart)
@@ -287,7 +288,7 @@ font:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.75
+# background_opacity: 0.75
 import:
   - /usr/share/alacritty/dracula.yml
 
