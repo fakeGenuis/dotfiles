@@ -1,2 +1,10 @@
-/* https://polymath.net/2020/05/vertical-tabs-firefox/ */
-#TabsToolbar { visibility: collapse !important; }
+/* https://gist.github.com/collinbarrett/45c90f7d427e08d69d32dfef402c86f6 */
+/* Hide horizontal tab toolbar */
+#TabsToolbar {
+    visibility:collapse!important;
+}
+
+/* Hide "Tree Style Tabs" sidebar header */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+    display:none;
+}
