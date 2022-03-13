@@ -1,6 +1,8 @@
 #!/bin/fish
+# surely there being package that installed before
+# like: git vim yadm
 
-sudo pacman -S --needed base-devel git yadm python
+sudo pacman -Syy --needed git vim yadm which base-devel python
 set PARU_PATH "$HOME/.local/lib/paru"
 which paru &>/dev/null || begin
     git clone https://aur.archlinux.org/paru.git "$PARU_PATH"
@@ -10,7 +12,8 @@ end
 
 which powershell.exe &>/dev/null && set is_wsl true || set is_wsl false
 echo "is wsl: " $is_wsl
-ls /sys/class/power_supply/BAT* &>/dev/null && set is_laptop true || set is_laptop false
+# ls /sys/class/power_supply/BAT* &>/dev/null && set is_laptop true || set is_laptop false
+set is_laptop true
 echo "is laptop: " $is_laptop
 
 set 2install
@@ -21,9 +24,9 @@ set -a 2install alacritty dracula-alacritty-git
 set -a 2install p7zip unrar wget inetutils xclip xsel tmux ranger neofetch starship trash-cli
 # editors
 set -a 2install neovim emacs
-# doom emacs extension (main for lsp)
+# doom emacs extension (mainly for lsp)
 set -a 2install mu isync shellcheck-bin prettier clang-format-static-bin gnuplot
-set -a 2install pyright python-{black,isort,lsp-server,nose,pipenv,pyflakes,pytest}
+set -a 2install pyright python-{black,isort,nose,pipenv,pyflakes,pytest}
 # better alternative command
 set -a 2install fd ripgrep exa bat bpytop
 # gtk theme and icon
@@ -54,11 +57,12 @@ if not $is_wsl
     set -a 2install ttf-material-design-icons-git ttf-twemoji-color
     # others
     set -a 2install miktex-git nextcloud-client zotero
+else
+    curl -L https://github.com/sorah/arch.sorah.jp/blob/master/aur-sorah/PKGBUILDs/subsystemctl/PKGBUILD
 end
 
-# laptop cannot afford heavy task
+# server development environment
 if not $is_laptop
-    # basic development
     set -a 2install geckodriver cmake man clang glslang
     set -a 2install cronie docker docker-compose
     set -a 2install python-{pip,keyring,matplotlib,pandas,pylint,seaborn,selenium,tqdm,yaml}
@@ -75,7 +79,21 @@ end
 
 set AGAVE_PATH "$HOME/.local/lib/agave"
 fc-list | grep agave &>/dev/null || begin
-    cd ~/Softwares && curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Agave.zip
-    7z x Agave.zip -o"$AGAVE_PATH"
+    curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/Agave.zip
+    7z x Agave.zip -o"$AGAVE_PATH" && rm Agave.zip
     cd "$AGAVE_PATH" && fd Windows -x rm && cp (ls | grep -v Windows) ~/.local/share/fonts
 end
+
+# doom emacs
+which doom &>/dev/null || begin
+    git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+    set -a fish_user_paths ~/.emacs.d/bin
+    doom install
+end
+
+# neovim plugin
+ls ~/.local/share/nvim/site/autoload/plug.vi1m &>/dev/null || begin
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+end
+# them ":PlugInstall" when open neovim
