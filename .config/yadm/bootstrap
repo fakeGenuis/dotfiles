@@ -21,7 +21,7 @@ set 2install
 # terminal
 set -a 2install alacritty dracula-alacritty-git
 # useful shell utilities
-set -a 2install p7zip unrar wget inetutils xclip xsel tmux ranger neofetch starship trash-cli
+set -a 2install p7zip unrar wget inetutils xclip xsel tmux ranger neofetch starship trash-cli man
 # editors
 set -a 2install neovim emacs
 # doom emacs extension (mainly for lsp)
@@ -56,14 +56,18 @@ if not $is_wsl
     # symbol and unicode fonts for desktop environment
     set -a 2install ttf-material-design-icons-git ttf-twemoji-color
     # others
-    set -a 2install miktex-git nextcloud-client zotero
+    set -a 2install miktex-git nextcloud-client zotero librewolf-bin
 else
-    curl -L https://github.com/sorah/arch.sorah.jp/blob/master/aur-sorah/PKGBUILDs/subsystemctl/PKGBUILD
+    # subsystemctl, for ssh into wsl
+    set subspath "~/.local/lib/subsystemctl"
+    ls "$subspath" &>/dev/null || begin
+        curl -Lo "$subspath"/PKGBUILD --create-dirs https://github.com/sorah/arch.sorah.jp/blob/master/aur-sorah/PKGBUILDs/subsystemctl/PKGBUILD && cd "$subspath" && makepkg -si
+    end
 end
 
 # server development environment
 if not $is_laptop
-    set -a 2install geckodriver cmake man clang glslang
+    set -a 2install geckodriver cmake clang glslang
     set -a 2install cronie docker docker-compose
     set -a 2install python-{pip,keyring,matplotlib,pandas,pylint,seaborn,selenium,tqdm,yaml}
 end
@@ -92,7 +96,7 @@ which doom &>/dev/null || begin
 end
 
 # neovim plugin
-ls ~/.local/share/nvim/site/autoload/plug.vi1m &>/dev/null || begin
+ls ~/.local/share/nvim/site/autoload/plug.vim &>/dev/null || begin
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 end
