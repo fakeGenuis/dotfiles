@@ -7,7 +7,7 @@ function X0vnc --description "x0vnc on, off or show status"
                 echo "a x0vncserver already running!!"
                 X0vnc status
             end || begin
-                tmux has-session -t vnc || tmux new-session -t vnc
+                tmux has-session -t vnc || tmux new-session -t vnc -d
                 tmux attach -t vnc\; new-window 'x0vncserver -rfbauth ~/.vnc/passwd -display :0 -localhost -rfbport 50114 -AlwaysShared'\; detach
             end
         case off
