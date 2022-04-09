@@ -12,8 +12,7 @@ end
 
 which powershell.exe &>/dev/null && set is_wsl true || set is_wsl false
 echo "is wsl: " $is_wsl
-# ls /sys/class/power_supply/BAT* &>/dev/null && set is_laptop true || set is_laptop false
-set is_laptop true
+ls /sys/class/power_supply/BAT* &>/dev/null && set is_laptop true || set is_laptop false
 echo "is laptop: " $is_laptop
 
 set 2install
