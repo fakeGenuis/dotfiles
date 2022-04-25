@@ -46,7 +46,7 @@ if not $is_wsl
     # display manager and screen locker
     set -a 2install lightdm lightdm-webkit-theme-aether i3lock-color xidlehook
     # gui system tools
-    set -a 2install redshift pamac-aur rofi gparted xcolor feh
+    set -a 2install redshift pamac-aur rofi gparted xcolor feh zenity xcape
     set -a 2install polkit-kde-agent gnome-keyring
     # input method
     set -a 2install fcitx5-im fcitx5-rime rime-cloverpinyin fcitx5-nord
