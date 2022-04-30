@@ -48,9 +48,12 @@
                 "CaskaydiaCove Nerd Font",
                 "CodeNewRoman Nerd Font",
                 "BQN386 Unicode",
-                "UbuntuMono Nerd Font"
+                "UbuntuMono Nerd Font",
+                "Victor Mono",
+                "Rec Mono Casual",
+                "UbuntuLiga Nerd Font Mono"
             ],
-            "size" : 7
+            "size" : 10
         },
         "Serif" : {
             "name" : "Serif",
