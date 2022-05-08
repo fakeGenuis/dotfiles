@@ -1,5 +1,5 @@
 configuration {
-	modi: "combi,run,filebrowser,ssh,keys";
+	modi: "combi,run,ssh,keys";
 /*	font: "mono 12";*/
 /*	location: 0;*/
 /*	yoffset: 0;*/
@@ -40,7 +40,7 @@ configuration {
 	dpi: 0;
 /*	threads: 0;*/
 	scroll-method: 0;
-	window-format: "{w}  {t}";
+	window-format: "[{w}] {t}";
 /*	click-to-exit: true;*/
 /*	max-history-size: 25;*/
 	combi-hide-mode-prefix: true;
@@ -51,7 +51,7 @@ configuration {
 /*	drun-reload-desktop-cache: false;*/
 /*	normalize-match: false;*/
 /*	steal-focus: false;*/
-/*	application-fallback-icon: ;*/
+	application-fallback-icon: "unknown-app";
 /*	pid: "/run/user/1000/rofi.pid";*/
 /*	display-window: ;*/
 /*	display-windowcd: ;*/
