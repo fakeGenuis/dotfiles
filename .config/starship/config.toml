@@ -1,4 +1,5 @@
 format = """
+$status\
 $time\
 $username\
 $hostname\
@@ -59,11 +60,12 @@ $cmd_duration\
 $line_break\
 $jobs\
 $battery\
-$status\
 $shell\
 $character"""
 # Inserts a blank line between shell prompts
 add_newline = true
+
+# see https://gist.github.com/ryo-ARAKI/48a11585299f9032fa4bda60c9bba593
 
 # Replace the "❯" symbol in the prompt with "➜"
 [character]                            # The name of the module we are configuring is "character"
@@ -76,9 +78,6 @@ disabled = true
 
 [battery]
 disabled = false
-full_symbol = "🔋 "
-charging_symbol = "⚡ "
-discharging_symbol = "💀 "
 
 [time]
 disabled = false
@@ -100,7 +99,14 @@ style = "bold red"
 symbol = "↕ "
 
 [memory_usage]
-disabled = true
+format = "$symbol[${ram}( | ${swap})]($style) "
+threshold = 75
+style = "bold dimmed white"
+disabled = false
 
 [status]
+symbol = " "
+disabled = false
+
+[sudo]
 disabled = false
