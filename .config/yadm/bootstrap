@@ -23,18 +23,18 @@ set -a 2install neovim emacs
 # better alternative command
 set -a 2install fd ripgrep exa bat bpytop
 # gtk theme and icon
-set -a 2install whitesur-gtk-theme-git papirus-icon-theme-git bibata-cursor-theme-bin
+set -a 2install whitesur-gtk-theme papirus-icon-theme-git bibata-cursor-theme-bin
 # English serif and sans-serif fonts
 set -a 2install ttf-linux-libertine gentium-plus-font adobe-source-serif-fonts
 # coding fonts
 set -a 2install nerd-fonts-{mononoki,fira-code} ttf-recursive
 # symbol and unicode fonts
-set -a 2install otf-fira-code-symbol ttf-symbola
+set -a 2install ttf-symbola
 
 # wsl have built in x server so display and windows manager are not needed
 if not $is_wsl
     # X and windows manager
-    set -a 2install xorg-server awesome-git lain-git nvidia nvidia-dkms nvidia-settings picom-ibhagwan-git
+    set -a 2install linux-headers nvidia-dkms nvidia-settings xorg-server awesome-git lain-git picom-ibhagwan-git
     # display manager and screen locker
     set -a 2install lightdm lightdm-webkit-theme-aether betterlockscreen xidlehook
     # gui system tools
