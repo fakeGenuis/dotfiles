@@ -31,3 +31,8 @@ let g:lightline = {
 syntax on
 "colorscheme onedark
 colorscheme dracula
+
+" https://superuser.com/questions/321547/how-do-i-replace-paste-yanked-text-in-vim-without-yanking-the-deleted-lines
+" replace currently selected text with default register
+" without yanking it
+vnoremap <leader>p "_dP
