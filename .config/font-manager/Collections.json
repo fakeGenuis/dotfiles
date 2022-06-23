@@ -1,18 +1,21 @@
 {
     "entries" : {
-        "Menu" : {
-            "name" : "Menu",
+        "Serif" : {
+            "name" : "Serif",
             "icon" : null,
             "comment" : null,
-            "index" : 2,
+            "index" : 5,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
-                "Sarasa UI SC",
-                "Comic Shanns"
+                "Gentium Book Plus",
+                "Gentium Plus",
+                "Linux Libertine",
+                "Source Serif Pro",
+                "Standard Symbols PS"
             ],
-            "size" : 2
+            "size" : 5
         },
         "Chinese" : {
             "name" : "Chinese",
@@ -43,34 +46,53 @@
             "children" : {            },
             "families" : [
                 "mononoki Nerd Font Mono",
-                "agave Nerd Font",
-                "FuraCode Nerd Font",
                 "CaskaydiaCove Nerd Font",
                 "CodeNewRoman Nerd Font",
                 "BQN386 Unicode",
                 "UbuntuMono Nerd Font",
                 "Victor Mono",
                 "Rec Mono Casual",
-                "UbuntuLiga Nerd Font Mono"
+                "UbuntuLiga Nerd Font Mono",
+                "Inconsolata",
+                "InconsolataLGC Nerd Font Mono",
+                "agave Nerd Font Mono",
+                "Courier Prime Code",
+                "mononokiLiga Nerd Font Mono",
+                "FiraCode Nerd Font Mono"
             ],
-            "size" : 10
+            "size" : 14
         },
-        "Serif" : {
-            "name" : "Serif",
+        "Menu" : {
+            "name" : "Menu",
             "icon" : null,
             "comment" : null,
-            "index" : 5,
+            "index" : 2,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
-                "Gentium Book Plus",
-                "Gentium Plus",
-                "Linux Libertine",
-                "Source Serif Pro",
-                "Standard Symbols PS"
+                "Sarasa UI SC",
+                "Comic Shanns"
             ],
-            "size" : 5
+            "size" : 2
+        },
+        "Ligatures" : {
+            "name" : "Ligatures",
+            "icon" : null,
+            "comment" : null,
+            "index" : 6,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "CaskaydiaCove Nerd Font Mono",
+                "FantasqueSansMono Nerd Font Mono",
+                "FiraCode Nerd Font Mono",
+                "JetBrainsMono Nerd Font Mono",
+                "Rec Mono Semicasual",
+                "Iosevka"
+            ],
+            "size" : 6
         },
         "Icons" : {
             "name" : "Icons",
