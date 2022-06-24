@@ -23,11 +23,11 @@ set -a 2install neovim emacs
 # better alternative command
 set -a 2install fd ripgrep exa bat bpytop
 # gtk theme and icon
-set -a 2install whitesur-gtk-theme papirus-icon-theme-git bibata-cursor-theme-bin
+set -a 2install whitesur-gtk-theme orchis-theme-git orchis-kde-theme-git papirus-icon-theme-git bibata-cursor-theme-bin
 # English serif and sans-serif fonts
 set -a 2install ttf-linux-libertine gentium-plus-font adobe-source-serif-fonts
 # coding fonts
-set -a 2install nerd-fonts-{mononoki,fira-code} ttf-recursive
+set -a 2install nerd-fonts-fira-code ttf-recursive
 # symbol and unicode fonts
 set -a 2install ttf-symbola
 
