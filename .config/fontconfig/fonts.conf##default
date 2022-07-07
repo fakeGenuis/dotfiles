@@ -40,7 +40,7 @@
       <string>sans-serif</string>
     </test>
     <edit name="family" mode="prepend" binding="strong">
-      <string>Sarasa Gothic SC</string>
+      <string>Open Sans</string>
     </edit>
   </match>
   <match target="pattern">
@@ -48,7 +48,7 @@
       <string>monospace</string>
     </test>
     <edit name="family" mode="prepend" binding="strong">
-      <string>Fura Code Nerd Font</string>
+      <string>FiraCode Nerd Font Mono</string>
     </edit>
   </match>
   <match>
@@ -59,7 +59,7 @@
       <string>serif</string>
     </test>
     <edit name="family" mode="prepend">
-      <string>Sarasa Gothic SC</string>
+      <string>AR PL UKai CN</string>
     </edit>
   </match>
   <match>
