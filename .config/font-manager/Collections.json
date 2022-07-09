@@ -17,6 +17,19 @@
             ],
             "size" : 5
         },
+        "Gyre" : {
+            "name" : "Gyre",
+            "icon" : null,
+            "comment" : null,
+            "index" : 7,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "DejaVu Math TeX Gyre"
+            ],
+            "size" : 1
+        },
         "Chinese" : {
             "name" : "Chinese",
             "icon" : null,
@@ -36,46 +49,6 @@
             ],
             "size" : 7
         },
-        "Code (mono)" : {
-            "name" : "Code (mono)",
-            "icon" : null,
-            "comment" : null,
-            "index" : 0,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "mononoki Nerd Font Mono",
-                "CaskaydiaCove Nerd Font",
-                "CodeNewRoman Nerd Font",
-                "BQN386 Unicode",
-                "UbuntuMono Nerd Font",
-                "Victor Mono",
-                "Rec Mono Casual",
-                "UbuntuLiga Nerd Font Mono",
-                "Inconsolata",
-                "InconsolataLGC Nerd Font Mono",
-                "agave Nerd Font Mono",
-                "Courier Prime Code",
-                "mononokiLiga Nerd Font Mono",
-                "FiraCode Nerd Font Mono"
-            ],
-            "size" : 14
-        },
-        "Menu" : {
-            "name" : "Menu",
-            "icon" : null,
-            "comment" : null,
-            "index" : 2,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Sarasa UI SC",
-                "Comic Shanns"
-            ],
-            "size" : 2
-        },
         "Ligatures" : {
             "name" : "Ligatures",
             "icon" : null,
@@ -94,6 +67,26 @@
             ],
             "size" : 6
         },
+        "Code (mono)" : {
+            "name" : "Code (mono)",
+            "icon" : null,
+            "comment" : null,
+            "index" : 0,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "mononoki Nerd Font Mono",
+                "BQN386 Unicode",
+                "UbuntuMono Nerd Font",
+                "Rec Mono Casual",
+                "UbuntuLiga Nerd Font Mono",
+                "agave Nerd Font Mono",
+                "mononokiLiga Nerd Font Mono",
+                "FiraCode Nerd Font Mono"
+            ],
+            "size" : 8
+        },
         "Icons" : {
             "name" : "Icons",
             "icon" : null,
@@ -105,6 +98,20 @@
             "families" : [
                 "Material Design Icons",
                 "Twemoji"
+            ],
+            "size" : 2
+        },
+        "Menu" : {
+            "name" : "Menu",
+            "icon" : null,
+            "comment" : null,
+            "index" : 2,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Sarasa UI SC",
+                "Comic Shanns"
             ],
             "size" : 2
         },
