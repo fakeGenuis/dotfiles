@@ -40,7 +40,7 @@
       <string>sans-serif</string>
     </test>
     <edit name="family" mode="prepend" binding="strong">
-      <string>Open Sans</string>
+      <string>Sarasa Gothic SC</string>
     </edit>
   </match>
   <match target="pattern">
@@ -81,46 +81,6 @@
       <string>monospace</string>
     </test>
     <edit name="family" mode="prepend">
-      <string>Sarasa Mono SC</string>
-    </edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family">
-      <string>WenQuanYi Zen Hei</string>
-    </test>
-    <edit name="family" mode="assign" binding="same">
-      <string>WenQuanYi Micro Hei</string>
-    </edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family">
-      <string>Microsoft YaHei</string>
-    </test>
-    <edit name="family" mode="assign" binding="same">
-      <string>WenQuanYi Micro Hei</string>
-    </edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family">
-      <string>SimHei</string>
-    </test>
-    <edit name="family" mode="assign" binding="same">
-      <string>WenQuanYi Micro Hei</string>
-    </edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family">
-      <string>SimSun</string>
-    </test>
-    <edit name="family" mode="assign" binding="same">
-      <string>Sarasa Gothic SC</string>
-    </edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family">
-      <string>SimSun-18030</string>
-    </test>
-    <edit name="family" mode="assign" binding="same">
       <string>Sarasa Gothic SC</string>
     </edit>
   </match>
