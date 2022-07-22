@@ -3,7 +3,7 @@
 # https://stackoverflow.com/a/29436423
 function y_or_n --description "read yes or no with prompt and message"
     while true
-        read -p "set_color green; echo -n "$argv" 'yes or no[y/n]:'; set_color normal;" yn
+        read -p "set_color green; echo -n "$argv" '[y/n]: '; set_color normal;" yn
         switch "$yn"
             case y Y
                 return 0
