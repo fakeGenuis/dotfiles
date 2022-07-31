@@ -21,7 +21,7 @@ function tunnelOn --description "toggle status of ssh to server"
         case -grasp
             ssh_forward "$argv[2]" 3664 grasp
         case -vnc
-            ssh_forward "$argv[2]" 5014 vnc
+            ssh_forward "$argv[2]" 50114 vnc
         case -proxy
             ssh_forward "$argv[2]" 8889 proxy
         case -h
