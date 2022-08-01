@@ -41,7 +41,7 @@ if not $is_wsl
     set -a 2install ttf-material-design-icons-git
 else
     # subsystemctl, for ssh into wsl
-    set subspath "~/.local/lib/subsystemctl"
+    set subspath "$HOME/.local/lib/subsystemctl"
     ls "$subspath" &>/dev/null || begin
         curl -Lo "$subspath"/PKGBUILD --create-dirs https://github.com/sorah/arch.sorah.jp/blob/master/aur-sorah/PKGBUILDs/subsystemctl/PKGBUILD && cd "$subspath" && makepkg -si
     end
