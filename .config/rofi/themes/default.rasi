@@ -6,7 +6,7 @@
 * {
   spacing: 0.3em;
   radius: 0.3em;
-  font: "agave Nerd Font Mono 17";
+  font: "MononokiLiga Nerd Font Mono 16";
   icon-font: "Material Design Icons 22";
 
   text-color: #333538ff;
@@ -60,7 +60,6 @@ listview {
   lines: 7;
   dynamic: true;
   spacing: 0px;
-  require-input: true;
 }
 element {
   padding: @spacing;
