@@ -4,18 +4,97 @@
             "name" : "Serif",
             "icon" : null,
             "comment" : null,
-            "index" : 5,
+            "index" : 1,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
                 "Gentium Book Plus",
-                "Gentium Plus",
-                "Linux Libertine",
                 "Source Serif Pro",
-                "Standard Symbols PS"
+                "LXGW WenKai"
             ],
-            "size" : 5
+            "size" : 3
+        },
+        "Icons/Unicode" : {
+            "name" : "Icons/Unicode",
+            "icon" : null,
+            "comment" : null,
+            "index" : 4,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Material Design Icons",
+                "Twemoji",
+                "Quivira"
+            ],
+            "size" : 3
+        },
+        "Chinese" : {
+            "name" : "Chinese",
+            "icon" : null,
+            "comment" : null,
+            "index" : 6,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Sarasa Gothic SC",
+                "WenQuanYi Micro Hei Mono",
+                "AR PL UKai CN",
+                "LXGW WenKai",
+                "Kosefont JP",
+                "Sarasa UI SC"
+            ],
+            "size" : 6
+        },
+        "Ligatures" : {
+            "name" : "Ligatures",
+            "icon" : null,
+            "comment" : null,
+            "index" : 3,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "FiraCode Nerd Font Mono",
+                "Cascadia Code"
+            ],
+            "size" : 2
+        },
+        "Code (mono)" : {
+            "name" : "Code (mono)",
+            "icon" : null,
+            "comment" : null,
+            "index" : 2,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "BQN386 Unicode",
+                "Rec Mono Casual",
+                "UbuntuLiga Nerd Font Mono",
+                "agave Nerd Font Mono",
+                "mononokiLiga Nerd Font Mono",
+                "FiraCode Nerd Font Mono",
+                "Cascadia Code",
+                "Cascadia Code Cur"
+            ],
+            "size" : 8
+        },
+        "Menu" : {
+            "name" : "Menu",
+            "icon" : null,
+            "comment" : null,
+            "index" : 5,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Sarasa UI SC",
+                "Comic Shanns"
+            ],
+            "size" : 2
         },
         "Gyre" : {
             "name" : "Gyre",
@@ -26,92 +105,8 @@
             "active" : true,
             "children" : {            },
             "families" : [
-                "DejaVu Math TeX Gyre"
-            ],
-            "size" : 1
-        },
-        "Chinese" : {
-            "name" : "Chinese",
-            "icon" : null,
-            "comment" : null,
-            "index" : 3,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Sarasa Gothic SC",
-                "Noto Sans Mono CJK SC",
-                "Noto Serif CJK SC",
-                "WenQuanYi Micro Hei Mono",
-                "AR PL UKai CN",
-                "Sarasa Mono SC",
-                "Sarasa UI SC"
-            ],
-            "size" : 7
-        },
-        "Ligatures" : {
-            "name" : "Ligatures",
-            "icon" : null,
-            "comment" : null,
-            "index" : 6,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "CaskaydiaCove Nerd Font Mono",
-                "FantasqueSansMono Nerd Font Mono",
-                "FiraCode Nerd Font Mono",
-                "JetBrainsMono Nerd Font Mono",
-                "Rec Mono Semicasual",
-                "Iosevka"
-            ],
-            "size" : 6
-        },
-        "Code (mono)" : {
-            "name" : "Code (mono)",
-            "icon" : null,
-            "comment" : null,
-            "index" : 0,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "mononoki Nerd Font Mono",
-                "BQN386 Unicode",
-                "UbuntuMono Nerd Font",
-                "Rec Mono Casual",
-                "UbuntuLiga Nerd Font Mono",
-                "agave Nerd Font Mono",
-                "mononokiLiga Nerd Font Mono",
-                "FiraCode Nerd Font Mono"
-            ],
-            "size" : 8
-        },
-        "Icons" : {
-            "name" : "Icons",
-            "icon" : null,
-            "comment" : null,
-            "index" : 4,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Material Design Icons",
-                "Twemoji"
-            ],
-            "size" : 2
-        },
-        "Menu" : {
-            "name" : "Menu",
-            "icon" : null,
-            "comment" : null,
-            "index" : 2,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Sarasa UI SC",
-                "Comic Shanns"
+                "DejaVu Math TeX Gyre",
+                "TeX Gyre Termes Math"
             ],
             "size" : 2
         },
@@ -119,18 +114,14 @@
             "name" : "Reading (sans)",
             "icon" : null,
             "comment" : null,
-            "index" : 1,
+            "index" : 0,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
-                "Noto Sans CJK SC",
-                "Sarasa Gothic SC",
-                "Cantarell",
-                "Linux Biolinum",
-                "Open Sans"
+                "Sarasa UI SC"
             ],
-            "size" : 5
+            "size" : 1
         }
     }
 }
