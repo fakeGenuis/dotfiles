@@ -14,6 +14,15 @@
     <edit name="rgba" mode="assign"> <const>rgb</const> </edit>
     <edit name="antialias" mode="assign"> <bool>true</bool> </edit>
   </match>
+
+  <!-- Default font (no fc-match pattern) -->
+  <!-- <match> -->
+  <!--   <edit mode="prepend" name="family"> -->
+  <!--     <string>Sarasa UI SC</string> -->
+  <!--   </edit> -->
+  <!-- </match> -->
+
+  <!-- Only bitmap for emoji fonts. -->
   <match target="font">
     <edit name="embeddedbitmap" mode="assign">
       <bool>false</bool>
@@ -27,6 +36,17 @@
       <bool>true</bool>
     </edit>
   </match>
+
+  <!-- Latin fonts. -->
+  <!-- Through designed for Chinese (更纱黑体) -->
+  <match target="pattern">
+    <test qual="any" name="family">
+      <string>sans-serif</string>
+    </test>
+    <edit name="family" mode="prepend" binding="strong">
+      <string>Sarasa UI SC</string>
+    </edit>
+  </match>
   <match>
     <test qual="any" name="family">
       <string>serif</string>
@@ -37,20 +57,43 @@
   </match>
   <match target="pattern">
     <test qual="any" name="family">
-      <string>sans-serif</string>
-    </test>
-    <edit name="family" mode="prepend" binding="strong">
-      <string>Sarasa Gothic SC</string>
-    </edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family">
       <string>monospace</string>
     </test>
     <edit name="family" mode="prepend" binding="strong">
-      <string>FiraCode Nerd Font Mono</string>
+      <string>MononokiLiga Nerd Font Mono</string>
     </edit>
   </match>
+
+  <!-- Default system-ui font -->
+  <alias binding="strong">
+    <family>system-ui</family>
+    <prefer>
+      <family>Sarasa UI SC</family>
+    </prefer>
+  </alias>
+
+  <!--Chinese fonts. -->
+  <!-- <match> -->
+  <!--   <test compare="contains" name="lang"> -->
+  <!--     <string>zh</string> -->
+  <!--   </test> -->
+  <!--   <edit mode="prepend" name="family"> -->
+  <!--     <string>Sarasa UI SC</string> -->
+  <!--   </edit> -->
+  <!-- </match> -->
+  <!-- Very cute Chinese font -->
+  <match>
+    <test name="lang" compare="contains">
+      <string>zh</string>
+    </test>
+    <test name="family">
+      <string>sans-serif</string>
+    </test>
+    <edit name="family" mode="prepend">
+      <string>Kosefont JP</string>
+    </edit>
+  </match>
+  <!-- best alternative to SimSun -->
   <match>
     <test name="lang" compare="contains">
       <string>zh</string>
@@ -59,18 +102,7 @@
       <string>serif</string>
     </test>
     <edit name="family" mode="prepend">
-      <string>AR PL UKai CN</string>
-    </edit>
-  </match>
-  <match>
-    <test name="lang" compare="contains">
-      <string>zh</string>
-    </test>
-    <test name="family">
-      <string>sans-serif</string>
-    </test>
-    <edit name="family" mode="prepend">
-      <string>Sarasa Gothic SC</string>
+      <string>LXGW WenKai Bold</string>
     </edit>
   </match>
   <match>
@@ -81,9 +113,75 @@
       <string>monospace</string>
     </test>
     <edit name="family" mode="prepend">
+      <string>Kosefont JP</string>
+    </edit>
+  </match>
+
+  <!--Windows & Linux Chinese fonts. -->
+  <match target="pattern">
+    <test qual="any" name="family">
+      <string>WenQuanYi Zen Hei</string>
+    </test>
+    <edit name="family" mode="assign" binding="same">
+      <string>WenQuanYi Micro Hei</string>
+    </edit>
+  </match>
+  <match target="pattern">
+    <test qual="any" name="family">
+      <string>Microsoft YaHei</string>
+    </test>
+    <edit name="family" mode="assign" binding="same">
+      <string>Kosefont JP</string>
+    </edit>
+  </match>
+  <match target="pattern">
+    <test qual="any" name="family">
+      <string>SimHei</string>
+    </test>
+    <edit name="family" mode="assign" binding="same">
       <string>Sarasa Gothic SC</string>
     </edit>
   </match>
+  <match target="pattern">
+    <test qual="any" name="family">
+      <string>SimSun</string>
+    </test>
+    <edit name="family" mode="assign" binding="same">
+      <string>LXGW WenKai</string>
+    </edit>
+  </match>
+  <match target="pattern">
+    <test qual="any" name="family">
+      <string>SimSun-18030</string>
+    </test>
+    <edit name="family" mode="assign" binding="same">
+      <string>LXGW WenKai</string>
+    </edit>
+  </match>
+
+  <!-- Fallback fonts preference order -->
+  <!-- <alias> -->
+  <!--   <family>sans-serif</family> -->
+  <!--   <prefer> -->
+  <!--     <family>Sarasa UI SC</family> -->
+  <!--     <family>Kosefont JP</family> -->
+  <!--   </prefer> -->
+  <!-- </alias> -->
+  <!-- <alias> -->
+  <!--   <family>serif</family> -->
+  <!--   <prefer> -->
+  <!--     <family>Source Serif Pro</family> -->
+  <!--     <family>LXGW Wenkai</family> -->
+  <!--   </prefer> -->
+  <!-- </alias> -->
+  <!-- <alias> -->
+  <!--   <family>monospace</family> -->
+  <!--   <prefer> -->
+  <!--     <family>UbuntuLiga Nerd Font Mono</family> -->
+  <!--     <family>FiraCode Nerd Font Mono</family> -->
+  <!--   </prefer> -->
+  <!-- </alias> -->
+
   <!-- Load local system customization file -->
   <include ignore_missing="yes">conf.d</include>
   <!-- Font cache directory list -->

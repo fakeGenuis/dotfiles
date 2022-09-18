@@ -1,0 +1,92 @@
+<?xml version='1.0'?>
+<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+<fontconfig>
+  <description>Arch Linux Font Config</description>
+  <dir>/usr/share/fonts</dir>
+  <dir>/usr/local/share/fonts</dir>
+  <dir prefix="xdg">fonts</dir>
+  <dir>~/.local/share/fonts</dir>
+  <match target="font">
+    <edit name="autohint" mode="assign"> <bool>false</bool> </edit>
+    <edit name="hinting" mode="assign"> <bool>true</bool> </edit>
+    <edit name="hintstyle" mode="assign"> <const>hintslight</const> </edit>
+    <edit name="lcdfilter" mode="assign"> <const>lcddefault</const> </edit>
+    <edit name="rgba" mode="assign"> <const>rgb</const> </edit>
+    <edit name="antialias" mode="assign"> <bool>true</bool> </edit>
+  </match>
+  <match target="font">
+    <edit name="embeddedbitmap" mode="assign">
+      <bool>false</bool>
+    </edit>
+  </match>
+  <match target="font">
+    <test name="family" compare="contains">
+      <string>Emoji</string>
+    </test>
+    <edit name="embeddedbitmap" mode="assign">
+      <bool>true</bool>
+    </edit>
+  </match>
+  <match>
+    <test qual="any" name="family">
+      <string>serif</string>
+    </test>
+    <edit name="family" mode="prepend" binding="strong">
+      <string>Source Serif Pro</string>
+    </edit>
+  </match>
+  <match target="pattern">
+    <test qual="any" name="family">
+      <string>sans-serif</string>
+    </test>
+    <edit name="family" mode="prepend" binding="strong">
+      <string>Sarasa UI SC</string>
+    </edit>
+  </match>
+  <match target="pattern">
+    <test qual="any" name="family">
+      <string>monospace</string>
+    </test>
+    <edit name="family" mode="prepend" binding="strong">
+      <string>FiraCode Nerd Font Mono</string>
+    </edit>
+  </match>
+  <match>
+    <test name="lang" compare="contains">
+      <string>zh</string>
+    </test>
+    <test name="family">
+      <string>serif</string>
+    </test>
+    <edit name="family" mode="prepend">
+      <string>LXGW WenKai</string>
+    </edit>
+  </match>
+  <match>
+    <test name="lang" compare="contains">
+      <string>zh</string>
+    </test>
+    <test name="family">
+      <string>sans-serif</string>
+    </test>
+    <edit name="family" mode="prepend">
+      <string>Sarasa UI SC</string>
+    </edit>
+  </match>
+  <match>
+    <test name="lang" compare="contains">
+      <string>zh</string>
+    </test>
+    <test name="family">
+      <string>monospace</string>
+    </test>
+    <edit name="family" mode="prepend">
+      <string>Sarasa UI SC</string>
+    </edit>
+  </match>
+  <!-- Load local system customization file -->
+  <include ignore_missing="yes">conf.d</include>
+  <!-- Font cache directory list -->
+  <cachedir>/var/cache/fontconfig</cachedir>
+  <cachedir prefix="xdg">fontconfig</cachedir>
+</fontconfig>
