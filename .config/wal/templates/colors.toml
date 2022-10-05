@@ -1,0 +1,6 @@
+active         = "{color5}"
+background     = "{color0}"
+background_alt = "{color8}"
+foreground     = "{color7}"
+selected       = "{color4}"
+urgent         = "{color1}"
