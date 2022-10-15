@@ -92,7 +92,7 @@ powershell_indicator = ""
 unknown_indicator = "mystery shell"
 
 [shlvl]
-disabled = false
+disabled = true
 format = "[$symbol$shlvl]($style) "
 repeat = false
 style = "bold red"
