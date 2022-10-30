@@ -3,9 +3,6 @@ set -gx GPG_TTY (tty)
 set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
-# https://askubuntu.com/questions/522599/how-to-get-color-man-pages-under-fish-shell
-set -x MANPAGER "sh -c 'col -bx | bat -l man -p --theme 'Dracula''"
-
 if status is-interactive
     # Commands to run in interactive sessions can go here
     set -gx STARSHIP_CONFIG ~/.config/starship/config.toml
@@ -26,15 +23,6 @@ end
 
 function fish_greeting
 end
-
-# https://wiki.archlinux.org/title/Ranger#Preventing_nested_ranger_instances
-# not safe when inside tmux, $RANGER_LEVEL == 1, tmux bug? 
-# function ranger
-#     if test -n "$RANGER_LEVEL"
-#         echo -n "You are in ranger level "; set_color red; echo "$RANGE_LEVEL"; set_color normal;
-#     end
-#     /usr/bin/ranger "$argv"
-# end
 
 # https://www.emacswiki.org/emacs/TrampMode
 # https://stackoverflow.com/a/37421917
