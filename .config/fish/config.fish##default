@@ -1,4 +1,6 @@
+# GPG ssh agent
 set -gx GPG_TTY (tty)
+set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
 # https://askubuntu.com/questions/522599/how-to-get-color-man-pages-under-fish-shell
