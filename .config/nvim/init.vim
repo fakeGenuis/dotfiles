@@ -5,7 +5,7 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'joshdick/onedark.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'sheerun/vim-polyglot'
-Plug 'dracula/vim', { 'as': 'dracula' }
+"Plug 'dracula/vim', { 'as': 'dracula' }
 
 call plug#end()
 
@@ -30,7 +30,7 @@ let g:lightline = {
 
 syntax on
 "colorscheme onedark
-colorscheme dracula
+"colorscheme dracula
 
 " https://superuser.com/questions/321547/how-do-i-replace-paste-yanked-text-in-vim-without-yanking-the-deleted-lines
 " replace currently selected text with default register
