@@ -1,5 +1,18 @@
 {
     "entries" : {
+        "Reading (sans)" : {
+            "name" : "Reading (sans)",
+            "icon" : null,
+            "comment" : null,
+            "index" : 0,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Sarasa UI SC"
+            ],
+            "size" : 1
+        },
         "Serif" : {
             "name" : "Serif",
             "icon" : null,
@@ -14,53 +27,6 @@
                 "LXGW WenKai"
             ],
             "size" : 3
-        },
-        "Icons/Unicode" : {
-            "name" : "Icons/Unicode",
-            "icon" : null,
-            "comment" : null,
-            "index" : 4,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Material Design Icons",
-                "Twemoji",
-                "Quivira"
-            ],
-            "size" : 3
-        },
-        "Chinese" : {
-            "name" : "Chinese",
-            "icon" : null,
-            "comment" : null,
-            "index" : 6,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Sarasa Gothic SC",
-                "WenQuanYi Micro Hei Mono",
-                "AR PL UKai CN",
-                "LXGW WenKai",
-                "Kosefont JP",
-                "Sarasa UI SC"
-            ],
-            "size" : 6
-        },
-        "Ligatures" : {
-            "name" : "Ligatures",
-            "icon" : null,
-            "comment" : null,
-            "index" : 3,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "FiraCode Nerd Font Mono",
-                "Cascadia Code"
-            ],
-            "size" : 2
         },
         "Code (mono)" : {
             "name" : "Code (mono)",
@@ -77,10 +43,53 @@
                 "agave Nerd Font Mono",
                 "mononokiLiga Nerd Font Mono",
                 "FiraCode Nerd Font Mono",
-                "Cascadia Code",
                 "Cascadia Code Cur"
             ],
-            "size" : 8
+            "size" : 7
+        },
+        "Chinese" : {
+            "name" : "Chinese",
+            "icon" : null,
+            "comment" : null,
+            "index" : 6,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "WenQuanYi Micro Hei Mono",
+                "AR PL UKai CN",
+                "LXGW WenKai",
+                "Kosefont JP",
+                "Sarasa UI SC"
+            ],
+            "size" : 5
+        },
+        "Ligatures" : {
+            "name" : "Ligatures",
+            "icon" : null,
+            "comment" : null,
+            "index" : 3,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "FiraCode Nerd Font Mono",
+                "Cascadia Code"
+            ],
+            "size" : 2
+        },
+        "Gyre" : {
+            "name" : "Gyre",
+            "icon" : null,
+            "comment" : null,
+            "index" : 7,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "TeX Gyre Termes Math"
+            ],
+            "size" : 1
         },
         "Menu" : {
             "name" : "Menu",
@@ -96,32 +105,20 @@
             ],
             "size" : 2
         },
-        "Gyre" : {
-            "name" : "Gyre",
+        "Icons/Unicode" : {
+            "name" : "Icons/Unicode",
             "icon" : null,
             "comment" : null,
-            "index" : 7,
+            "index" : 4,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
-                "DejaVu Math TeX Gyre",
-                "TeX Gyre Termes Math"
+                "Material Design Icons",
+                "Twemoji",
+                "Quivira"
             ],
-            "size" : 2
-        },
-        "Reading (sans)" : {
-            "name" : "Reading (sans)",
-            "icon" : null,
-            "comment" : null,
-            "index" : 0,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Sarasa UI SC"
-            ],
-            "size" : 1
+            "size" : 3
         }
     }
 }
