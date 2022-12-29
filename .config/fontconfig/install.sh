@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-install="paru -S --needed --noconfirm"
+install=(paru -S --needed --noconfirm)
 to_install=()
 
 # English fonts
@@ -17,4 +17,4 @@ to_install+=(ttf-firacode-nerd)
 to_install+=(wqy-microhei ttf-lxgw-wenkai ttf-kose-git)
 # to_install+=(ttf-arphic-ukai)
 
-"$install" "${to_install[@]}"
+"${install[@]}" "${to_install[@]}"
