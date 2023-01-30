@@ -7,7 +7,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
     set -gx STARSHIP_CONFIG ~/.config/starship/config.toml
     starship init fish | source
-    cat ~/.cache/wal/sequences
+    test -e ~/.cache/wal/sequences && cat ~/.cache/wal/sequences
 end
 
 # emacs vterm shell-side configuration
