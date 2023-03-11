@@ -11,6 +11,3 @@ if string match -qri wsl (uname -a)
     set -gx ALL_PROXY (cat /etc/resolv.conf | grep nameserver | awk '{ print $2 }'):8883
     # emacsclient -e 1 &>/dev/null || env LC_CTYPE='zh_CN.UTF-8' emacs --daemon &
 end
-
-if status is-login
-end

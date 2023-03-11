@@ -9,8 +9,6 @@ if status is-login
     set -gx SDL_IM_MODULE fcitx
     set -gx INPUT_METHOD fcitx
 
-    # https://wiki.archlinux.org/title/HiDPI
-    # set -gx QT_AUTO_SCREEN_SCALE_FACTOR 1
     set -gx QT_QPA_PLATFORMTHEME qt5ct
     set -gx VISUAL "emacsclient -c -a ''"
     set -gx EDITOR nvim
