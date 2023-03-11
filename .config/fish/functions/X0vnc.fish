@@ -13,6 +13,6 @@ function X0vnc --description "x0vnc on, off or show status"
         case off
             pkill x0vncserver
         case status
-            pgrep -a x0vncserver
+            pgrep -af x0vncserver
     end
 end
