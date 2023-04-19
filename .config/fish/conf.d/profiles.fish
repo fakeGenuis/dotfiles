@@ -10,6 +10,6 @@ if status is-login
     set -gx INPUT_METHOD fcitx
 
     set -gx QT_QPA_PLATFORMTHEME qt5ct
-    set -gx VISUAL "emacsclient -c -a ''"
+    set -gx VISUAL emacsclient -c -a ''
     set -gx EDITOR nvim
 end
