@@ -1,18 +1,5 @@
 {
     "entries" : {
-        "Reading (sans)" : {
-            "name" : "Reading (sans)",
-            "icon" : null,
-            "comment" : null,
-            "index" : 0,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Sarasa UI SC"
-            ],
-            "size" : 1
-        },
         "Serif" : {
             "name" : "Serif",
             "icon" : null,
@@ -47,6 +34,20 @@
             ],
             "size" : 7
         },
+        "Ligatures" : {
+            "name" : "Ligatures",
+            "icon" : null,
+            "comment" : null,
+            "index" : 3,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "FiraCode Nerd Font Mono",
+                "Cascadia Code"
+            ],
+            "size" : 2
+        },
         "Chinese" : {
             "name" : "Chinese",
             "icon" : null,
@@ -63,33 +64,6 @@
                 "Sarasa UI SC"
             ],
             "size" : 5
-        },
-        "Ligatures" : {
-            "name" : "Ligatures",
-            "icon" : null,
-            "comment" : null,
-            "index" : 3,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "FiraCode Nerd Font Mono",
-                "Cascadia Code"
-            ],
-            "size" : 2
-        },
-        "Gyre" : {
-            "name" : "Gyre",
-            "icon" : null,
-            "comment" : null,
-            "index" : 7,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "TeX Gyre Termes Math"
-            ],
-            "size" : 1
         },
         "Menu" : {
             "name" : "Menu",
@@ -115,10 +89,23 @@
             "children" : {            },
             "families" : [
                 "Material Design Icons",
-                "Twemoji",
-                "Quivira"
+                "Quivira",
+                "Noto Color Emoji"
             ],
             "size" : 3
+        },
+        "Reading (sans)" : {
+            "name" : "Reading (sans)",
+            "icon" : null,
+            "comment" : null,
+            "index" : 0,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Sarasa UI SC"
+            ],
+            "size" : 1
         }
     }
 }
