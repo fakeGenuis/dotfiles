@@ -12,4 +12,8 @@ if status is-login
     set -gx QT_QPA_PLATFORMTHEME qt5ct
     set -gx VISUAL emacsclient -c -a \"\"
     set -gx EDITOR nvim
+
+    # bat related
+    set -gx MANROFFOPT -c
+    set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
 end
