@@ -1,0 +1,120 @@
+title="packages for every config directory"
+# use =yadm list | grep "\.config" | cut -d '/' -f 2 | uniq -c | sort -n=
+# to see all your config directory in ".config"
+
+# default select for module/directory
+enable_default=false
+
+["shell-utilities"]
+enabled=true
+packages=[
+    "bat",
+    "bpytop",
+    "exa",
+    "man",
+    "p7zip"
+]
+
+[windows_manager]
+directory="~/.config/awesome"
+depends_on=["xorg", "display_manager"]
+packages=[
+    "awesome-git",
+    "lain-git",
+    "ttf-sarasa-ui-sc",
+    "ttf-comic-shanns-v2",
+    "ttf-material-design-icons-git",
+    "lm_sensors",
+    "betterlockscreen",
+    "xidlehook"
+]
+
+[doom]
+enabled=true
+# see [[file:~/.config/doom/install.sh]] for packages for doom modules
+packages=[
+    "emacs-nativecomp",
+    "fd",
+    "ripgrep"
+]
+
+["font-manager"]
+packages=[
+    "ttf-arphic-ukai",
+    "ttf-bqn386-git",
+    "ttf-firacode-nerd",
+    "ttf-lxgw-wenkai",
+    "ttf-recursive"
+]
+
+[qt5ct]
+enabled=true
+# depends on kvantum
+packages=[
+    "kvantum",
+    "kvantum-theme-orchis-git",
+    "papirus-icon-theme"
+]
+
+[fontconfig]
+enabled=true
+packages=[
+    "ttf-sarasa-ui-sc",
+    "ttf-firacode-nerd",
+    "wqy-microhei",
+    "ttf-lxgw-wenkai",
+    "ttf-kose-git",
+    "ttf-arphic-ukai",
+    "quivira",
+    "noto-fonts-emoji",
+    "ttf-firacode-nerd"
+]
+
+[gtk]
+enabled=true
+packages=[
+    "ttf-sarasa-ui-sc",
+    "papirus-icon-theme",
+    "bibata-cursor-theme-bin"
+]
+
+[input_method]
+packages=[
+    "fcitx5-im",
+    "fcitx5-nord",
+    "fcitx5-rime",
+    "rime-cloverpinyin"
+]
+
+[terminal]
+packages=["alacritty", "dracula-alacritty-git"]
+
+[others]
+# modules have only one package to install are listed here
+# not fully equaled to their config directory name
+packages=[
+    "fish",
+    "python-pywal",
+    "rofi",
+    # "ranger",
+    "starship",
+    "redshift",
+    "picom",
+    "neovim",
+    "bat"
+]
+
+[nvidia]
+packages=["nvidia", "nvidia-utils", "nvidia-settings"]
+
+[display_manager]
+packages=["sddm", "sddm-sugar-light"]
+
+[proxy]
+packages=["xray-bin", "qv2ray"]
+
+[container]
+packages=["docker", "docker-compose"]
+
+[paper]
+packages=["miktex-git", "zotero-bin"]

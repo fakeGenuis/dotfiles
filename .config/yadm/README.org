@@ -1,0 +1,17 @@
+#+title: yadm bootstrap
+
+* Pre-requisites
+#+begin_src bash
+paru -S --needed yadm
+#+end_src
+
+* Bootstrap
+[[https://yadm.io/docs/bootstrap#][Bootstrap - yadm]]
+Install dependence of your dotfile:
+1. module/directory independent
+2. easy enable/disable
+3. remove clearly
+4. maybe a small declared package system
+
+* Todos
+1. [ ] add dependence of modules
