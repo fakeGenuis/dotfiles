@@ -16,7 +16,7 @@ packages=[
 ]
 
 [windows_manager]
-directory="~/.config/awesome"
+directory="~/.config/awesome/"
 depends_on=["xorg", "display_manager"]
 packages=[
     "awesome-git",
@@ -31,7 +31,7 @@ packages=[
 
 [doom]
 enabled=true
-# see [[file:~/.config/doom/install.sh]] for packages for doom modules
+directory="~/.config/doom/"
 packages=[
     "emacs-nativecomp",
     "fd",
@@ -40,6 +40,7 @@ packages=[
 
 ["font-manager"]
 packages=[
+    "ttf-agave-nerd",
     "ttf-arphic-ukai",
     "ttf-bqn386-git",
     "ttf-firacode-nerd",
@@ -60,14 +61,10 @@ packages=[
 enabled=true
 packages=[
     "ttf-sarasa-ui-sc",
-    "ttf-firacode-nerd",
-    "wqy-microhei",
     "ttf-lxgw-wenkai",
     "ttf-kose-git",
-    "ttf-arphic-ukai",
-    "quivira",
-    "noto-fonts-emoji",
-    "ttf-firacode-nerd"
+    "wqy-microhei",
+    "ttf-arphic-ukai"
 ]
 
 [gtk]
@@ -89,15 +86,17 @@ packages=[
 [terminal]
 packages=["alacritty", "dracula-alacritty-git"]
 
+[fish]
+enabled=true
+packages=["fish", "starship"]
+
 [others]
 # modules have only one package to install are listed here
 # not fully equaled to their config directory name
 packages=[
-    "fish",
     "python-pywal",
     "rofi",
     # "ranger",
-    "starship",
     "redshift",
     "picom",
     "neovim",
