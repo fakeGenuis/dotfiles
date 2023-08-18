@@ -1,4 +1,4 @@
-#+title: yadm bootstrap
+#+title: Instruction of yadm repository
 
 * Pre-requisites
 #+begin_src bash
@@ -8,10 +8,21 @@ paru -S --needed yadm
 * Bootstrap
 [[https://yadm.io/docs/bootstrap#][Bootstrap - yadm]]
 Install dependence of your dotfile:
-1. module/directory independent
-2. easy enable/disable
-3. remove clearly
-4. maybe a small declared package system
+1. arch pacman based
+2. module/directory independent
+3. easy enable/disable
+4. remove clearly
+5. maybe a small declared package system
+
+About *GetPackages*:
+- src_bash{./GetPackages} to get all packages need to install
+- src_bash{./GetPackages > installed} save installed packages for later comparing to get can be removed packages
+- src_bash{./GetPackages --remove} to get all removable packages
+
+*Extra scripts needed for module are in [[file:./install.d/]]*
 
 * Todos
 1. [ ] add dependence of modules
+   dependent package must appears before
+2. [ ] manager system file
+   [[https://yadm.io/docs/faq#unconventional-cases][Frequently Asked Questions - yadm]]
