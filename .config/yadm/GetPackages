@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+
+import tomli, sys, os
+
+
+def expand_sub_packages(directory: str) -> str:
+    return "/".join([directory.replace("~", os.getenv("HOME")), "packages.toml"])
+
+
+def install(file_name: str) -> list:
+    """Get all packages needed to be installed."""
+    with open(file_name, "rb") as f:
+        conf = tomli.load(f)
+    default = conf["enable_default"]
+
+    all_install = []
+    for module in conf:
+        if type(conf[module]) is dict and (conf[module].get("enabled", default)):
+            all_install += conf[module]["packages"]
+
+            if ("directory" in conf[module]) and os.path.isfile(
+                sub_file_name := expand_sub_packages(conf[module]["directory"])
+            ):
+                all_install += install(sub_file_name)
+
+    return sorted(set(all_install))
+
+
+def remove() -> list:
+    """Get packages already installed but not owned by any module"""
+    if not os.path.isfile("installed"):
+        return []
+
+    with open("installed", "r") as f:
+        installed = [line.rstrip() for line in f.readlines()]
+
+    return [package for package in installed if package not in install("packages.toml")]
+
+
+if len(sys.argv) > 1 and sys.argv[1] == "--remove":
+    print("\n".join(remove()))
+else:
+    print("\n".join(install("packages.toml")))
