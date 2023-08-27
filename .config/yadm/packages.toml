@@ -1,32 +1,85 @@
-title="packages for every config directory"
+title="packages for a fresh system"
 # use =yadm list | grep "\.config" | cut -d '/' -f 2 | uniq -c | sort -n=
 # to see all your config directory in ".config"
 
 # default select for module/directory
 enable_default=false
 
-["shell-utilities"]
-enabled=true
+[system]
 packages=[
-    "bat",
-    "bpytop",
-    "exa",
-    "man",
-    "p7zip"
+    "gnome-keyring",
+    "grub",
+    "lxqt-policykit",
+    "ntfs-3g",
+    "os-prober",
+    "usbutils"
 ]
 
-[windows_manager]
+[network]
+packages=[
+    # "inetutils",
+    "iptables-nft",
+    # "iw",
+    # "mtr",
+    "network-manager-applet",
+    "networkmanager",
+    "sshguard"
+]
+
+[nvidia]
+packages=["nvidia", "nvidia-utils", "nvidia-settings", "nvidia-prime"]
+
+[amd]
+# for cpu with integrated graphics
+packages=[
+    "amd-ucode",
+    "amdgpu_top-bin",
+    "libva-mesa-driver",
+    "libva-utils",
+    "mesa-utils",
+    "xf86-video-amdgpu"
+]
+
+[sound]
+packages=[
+    "pipewire",
+    "pipewire-alsa",
+    "pipewire-jack",
+    "pipewire-pulse",
+    "playerctl",
+    "wireplumber"
+]
+
+[sddm]
+packages=[
+    "mons",
+    "sddm",
+    "sddm-sugar-light",
+    "xorg-server"
+]
+
+[awesome]
 directory="~/.config/awesome/"
-depends_on=["xorg", "display_manager"]
+depends_on=["sddm"]
 packages=[
     "awesome-git",
+    "betterlockscreen",
     "lain-git",
-    "ttf-sarasa-ui-sc",
+    "lm_sensors",
+    "lua-inspect",
+    "luarocks",
+    "maim",
+    "picom",
+    "python-pywal",
+    "redshift",
     "ttf-comic-shanns-v2",
     "ttf-material-design-icons-git",
-    "lm_sensors",
-    "betterlockscreen",
-    "xidlehook"
+    "ttf-sarasa-gothic-sc",
+    "upower",
+    "xcape",
+    "xidlehook",
+    "xsel",
+    "xsettingsd"
 ]
 
 [doom]
@@ -38,14 +91,44 @@ packages=[
     "ripgrep"
 ]
 
-["font-manager"]
+[browser]
+packages=["librewolf-bin"]
+
+[terminal]
+packages=["alacritty", "dracula-alacritty-git"]
+
+[fish]
+enabled=true
+packages=["fish", "starship", "xorg-xdpyinfo", "fish-done"]
+
+["shell-utilities"]
+enabled=true
 packages=[
-    "ttf-agave-nerd",
-    "ttf-arphic-ukai",
-    "ttf-bqn386-git",
-    "ttf-firacode-nerd",
-    "ttf-lxgw-wenkai",
-    "ttf-recursive"
+    "bat",
+    # "bc",
+    "bpytop",
+    "dragon-drop",
+    "exa",
+    "gdu-bin",
+    "nvtop",
+    "man-db",
+    "neofetch",
+    "p7zip",
+    "ranger",
+    "tmsu-bin",
+    "tokei",
+    "which",
+    "xcolor",
+    "inxi"
+]
+
+[gtk]
+enabled=true
+packages=[
+    "bibata-cursor-theme-bin",
+    "gtk-engine-murrine",
+    "papirus-icon-theme",
+    "ttf-sarasa-gothic-sc"
 ]
 
 [qt5ct]
@@ -54,25 +137,21 @@ enabled=true
 packages=[
     "kvantum",
     "kvantum-theme-orchis-git",
-    "papirus-icon-theme"
+    "papirus-icon-theme",
+    "qt5-styleplugins",
+    "qt5ct"
 ]
 
 [fontconfig]
+# minimized
 enabled=true
 packages=[
-    "ttf-sarasa-ui-sc",
+    "ttf-opensans",
+    "adobe-source-serif-fonts",
     "ttf-lxgw-wenkai",
-    "ttf-kose-git",
-    "wqy-microhei",
-    "ttf-arphic-ukai"
-]
-
-[gtk]
-enabled=true
-packages=[
-    "ttf-sarasa-ui-sc",
-    "papirus-icon-theme",
-    "bibata-cursor-theme-bin"
+    "ttf-sarasa-gothic-sc",
+    "noto-fonts-emoji",
+    "ttf-firacode-nerd"
 ]
 
 [input_method]
@@ -83,37 +162,105 @@ packages=[
     "rime-cloverpinyin"
 ]
 
-[terminal]
-packages=["alacritty", "dracula-alacritty-git"]
+[rofi]
+packages=["rofi", "rofimoji"]
 
-[fish]
-enabled=true
-packages=["fish", "starship"]
-
-[others]
-# modules have only one package to install are listed here
-# not fully equaled to their config directory name
-packages=[
-    "python-pywal",
-    "rofi",
-    # "ranger",
-    "redshift",
-    "picom",
-    "neovim",
-    "bat"
-]
-
-[nvidia]
-packages=["nvidia", "nvidia-utils", "nvidia-settings"]
-
-[display_manager]
-packages=["sddm", "sddm-sugar-light"]
+[editor]
+packages=["vscodium-bin-marketplace", "neovim"]
 
 [proxy]
 packages=["xray-bin", "qv2ray"]
 
-[container]
-packages=["docker", "docker-compose"]
-
 [paper]
 packages=["miktex-git", "zotero-bin"]
+
+[remote]
+packages=[
+    "barrier",
+    "openssh",
+    "realvnc-vnc-viewer",
+    "scrcpy",
+    "tigervnc-server"
+]
+
+[bluetooth]
+packages=["blueman", "bluez", "bluez-utils"]
+
+[virtual]
+packages=[
+    "dnsmasq",
+    "edk2-ovmf",
+    "libvirt",
+    "qemu-desktop",
+    "swtpm",
+    "virt-manager"
+]
+
+[amuse]
+packages=[
+    "mpv",
+    "nomacs",
+    "picacg-qt-appimage",
+    "r3play-appimage",
+    "spotify",
+    "steam",
+    "telegram-desktop"
+]
+
+[benchmark]
+packages=["s-tui", "kdiskmark", "blender-benchmark", "crazydiskinfo"]
+
+[files]
+packages=["baidunetdisk-bin", "nextcloud-client", "xunlei-bin"]
+
+[dev]
+packages=[
+    "blender",
+    "docker",
+    "docker-compose",
+    "ffmpegthumbnailer",
+    "gcc",
+    "gimp",
+    "jdk-openjdk"
+]
+
+[devices]
+packages=[
+    "galaxybudsclient-bin",
+    "i2c-tools",
+    "obinskit",
+    "openrgb-bin",
+    "via-bin"
+]
+
+["font-manager"]
+# those are all my favorite fonts
+packages=[
+    "font-manager",
+    # sans
+    "ttc-iosevka-aile",
+    "ttf-fira-sans",
+    "ttf-opensans",
+    "ttf-sarasa-gothic-sc",
+    # serif
+    "adobe-source-serif-fonts",
+    "gentium-plus-font",
+    # code
+    "ttf-agave-nerd",
+    "ttf-bqn386-git",
+    "ttf-firacode-nerd",        # ligature
+    "ttf-recursive",
+    # ui
+    "ttf-comic-shanns-v2",
+    # emoji
+    "ttf-material-design-icons-git",
+    "noto-fonts-emoji",
+    "quirvira",
+    # chinese
+    "ttf-arphic-ukai",
+    "ttf-kose-git",
+    "ttf-lxgw-wenkai",
+    "ttf-yozai-font",
+    "ttf-lxgw-neo-xihei",
+    "wqy-microhei"
+]
