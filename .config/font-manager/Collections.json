@@ -10,10 +10,28 @@
             "children" : {            },
             "families" : [
                 "Gentium Book Plus",
-                "Source Serif Pro",
-                "LXGW WenKai"
+                "Source Serif Pro"
             ],
-            "size" : 3
+            "size" : 2
+        },
+        "Chinese" : {
+            "name" : "Chinese",
+            "icon" : null,
+            "comment" : null,
+            "index" : 6,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "WenQuanYi Micro Hei Mono",
+                "AR PL UKai CN",
+                "LXGW WenKai",
+                "Kosefont JP",
+                "Sarasa Gothic SC",
+                "LXGW Neo XiHei",
+                "Yozai"
+            ],
+            "size" : 7
         },
         "Code (mono)" : {
             "name" : "Code (mono)",
@@ -34,6 +52,21 @@
             ],
             "size" : 7
         },
+        "Menu" : {
+            "name" : "Menu",
+            "icon" : null,
+            "comment" : null,
+            "index" : 5,
+            "requires-update" : false,
+            "active" : true,
+            "children" : {            },
+            "families" : [
+                "Comic Shanns",
+                "Sarasa Gothic SC",
+                "Recursive Sans Linear Static"
+            ],
+            "size" : 3
+        },
         "Ligatures" : {
             "name" : "Ligatures",
             "icon" : null,
@@ -48,36 +81,22 @@
             ],
             "size" : 2
         },
-        "Chinese" : {
-            "name" : "Chinese",
+        "Reading (sans)" : {
+            "name" : "Reading (sans)",
             "icon" : null,
             "comment" : null,
-            "index" : 6,
+            "index" : 0,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
-                "WenQuanYi Micro Hei Mono",
-                "AR PL UKai CN",
-                "LXGW WenKai",
-                "Kosefont JP",
-                "Sarasa UI SC"
+                "Iosevka Aile",
+                "Open Sans",
+                "Source Sans Pro",
+                "Sarasa Gothic SC",
+                "Fira Sans"
             ],
             "size" : 5
-        },
-        "Menu" : {
-            "name" : "Menu",
-            "icon" : null,
-            "comment" : null,
-            "index" : 5,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Sarasa UI SC",
-                "Comic Shanns"
-            ],
-            "size" : 2
         },
         "Icons/Unicode" : {
             "name" : "Icons/Unicode",
@@ -93,19 +112,6 @@
                 "Noto Color Emoji"
             ],
             "size" : 3
-        },
-        "Reading (sans)" : {
-            "name" : "Reading (sans)",
-            "icon" : null,
-            "comment" : null,
-            "index" : 0,
-            "requires-update" : false,
-            "active" : true,
-            "children" : {            },
-            "families" : [
-                "Sarasa UI SC"
-            ],
-            "size" : 1
         }
     }
 }
