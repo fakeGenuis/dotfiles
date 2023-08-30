@@ -1,18 +1,19 @@
 {
     "entries" : {
-        "Serif" : {
-            "name" : "Serif",
+        "Menu" : {
+            "name" : "Menu",
             "icon" : null,
             "comment" : null,
-            "index" : 1,
+            "index" : 5,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
-                "Gentium Book Plus",
-                "Source Serif Pro"
+                "Sarasa Gothic SC",
+                "Recursive Sans Linear Static",
+                "ComicShannsMono Nerd Font"
             ],
-            "size" : 2
+            "size" : 3
         },
         "Chinese" : {
             "name" : "Chinese",
@@ -52,20 +53,19 @@
             ],
             "size" : 7
         },
-        "Menu" : {
-            "name" : "Menu",
+        "Serif" : {
+            "name" : "Serif",
             "icon" : null,
             "comment" : null,
-            "index" : 5,
+            "index" : 1,
             "requires-update" : false,
             "active" : true,
             "children" : {            },
             "families" : [
-                "Comic Shanns",
-                "Sarasa Gothic SC",
-                "Recursive Sans Linear Static"
+                "Gentium Book Plus",
+                "Source Serif Pro"
             ],
-            "size" : 3
+            "size" : 2
         },
         "Ligatures" : {
             "name" : "Ligatures",
