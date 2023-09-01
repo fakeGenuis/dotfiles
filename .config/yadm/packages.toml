@@ -17,7 +17,6 @@ packages=[
 
 [network]
 packages=[
-    # "inetutils",
     "iptables-nft",
     # "iw",
     # "mtr",
@@ -69,6 +68,7 @@ packages=[
     "lua-inspect",
     "luarocks",
     "maim",
+    "pacman-contrib",
     "picom",
     "python-pywal",
     "redshift",
@@ -107,32 +107,32 @@ packages=[
     "bat",
     # "bc",
     "bpytop",
-    "dragon-drop",
+    # "dragon-drop",
     "exa",
     "gdu-bin",
-    "nvtop",
+    # "nvtop",
     "man-db",
     "neofetch",
     "p7zip",
-    "ranger",
-    "tmsu-bin",
-    "tokei",
+    # "ranger",
+    # "tmsu-bin",
+    # "tokei",
     "which",
-    "xcolor",
-    "inxi"
+    # "xcolor",
+    # "inxi"
 ]
 
 [gtk]
 enabled=true
 packages=[
     "bibata-cursor-theme-bin",
-    "gtk-engine-murrine",
+    # "gtk-engine-murrine",
     "papirus-icon-theme",
     "ttf-sarasa-gothic-sc"
 ]
 
 [qt5ct]
-enabled=true
+enabled=false
 # depends on kvantum
 packages=[
     "kvantum",
@@ -144,7 +144,7 @@ packages=[
 
 [fontconfig]
 # minimized
-enabled=true
+enabled=false
 packages=[
     "ttf-opensans",
     "adobe-source-serif-fonts",

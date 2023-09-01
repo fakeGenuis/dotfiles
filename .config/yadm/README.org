@@ -2,7 +2,7 @@
 
 * Pre-requisites
 #+begin_src bash
-paru -S --needed yadm
+paru -S --needed yadm python-tomli
 #+end_src
 
 * Bootstrap
