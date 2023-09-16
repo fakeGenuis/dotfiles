@@ -1,5 +1,6 @@
 configuration {
-  modes: "combi,run,filebrowser,ssh";
+  /* you need ln last two file in $PATH */
+  modes: "combi,run,ssh,bookmarks: rofi-bookmarks.py,brave: brave_search.sh";
   font: "MononokiLiga Nerd Font Mono 14";
   /*  location: 0;*/
   /*  yoffset: 0;*/
@@ -14,7 +15,7 @@ configuration {
   /*  run-shell-command: "{terminal} -e {cmd}";*/
   /*  window-command: "wmctrl -i -R {window}";*/
   /*  window-match-fields: "all";*/
-	window-match-fields: "title,class,role,name,desktop";
+  window-match-fields: "title,class,role,name,desktop";
   /* icon-theme: "Papirus"; */
   drun-match-fields: "name,generic,exec,categories,keywords";
   drun-categories: "";
@@ -54,17 +55,17 @@ configuration {
   /*  normalize-match: false;*/
   /*  steal-focus: false;*/
   /* application-fallback-icon: "unknown-app"; */
-	/*---------- Fallback Icon ----------*/
-	run,drun {
-		fallback-icon: "application-x-addon";
-	}
+  /*---------- Fallback Icon ----------*/
+  run, drun {
+    fallback-icon: "application-x-addon";
+  }
   /*  refilter-timeout-limit: 8192;*/
   /*  xserver-i300-workaround: false;*/
   /*  pid: "/run/user/1000/rofi.pid";*/
   display-window: "";
   /*  display-windowcd: ;*/
   display-run: "";
-  display-ssh: "";
+  display-ssh: "";
   display-drun: "";
   display-combi: "";
   display-keys: "";
