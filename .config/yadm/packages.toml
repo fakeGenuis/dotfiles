@@ -12,7 +12,8 @@ packages=[
     "lxqt-policykit",
     "ntfs-3g",
     "os-prober",
-    "usbutils"
+    "usbutils",
+    "xdg-user-dirs" # no abused dir at home
 ]
 
 [network]
