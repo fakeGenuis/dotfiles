@@ -5,7 +5,7 @@ SEARCH_QUERY="https://search.brave.com/search?q="
 BROWSER=librewolf
 
 # get default profile name of librewolf
-DEFAULT_PROFILE=$(grep 'Default' ~/.librewolf/profiles.ini | cut -d'=' -f2 | cut -d'.' -f2)
+DEFAULT_PROFILE=$(grep 'Default' ~/.librewolf/profiles.ini | cut -d'=' -f2 | cut -d'.' -f2 | tail -1)
 
 # rofi-script mode, use this with
 # =rofi -show search -modi 'search: ./brave_search.sh'=
