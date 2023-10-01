@@ -70,7 +70,7 @@ packages=[
     "luarocks",
     "maim",
     "pacman-contrib",
-    "picom",
+    "picom-ftlabs-git",
     "python-pywal",
     "redshift",
     "ttf-comic-shanns-v2",
