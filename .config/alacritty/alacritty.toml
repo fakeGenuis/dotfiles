@@ -8,18 +8,18 @@ TERM = "xterm-256color"
 size = 13.5
 
 [font.bold]
-family = "mononokiLiga Nerd Font Mono"
+family = "Maple NF"
 style = "Bold"
 
 [font.bold_italic]
-family = "mononokiLiga Nerd Font Mono"
+family = "Maple NF"
 style = "Bold Italic"
 
 [font.italic]
-family = "mononokiLiga Nerd Font Mono"
+family = "Maple NF"
 
 [font.normal]
-family = "mononokiLiga Nerd Font Mono"
+family = "Maple NF"
 style = "Regular"
 
 [window]

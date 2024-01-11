@@ -30,9 +30,10 @@
                 "Kosefont JP",
                 "Sarasa Gothic SC",
                 "LXGW Neo XiHei",
-                "Yozai"
+                "Yozai",
+                "Maple SC NF"
             ],
-            "size" : 7
+            "size" : 8
         },
         "Code (mono)" : {
             "name" : "Code (mono)",
@@ -49,9 +50,10 @@
                 "agave Nerd Font Mono",
                 "mononokiLiga Nerd Font Mono",
                 "FiraCode Nerd Font Mono",
-                "Cascadia Code Cur"
+                "Cascadia Code Cur",
+                "Maple NF"
             ],
-            "size" : 7
+            "size" : 8
         },
         "Serif" : {
             "name" : "Serif",
@@ -77,9 +79,10 @@
             "children" : {            },
             "families" : [
                 "FiraCode Nerd Font Mono",
-                "Cascadia Code"
+                "Cascadia Code",
+                "Maple NF"
             ],
-            "size" : 2
+            "size" : 3
         },
         "Reading (sans)" : {
             "name" : "Reading (sans)",
