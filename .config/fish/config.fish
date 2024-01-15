@@ -13,15 +13,11 @@ end
 # emacs vterm shell-side configuration
 if test "$INSIDE_EMACS" = vterm -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
     source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
-    function fish_title
-        echo (status current-command) ':' (pwd)
-    end
+    # restore default fish_title
+    source "/usr/share/fish/functions/fish_title.fish"
     function e --wraps=emacsclient --description 'alias e=emacsclient'
         emacsclient $argv
     end
-end
-
-function fish_greeting
 end
 
 # https://www.emacswiki.org/emacs/TrampMode
