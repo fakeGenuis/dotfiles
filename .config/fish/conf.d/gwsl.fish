@@ -1,6 +1,6 @@
 #!/usr/bin/env fish
 
-if string match -qri wsl (uname -a)
+if status is-login; and string match -qri wsl (uname -a)
     # if no $DISPLAY export, wslg (windows official) is used
     # set -gx DISPLAY (cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0 #GWSL
     # set -gx PULSE_SERVER tcp:(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}') #GWSL

@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 # https://wiki.archlinux.org/title/HiDPI
 
-if test -n "$DISPLAY"
+if status is-login; and test -n "$DISPLAY"
     set -l reso (xdpyinfo | grep dimension | awk '{print $2}' | cut -d'x' -f1)
     if test "$reso" -gt 2560
         set -gx GDK_SCALE 2
