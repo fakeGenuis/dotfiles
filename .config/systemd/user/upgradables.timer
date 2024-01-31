@@ -1,0 +1,10 @@
+[Unit]
+Description=Timer for a check for upgrades
+After=network-online.target
+
+[Timer]
+OnStartupSec=5min
+OnUnitActiveSec=1hour
+
+[Install]
+WantedBy=default.target

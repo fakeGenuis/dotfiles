@@ -1,0 +1,6 @@
+[Unit]
+Description=Check upgradable packages and save
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/awesome/scripts/check-upgradables.sh
