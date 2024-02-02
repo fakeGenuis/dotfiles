@@ -170,7 +170,11 @@ packages=["rofi", "rofimoji"]
 packages=["vscodium-bin-marketplace", "neovim"]
 
 [proxy]
-packages=["xray-bin", "qv2ray"]
+packages=[
+    "xray-bin", "qv2ray",
+    # ssh using http tunnel
+    "openbsd-netstat"
+]
 
 [paper]
 packages=["miktex-git", "zotero-bin"]
