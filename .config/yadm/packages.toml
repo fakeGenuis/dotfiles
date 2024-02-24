@@ -14,6 +14,7 @@ packages=[
     "os-prober",
     "usbutils",
     "xdg-user-dirs" # no abused dir at home
+    "udiskie",        # automount usb drive
 ]
 
 [network]
