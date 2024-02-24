@@ -20,6 +20,11 @@ if test "$INSIDE_EMACS" = vterm -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
     end
 end
 
+# `neofetch` as fish greeting
+function fish_greeting
+    neofetch
+end
+
 # https://www.emacswiki.org/emacs/TrampMode
 # https://stackoverflow.com/a/37421917
 # fish with tramp
