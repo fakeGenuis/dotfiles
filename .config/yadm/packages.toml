@@ -1,36 +1,51 @@
-title="packages for a fresh system"
-# use =yadm list | grep "\.config" | cut -d '/' -f 2 | uniq -c | sort -n=
-# to see all your config directory in ".config"
+title="declarative packages configuration"
+# nix is somewhat too complicate for me
 
 # default select for module/directory
-enable_default=false
+enable_default=true
 
-[system]
+[flags]
+is_wsl="which powershell.exe &>/dev/null"
+is_laptop="ls /sys/class/power_supply | grep BAT &>/dev/null"
+
+# packages in the archwiki "Installation guide"
+[essential]
 packages=[
-    "gnome-keyring",
-    "grub",
-    "lxqt-policykit",
-    "ntfs-3g",
-    "os-prober",
-    "usbutils",
-    "xdg-user-dirs" # no abused dir at home
-    "udiskie",        # automount usb drive
+    "base",
+    "linux",
+    "linux-firmware",
+    "networkmanager"
 ]
 
-[network]
+[boot]
+enabled="not is_wsl"
 packages=[
-    "iptables-nft",
-    # "iw",
-    # "mtr",
-    "network-manager-applet",
-    "networkmanager",
-    "sshguard"
+    "grub",                # bootloader
+    "os-prober",           # other os entries in grub
+    "efibootmgr",          # =grub= write boot entries to NVRAM
+    "mkinitcpio-firmware", # suppress warnnings when mkinitcpio
+]
+
+[user]
+packages=[
+    "gnome-keyring",
+    "lxqt-policykit",
+    "xdg-user-dirs",  # no abused dir at home
+    "accountsservice" # user avatar
 ]
 
 [nvidia]
-packages=["nvidia", "nvidia-utils", "nvidia-settings", "nvidia-prime"]
+enabled="not is_wsl"
+packages=[
+    "nvidia",
+    "nvidia-utils",
+    "nvidia-settings",
+    "nvidia-prime",
+    "nvtop"
+]
 
 [amd]
+enabled="not is_wsl"
 # for cpu with integrated graphics
 packages=[
     "amd-ucode",
@@ -41,7 +56,63 @@ packages=[
     "xf86-video-amdgpu"
 ]
 
+[display-server]
+# only enable when there is display manager
+enabled=false
+packages=[
+    "xorg-server",
+    "xorg-xdpyinfo", # Option for =neofetch=
+    "xorg-xwininfo", # Option for ~picom-trans~
+    "mons"
+]
+
+[sddm]
+enabled="not is_wsl"
+depends_on=["display-server"]
+packages=[
+    "sddm",
+    "sddm-sugar-light",
+    "sddm-sugar-candy-git"
+]
+
+[lightdm]
+enabled=false
+depends_on=["display-server"]
+packages=[
+    "lightdm",
+    "lightdm-webkit-theme-aether",
+    "lightdm-webkit-theme-litarvan"
+]
+
+[awesome]
+enabled="not is_wsl"
+directory="~/.config/awesome/"
+packages=[
+    "awesome-git"
+]
+
+[gtk]
+packages=[
+    "bibata-cursor-theme-bin",
+    "papirus-icon-theme",
+    "ttf-sarasa-gothic-sc",
+    "orchis-theme-git",
+    "gtk-engine-murrine" # gtk2 support with orchis-theme-git
+]
+
+[qt5ct]
+# depends on kvantum
+packages=[
+    "kvantum",
+    "kvantum-qt5", # qt5 style theme
+    "kvantum-theme-orchis-git",
+    "papirus-icon-theme",
+    "qt5-styleplugins",
+    "qt5ct"
+]
+
 [sound]
+enabled="not is_wsl"
 packages=[
     "pipewire",
     "pipewire-alsa",
@@ -51,102 +122,11 @@ packages=[
     "wireplumber"
 ]
 
-[sddm]
-packages=[
-    "mons",
-    "sddm",
-    "sddm-sugar-light",
-    "xorg-server"
-]
-
-[awesome]
-directory="~/.config/awesome/"
-depends_on=["sddm"]
-packages=[
-    "awesome-git",
-    "betterlockscreen",
-    "lain-git",
-    "lm_sensors",
-    "lua-inspect",
-    "luarocks",
-    "maim",
-    "pacman-contrib",
-    "picom-ftlabs-git",
-    "python-pywal",
-    "redshift",
-    "ttf-comic-shanns-v2",
-    "ttf-material-design-icons-git",
-    "ttf-sarasa-gothic-sc",
-    "upower",
-    "xcape",
-    "xidlehook",
-    "xsel",
-    "xsettingsd"
-]
-
-[doom]
-enabled=true
-directory="~/.config/doom/"
-packages=[
-    "emacs-nativecomp",
-    "fd",
-    "ripgrep"
-]
-
-[browser]
-packages=["librewolf-bin"]
-
-[terminal]
-packages=["alacritty", "dracula-alacritty-git"]
-
-[fish]
-enabled=true
-packages=["fish", "starship", "xorg-xdpyinfo", "fish-done"]
-
-["shell-utilities"]
-enabled=true
-packages=[
-    "bat",
-    # "bc",
-    "bpytop",
-    # "dragon-drop",
-    "exa",
-    "gdu-bin",
-    # "nvtop",
-    "man-db",
-    "neofetch",
-    "p7zip",
-    # "ranger",
-    # "tmsu-bin",
-    # "tokei",
-    "which",
-    # "xcolor",
-    # "inxi"
-]
-
-[gtk]
-enabled=true
-packages=[
-    "bibata-cursor-theme-bin",
-    # "gtk-engine-murrine",
-    "papirus-icon-theme",
-    "ttf-sarasa-gothic-sc"
-]
-
-[qt5ct]
-enabled=false
-# depends on kvantum
-packages=[
-    "kvantum",
-    "kvantum-theme-orchis-git",
-    "papirus-icon-theme",
-    "qt5-styleplugins",
-    "qt5ct"
-]
+[bluetooth]
+enabled="not is_wsl"
+packages=["blueman", "bluez", "bluez-utils"]
 
 [fontconfig]
-# minimized
-enabled=false
 packages=[
     "ttf-opensans",
     "adobe-source-serif-fonts",
@@ -157,92 +137,190 @@ packages=[
 ]
 
 [input_method]
+enabled="not is_wsl"
+groups=["fcitx5-im"]
 packages=[
-    "fcitx5-im",
     "fcitx5-nord",
     "fcitx5-rime",
     "rime-cloverpinyin"
 ]
 
-[rofi]
-packages=["rofi", "rofimoji"]
+[doom]
+directory="~/.config/doom/"
+packages=[
+    "emacs-nativecomp",
+    "fd",
+    "ripgrep"
+]
 
-[editor]
-packages=["vscodium-bin-marketplace", "neovim"]
+[fish]
+packages=[
+    "fish",
+    "starship",      # shell prompt pretty
+    "xorg-xdpyinfo", # set =GDK_SCALE= depends on resolution
+    "xorg-xprop",
+    "fish-done"      # notify background shell work done
+]
+
+[other-applications]
+enabled="not is_wsl"
+packages=[
+    "alacritty",
+    "baidunetdisk-bin",
+    "dracula-alacritty-git",
+    "librewolf-bin",
+    "neovim",
+    "nextcloud-client",
+    "xunlei-bin"
+]
+
+[usb]
+enabled="not is_wsl"
+packages=[
+    "udiskie",             # automount usb drive
+    "usbutils",            # =lsusb=
+    "ventoy-bin",          # usb bootable media
+]
+
+[base-dev]
+packages=[
+    "base-devel", # =gcc, which, make, sudo=
+    "git",
+    "openssh",
+    "paru"
+]
+
+[shell-utilities]
+packages=[
+    "bat",            # better =cat=
+    "bpytop",         # system monitor
+    "dragon-drop",
+    "eza",            # better =ls=
+    "gdu-bin",        # =du= on all directories
+    "inxi",           # system information tool
+    "man-db",         # man page
+    "neofetch",
+    "openbsd-netcat", # ssh using http tunnel using =nc=
+    "p7zip",
+    "proxychains-ng", # force proxy
+    "ranger",         # command line file browser
+    "tmsu-bin",       # tag manager system
+    "tokei",          # count lines of code
+    "trash-cli",
+    "unrar",
+    "unzip",
+    "yadm"            # reason you are here
+]
+
+[pacman]
+packages=[
+    "pacman-contrib",         # =checkupdates, paccache=
+    "paccache-hook",          # clean pacman cache
+    "rebuild-detector",       # detect packages need to rebuild
+    "pacman-log-orphans-hook" # notify orphans packages
+]
 
 [proxy]
+enabled="not is_wsl"
 packages=[
-    "xray-bin", "qv2ray",
-    # ssh using http tunnel
-    "openbsd-netstat"
+    "xray-bin", "qv2ray"
 ]
-
-[paper]
-packages=["miktex-git", "zotero-bin"]
 
 [remote]
+enabled="not is_wsl"
 packages=[
     "barrier",
-    "openssh",
     "realvnc-vnc-viewer",
     "scrcpy",
-    "tigervnc-server"
+    "tigervnc-server",
+    "x11vnc"
 ]
 
-[bluetooth]
-packages=["blueman", "bluez", "bluez-utils"]
-
 [virtual]
+enabled="not is_laptop and not is_wsl"
 packages=[
     "dnsmasq",
     "edk2-ovmf",
+    "genymotion", # android x86
     "libvirt",
     "qemu-desktop",
     "swtpm",
-    "virt-manager"
+    "virt-manager",
+    "virtio-win"
 ]
 
 [amuse]
+enabled="not is_wsl"
 packages=[
     "mpv",
     "nomacs",
     "picacg-qt-appimage",
-    "r3play-appimage",
-    "spotify",
     "steam",
     "telegram-desktop"
 ]
 
 [benchmark]
-packages=["s-tui", "kdiskmark", "blender-benchmark", "crazydiskinfo"]
+enabled=false
+packages=[
+    "blender-benchmark",
+    "cpu-x",
+    "crazydiskinfo",
+    "kdiskmark",
+    "nvme-cli",
+    "s-tui"
+]
 
-[files]
-packages=["baidunetdisk-bin", "nextcloud-client", "xunlei-bin"]
-
-[dev]
+[more-dev]
+enabled="not is_wsl"
 packages=[
     "blender",
     "docker",
     "docker-compose",
     "ffmpegthumbnailer",
-    "gcc",
-    "gimp",
-    "jdk-openjdk"
+    "gimp"
+    # "jdk-openjdk"
 ]
 
 [devices]
+enabled="not is_wsl"
 packages=[
     "galaxybudsclient-bin",
-    "i2c-tools",
     "obinskit",
     "openrgb-bin",
-    "via-bin"
+    "i2c-tools", # for =openrgb=
+    "vial-appimage"
 ]
 
-["font-manager"]
+[research]
+enabled="not is_wsl and not is_laptop"
+packages=[
+    "fermat",
+    "jupyter-notebook",
+    "mathematica",
+    "miktex",
+    "zotero-bin"
+]
+
+[windows]
+enabled="not is_wsl"
+packages=[
+    "ntfs-3g",   # mount ntfs partition
+    "chntpw"     # dual boot bluetooth repair
+]
+
+[network]
+enabled="not is_laptop"
+packages=[
+    "iptables-nft",
+    "sshguard",
+]
+
+[font-manager]
+enabled=false
 # those are all my favorite fonts
 packages=[
     "font-manager",
+    # "fontforge", # build custom fonts
     # sans
     "ttc-iosevka-aile",
     "ttf-fira-sans",

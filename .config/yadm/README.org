@@ -1,8 +1,14 @@
 #+title: Instruction of yadm repository
 
+# use ~yadm list | grep "\.config" | cut -d '/' -f 2 | uniq -c | sort -n~
+# to see all your config directory in ".config"
+
 * Pre-requisites
+You may not go to here without =git=.
+
+Beside, you need an aur helper like =paru=, and for =GetPackages= to run
 #+begin_src bash
-paru -S --needed yadm python-tomli
+paru -S --needed python-tomli
 #+end_src
 
 * Bootstrap
@@ -14,15 +20,33 @@ Install dependence of your dotfile:
 4. remove clearly
 5. maybe a small declared package system
 
-About *GetPackages*:
-- src_bash{./GetPackages} to get all packages need to install
-- src_bash{./GetPackages > installed} save installed packages for later comparing to get can be removed packages
-- src_bash{./GetPackages --remove} to get all removable packages
+* Usage
+- Get all packages installed but not declared
+  #+begin_src shell
+./GetPackages --remove
+  #+end_src
+
+- Get all packages declared but not explicitly installed
+  #+begin_src shell
+./GetPackages
+  #+end_src
+
+  you may further install missing package with
+  #+begin_src shell
+./GetPackages | paru -S --needed -
+  #+end_src
+
+  and after that, mark remain package with explicitly installed
+  #+begin_src shell
+./GetPackages | paru -D --asexplicit -
+  #+end_src
 
 *Extra scripts needed for module are in [[file:./install.d/]]*
 
 * Todos
-1. [ ] add dependence of modules
+1. [X] add dependence of modules
    dependent package must appears before
 2. [ ] manager system file
    [[https://yadm.io/docs/faq#unconventional-cases][Frequently Asked Questions - yadm]]
+3. [ ] A plugin system query reason for all explicit installed packages
+4. [ ] If there is dependencies on from modules in =directory=

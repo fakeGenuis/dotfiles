@@ -1,10 +1,81 @@
 #!/usr/bin/env python3
 
-import tomli, sys, os
+import tomli, os, subprocess, argparse
+from typing import List
+from argparse import RawTextHelpFormatter
+
+
+# Get the directory of the current script
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def expand_sub_packages(directory: str) -> str:
-    return "/".join([directory.replace("~", os.getenv("HOME")), "packages.toml"])
+    return "/".join([directory.replace("~", os.getenv("HOME", "~")), "packages.toml"])
+
+
+def extract_group(name: str) -> List[str]:
+    output = subprocess.check_output(f"pacman -Qgq {name}", shell=True, text=True)
+    return output.splitlines()
+
+
+FLAGS = dict()
+def update_flags() -> None:
+    global FLAGS
+    if FLAGS: return
+
+    with open(f"{SCRIPT_DIR}/packages.toml", "rb") as f:
+        conf = tomli.load(f)
+
+    for flag in conf["flags"]:
+        try:
+            subprocess.run(conf["flags"][flag], check=True, shell=True)
+            FLAGS[flag] = True
+        except subprocess.CalledProcessError:
+            FLAGS[flag] = False
+
+
+def get_flag(module: dict, default: bool) -> bool:
+    global FLAGS
+    if module.get("enabled", None) is None:
+        return default
+
+    if isinstance(module["enabled"], bool):
+        return module["enabled"]
+
+    update_flags()
+
+    # =tomli.load= replace "not" to "!", substitute back
+    flag_string = module["enabled"].replace("!", "not")
+
+    for flag in FLAGS:
+        flag_string = flag_string.replace(flag, f"FLAGS[\"{flag}\"]")
+
+    return eval(flag_string)
+
+
+def module_install(conf: dict, module: str, default, lvl=0) -> List[str]:
+    installs = []
+    module_dict = conf[module]
+    if type(module_dict) is not dict or (lvl == 0 and (not get_flag(module_dict, default))):
+        return installs
+
+    installs += module_dict.get("packages", [])
+
+    if "groups" in module_dict:
+        for name in module_dict["groups"]:
+            installs += extract_group(name)
+
+    if "depends_on" in module_dict:
+        for other_module in module_dict["depends_on"]:
+            # "depends on" has highest priority
+            installs += module_install(conf, other_module, default, lvl=lvl+1)
+
+    if ("directory" in module_dict) and os.path.isfile(
+        sub_file_name := expand_sub_packages(module_dict["directory"])
+    ):
+        installs += install(sub_file_name)
+
+    return installs
 
 
 def install(file_name: str) -> list:
@@ -13,31 +84,33 @@ def install(file_name: str) -> list:
         conf = tomli.load(f)
     default = conf["enable_default"]
 
-    all_install = []
+    installs = []
     for module in conf:
-        if type(conf[module]) is dict and (conf[module].get("enabled", default)):
-            all_install += conf[module]["packages"]
+        installs += module_install(conf, module, default)
 
-            if ("directory" in conf[module]) and os.path.isfile(
-                sub_file_name := expand_sub_packages(conf[module]["directory"])
-            ):
-                all_install += install(sub_file_name)
-
-    return sorted(set(all_install))
+    return sorted(set(installs))
 
 
-def remove() -> list:
+def remove(reverse=False) -> list:
     """Get packages already installed but not owned by any module"""
-    if not os.path.isfile("installed"):
-        return []
 
-    with open("installed", "r") as f:
-        installed = [line.rstrip() for line in f.readlines()]
+    installed = subprocess.check_output("pacman -Qeq", shell=True, text=True).splitlines()
 
-    return [package for package in installed if package not in install("packages.toml")]
+    defined = install("packages.toml")
+
+    if reverse:
+        installed, defined = defined, installed
+
+    return [package for package in installed if package not in defined]
 
 
-if len(sys.argv) > 1 and sys.argv[1] == "--remove":
+parser = argparse.ArgumentParser(description='Helper for declarative packages by pacman\nBy default list packages declared not installed.', formatter_class=RawTextHelpFormatter)
+
+parser.add_argument('--remove', action="store_true", help='list packages installed not declared')
+
+args = parser.parse_args()
+
+if args.remove:
     print("\n".join(remove()))
 else:
-    print("\n".join(install("packages.toml")))
+    print("\n".join(remove(reverse=True)))
