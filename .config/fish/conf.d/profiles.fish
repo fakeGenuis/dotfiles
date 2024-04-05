@@ -16,8 +16,11 @@ if status is-login
     # bat related
     set -gx MANROFFOPT -c
     set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
+end
 
+if status is-interactive
     # colored password prompt
-    set -Ux SUDO_PROMPT "$(tput setaf 1 bold)""[sudo]$(tput sgr0)" \
+    # not work in ~status is-login~, error "tput: No value for $TERM and no -T specified"
+    set -gx SUDO_PROMPT "$(tput setaf 1 bold)""[sudo]$(tput sgr0)" \
         "$(tput setaf 6)password for$(tput sgr0) $(tput setaf 5)%p$(tput sgr0): "
 end
