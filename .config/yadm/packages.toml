@@ -132,7 +132,7 @@ packages=[
     "adobe-source-serif-fonts",
     "ttf-lxgw-wenkai",
     "ttf-sarasa-gothic-sc",
-    "noto-fonts-emoji",
+    "noto-fonts-emoji", # emoji support
     "ttf-firacode-nerd"
 ]
 
