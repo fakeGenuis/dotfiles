@@ -7,6 +7,7 @@ enable_default=true
 [flags]
 is_wsl="which powershell.exe &>/dev/null"
 is_laptop="ls /sys/class/power_supply | grep BAT &>/dev/null"
+is_personal="[ \"$(yadm config local.class)\" = \"personal\" ]"
 
 # packages in the archwiki "Installation guide"
 [essential]
@@ -20,10 +21,9 @@ packages=[
 [boot]
 enabled="not is_wsl"
 packages=[
-    "grub",                # bootloader
-    "os-prober",           # other os entries in grub
-    "efibootmgr",          # =grub= write boot entries to NVRAM
-    "mkinitcpio-firmware", # suppress warnnings when mkinitcpio
+    "grub",               # bootloader
+    "efibootmgr",         # =grub= write boot entries to NVRAM
+    "mkinitcpio-firmware" # suppress warnnings when mkinitcpio
 ]
 
 [user]
@@ -45,7 +45,7 @@ packages=[
 ]
 
 [amd]
-enabled="not is_wsl"
+enabled=false
 # for cpu with integrated graphics
 packages=[
     "amd-ucode",
@@ -166,12 +166,10 @@ packages=[
 enabled="not is_wsl"
 packages=[
     "alacritty",
-    "baidunetdisk-bin",
     "dracula-alacritty-git",
     "librewolf-bin",
     "neovim",
-    "nextcloud-client",
-    "xunlei-bin"
+    "nextcloud-client"
 ]
 
 [usb]
@@ -237,7 +235,7 @@ packages=[
 ]
 
 [virtual]
-enabled="not is_laptop and not is_wsl"
+enabled="is_personal and not is_laptop and not is_wsl"
 packages=[
     "dnsmasq",
     "edk2-ovmf",
@@ -250,13 +248,15 @@ packages=[
 ]
 
 [amuse]
-enabled="not is_wsl"
+enabled="is_personal and not is_wsl"
 packages=[
+    "baidunetdisk-bin",
     "mpv",
     "nomacs",
     "picacg-qt-appimage",
     "steam",
-    "telegram-desktop"
+    "telegram-desktop",
+    "xunlei-bin"
 ]
 
 [benchmark]
@@ -276,13 +276,12 @@ packages=[
     "blender",
     "docker",
     "docker-compose",
-    "ffmpegthumbnailer",
-    "gimp"
-    # "jdk-openjdk"
+    "gimp",
+    "jdk-openjdk"
 ]
 
 [devices]
-enabled="not is_wsl"
+enabled="is_personal and not is_wsl"
 packages=[
     "galaxybudsclient-bin",
     "obinskit",
@@ -302,14 +301,15 @@ packages=[
 ]
 
 [windows]
-enabled="not is_wsl"
+enabled="is_personal and not is_wsl"
 packages=[
     "ntfs-3g",   # mount ntfs partition
+    "os-prober", # other os entries in grub
     "chntpw"     # dual boot bluetooth repair
 ]
 
 [network]
-enabled="not is_laptop"
+enabled="not is_wsl"
 packages=[
     "iptables-nft",
     "sshguard",
