@@ -5,6 +5,7 @@ gpg-connect-agent updatestartuptty /bye >/dev/null
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
+    zoxide init fish | source
     set -gx STARSHIP_CONFIG ~/.config/starship/config.toml
     starship init fish | source
     test -e ~/.cache/wal/sequences && cat ~/.cache/wal/sequences
@@ -22,7 +23,6 @@ end
 
 # `neofetch` as fish greeting
 function fish_greeting
-    neofetch
 end
 
 # https://www.emacswiki.org/emacs/TrampMode

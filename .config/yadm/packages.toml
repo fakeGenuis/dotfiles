@@ -204,6 +204,7 @@ packages=[
     "bat",            # better =cat=
     "bpytop",         # system monitor
     "eza",            # better =ls=
+    "zoxide",         # better =cd=
     "gdu-bin",        # =du= on all directories
     # "inxi",           # system information tool
     "man-db",         # man page
