@@ -11,6 +11,7 @@ is_personal="[ \"$(yadm config local.class)\" = \"personal\" ]"
 
 # packages in the archwiki "Installation guide"
 [essential]
+enabled="not is_wsl"
 packages=[
     "base",
     "linux",
@@ -29,9 +30,7 @@ packages=[
 [user]
 packages=[
     "gnome-keyring",
-    "lxqt-policykit",
     "xdg-user-dirs",  # no abused dir at home
-    "accountsservice" # user avatar
 ]
 
 [nvidia]
@@ -61,8 +60,10 @@ packages=[
 enabled=false
 packages=[
     "xorg-server",
-    "xorg-xdpyinfo", # Option for =neofetch=
-    "xorg-xwininfo", # Option for ~picom-trans~
+    "xorg-xdpyinfo",   # Option for =neofetch=
+    "xorg-xwininfo",   # Option for ~picom-trans~
+    "dragon-drop",
+    "accountsservice", # user avatar
     "mons"
 ]
 
@@ -91,8 +92,15 @@ packages=[
     "awesome-git"
 ]
 
+[wsl-extra]
+enabled="is_wsl"
+packages=[
+    "base"
+]
+
 [gtk]
 packages=[
+    "gtk2", # pinenty
     "bibata-cursor-theme-bin",
     "papirus-icon-theme",
     "ttf-sarasa-gothic-sc",
@@ -101,7 +109,7 @@ packages=[
 ]
 
 [qt5ct]
-# depends on kvantum
+enabled="not is_wsl"
 packages=[
     "kvantum",
     "kvantum-qt5", # qt5 style theme
@@ -155,10 +163,11 @@ packages=[
 
 [fish]
 packages=[
+    "bc",
     "fish",
     "starship",      # shell prompt pretty
     "xorg-xdpyinfo", # set =GDK_SCALE= depends on resolution
-    "xorg-xprop",
+    # "xorg-xprop", # required by =gnome-keyring=
     "fish-done"      # notify background shell work done
 ]
 
@@ -183,6 +192,8 @@ packages=[
 [base-dev]
 packages=[
     "base-devel", # =gcc, which, make, sudo=
+    "python-tomli", # required by this script
+    "python",
     "git",
     "openssh",
     "paru"
@@ -192,18 +203,17 @@ packages=[
 packages=[
     "bat",            # better =cat=
     "bpytop",         # system monitor
-    "dragon-drop",
     "eza",            # better =ls=
     "gdu-bin",        # =du= on all directories
-    "inxi",           # system information tool
+    # "inxi",           # system information tool
     "man-db",         # man page
     "neofetch",
     "openbsd-netcat", # ssh using http tunnel using =nc=
     "p7zip",
     "proxychains-ng", # force proxy
-    "ranger",         # command line file browser
-    "tmsu-bin",       # tag manager system
-    "tokei",          # count lines of code
+    # "ranger",         # command line file browser
+    # "tmsu-bin",       # tag manager system
+    # "tokei",          # count lines of code
     "trash-cli",
     "unrar",
     "unzip",
