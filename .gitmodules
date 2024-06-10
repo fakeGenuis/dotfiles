@@ -1,6 +1,8 @@
 [submodule ".config/doom"]
 	path = .config/doom
 	url = git@github.com:fakeGenuis/doom.git
+	branch = master
 [submodule ".config/awesome"]
 	path = .config/awesome
 	url = git@github.com:fakeGenuis/awesome.git
+	branch = master
