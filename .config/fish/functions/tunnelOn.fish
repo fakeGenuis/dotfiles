@@ -25,6 +25,8 @@ function tunnelOn --description "toggle status of ssh to server"
             ssh_forward "$argv[2]" vnc 30114 50114
         case -proxy
             ssh_forward "$argv[2]" proxy 8889 8889
+        case -ollama
+            ssh_forward "$argv[2]" proxy 11434 11434
         case -h
             echo "Usage: tunnelOn [Options] sshName
 toggle on ssh port forward for services
