@@ -3,4 +3,7 @@ Description=Change wallpaper
 
 [Service]
 Type=oneshot
+# https://unix.stackexchange.com/a/547817
+LogLevelMax=alert
+SyslogLevel=2
 ExecStart=%h/.config/awesome/scripts/wallpaper.sh -n
