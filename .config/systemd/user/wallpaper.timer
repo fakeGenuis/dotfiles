@@ -1,9 +1,10 @@
 [Unit]
 Description=Timer for a wallpaper change
+PartOf=graphical-session.target
 
 [Timer]
-OnStartupSec=5min
-OnUnitActiveSec=4min
+OnStartupSec=1min
+OnUnitActiveSec=5min
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=xsession.target
