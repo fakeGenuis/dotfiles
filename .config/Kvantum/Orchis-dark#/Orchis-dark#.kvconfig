@@ -58,13 +58,13 @@ submenu_overlap=0
 tooltip_delay=-1
 tree_branch_line=true
 no_window_pattern=false
-opaque=kaffeine,kmplayer,subtitlecomposer,kdenlive,vlc,smplayer,smplayer2,avidemux,avidemux2_qt4,avidemux3_qt4,avidemux3_qt5,kamoso,QtCreator,VirtualBox,trojita,dragon,digikam
-reduce_window_opacity=0
+opaque=
+reduce_window_opacity=10
 respect_DE=true
 scrollable_menu=false
 submenu_delay=150
 no_inactiveness=true
-reduce_menu_opacity=0
+reduce_menu_opacity=10
 click_behavior=0
 contrast=1.00
 dialog_button_layout=0
@@ -98,7 +98,7 @@ progress.indicator.text.color=#dfdfdf
 
 [Hacks]
 transparent_ktitle_label=true
-transparent_dolphin_view=true
+transparent_dolphin_view=false
 transparent_pcmanfm_sidepane=true
 blur_translucent=false
 transparent_menutitle=true
@@ -113,15 +113,15 @@ normal_default_pushbutton=true
 single_top_toolbar=true
 tint_on_mouseover=0
 transparent_pcmanfm_view=true
-no_selection_tint=true
+no_selection_tint=false
 transparent_arrow_button=true
 middle_click_scroll=false
 opaque_colors=false
 kinetic_scrolling=false
 scroll_jump_workaround=true
-centered_forms=false
+centered_forms=true
 noninteger_translucency=false
-blur_only_active_window=false
+blur_only_active_window=true
 style_vertical_toolbars=false
 
 [PanelButtonCommand]
@@ -338,10 +338,10 @@ text.normal.color=#dfdfdf
 text.focus.color=white
 text.press.color=#dfdfdf
 text.toggle.color=white
-frame.left=0
-frame.right=0
-frame.top=0
-frame.bottom=4
+frame.left=2
+frame.right=2
+frame.top=2
+frame.bottom=2
 frame.expansion=0
 
 [Slider]
