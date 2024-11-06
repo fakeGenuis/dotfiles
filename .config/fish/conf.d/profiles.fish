@@ -9,7 +9,7 @@ if status is-login
     set -gx SDL_IM_MODULE fcitx
     set -gx INPUT_METHOD fcitx
 
-    set -gx QT_QPA_PLATFORMTHEME qt5ct
+    set -gx QT_QPA_PLATFORMTHEME qt6ct
     set -gx VISUAL "emacsclient -c -a= -F '((height . 50) (width . 150))'"
     set -gx EDITOR nvim
 
