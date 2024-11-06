@@ -1,4 +1,5 @@
 # https://github.com/alacritty/alacritty/issues/7473
+[general]
 import = ["/usr/share/alacritty/dracula.toml"]
 
 [env]
