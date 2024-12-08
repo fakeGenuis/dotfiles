@@ -15,6 +15,7 @@ enabled="not is_wsl"
 packages=[
     "base",
     "linux",
+    "linux-headers",
     "linux-firmware",
     "networkmanager"
 ]
@@ -23,8 +24,8 @@ packages=[
 enabled="not is_wsl"
 packages=[
     "grub",               # bootloader
-    "efibootmgr",         # =grub= write boot entries to NVRAM
-    "mkinitcpio-firmware" # suppress warnnings when mkinitcpio
+    "efibootmgr"         # =grub= write boot entries to NVRAM
+    # "mkinitcpio-firmware" # suppress warnnings when mkinitcpio
 ]
 
 [user]
@@ -36,23 +37,24 @@ packages=[
 [nvidia]
 enabled="not is_wsl"
 packages=[
-    "nvidia",
+    "nvidia-open-dkms",
     "nvidia-utils",
     "nvidia-settings",
+    "libva-nvidia-driver", # hardware video acceleration
     "nvidia-prime",
     "nvtop"
 ]
 
 [amd]
-enabled=false
 # for cpu with integrated graphics
 packages=[
     "amd-ucode",
-    "amdgpu_top-bin",
-    "libva-mesa-driver",
-    "libva-utils",
-    "mesa-utils",
-    "xf86-video-amdgpu"
+    # "amdgpu_top-bin",
+    "mesa",             # 3D hardware video acceleration
+    "lib32-mesa",
+    # "libva-utils",      # vainfo
+    "mesa-utils",       # glxinfo
+    "xf86-video-amdgpu" # xorg
 ]
 
 [display-server]
@@ -60,7 +62,7 @@ packages=[
 enabled=false
 packages=[
     "xorg-server",
-    "xorg-xdpyinfo",   # Option for =neofetch=
+    "xorg-xdpyinfo",   # for =betterlockscreen=
     "xorg-xwininfo",   # Option for ~picom-trans~
     "dragon-drop",
     "accountsservice", # user avatar
@@ -72,8 +74,9 @@ enabled="not is_wsl"
 depends_on=["display-server"]
 packages=[
     "sddm",
-    "sddm-sugar-light",
-    "sddm-sugar-candy-git"
+    "sddm-theme-corners-git",
+    # "sddm-sugar-light",
+    # "sddm-sugar-candy-git"
 ]
 
 [lightdm]
@@ -104,7 +107,7 @@ packages=[
     "bibata-cursor-theme-bin",
     "papirus-icon-theme",
     "ttf-sarasa-gothic-sc",
-    "orchis-theme-git",
+    "orchis-theme-dracula-git",
     "gtk-engine-murrine" # gtk2 support with orchis-theme-git
 ]
 
@@ -116,7 +119,8 @@ packages=[
     "kvantum-theme-orchis-git",
     "papirus-icon-theme",
     "qt5-styleplugins",
-    "qt5ct"
+    "qt5ct",
+    "qt6ct", # for some qt6 applications
 ]
 
 [sound]
@@ -177,7 +181,8 @@ packages=[
     "alacritty",
     "dracula-alacritty-git",
     "librewolf-bin",
-    "neovim",
+    "python-pywalfox-librewolf", # sync walfox theme
+    # "neovim", # always use emacs!
     "nextcloud-client"
 ]
 
@@ -192,11 +197,18 @@ packages=[
 [base-dev]
 packages=[
     "base-devel", # =gcc, which, make, sudo=
+    "gdb",
+    "ollama-cuda", # LLMs
     "python-tomli", # required by this script
     "python",
     "git",
     "openssh",
     "paru"
+]
+
+[utilities]
+packages=[
+    "peek" # screen recorder
 ]
 
 [shell-utilities]
@@ -205,15 +217,16 @@ packages=[
     "bpytop",         # system monitor
     "eza",            # better =ls=
     "zoxide",         # better =cd=
+    "fzf",            # extend `zoxide' with selection
     "gdu-bin",        # =du= on all directories
     # "inxi",           # system information tool
     "man-db",         # man page
-    "neofetch",
+    "fastfetch",
     "openbsd-netcat", # ssh using http tunnel using =nc=
     "p7zip",
     "proxychains-ng", # force proxy
     # "ranger",         # command line file browser
-    # "tmsu-bin",       # tag manager system
+    "tmsu-bin",       # tag manager system
     # "tokei",          # count lines of code
     "trash-cli",
     "unrar",
@@ -246,7 +259,8 @@ packages=[
 ]
 
 [virtual]
-enabled="is_personal and not is_laptop and not is_wsl"
+enabled=false
+# enabled="is_personal and not is_laptop and not is_wsl"
 packages=[
     "dnsmasq",
     "edk2-ovmf",
@@ -261,19 +275,33 @@ packages=[
 [amuse]
 enabled="is_personal and not is_wsl"
 packages=[
-    "baidunetdisk-bin",
     "mpv",
-    "nomacs",
-    "picacg-qt-appimage",
-    "steam",
-    "telegram-desktop",
-    "xunlei-bin"
+    "qimgv-git", # image viewer
+    "steam-native-runtime",
+]
+
+[communicate]
+packages=[
+    "wechat-universal-bwrap",
+    # "wemeet-bin",
+    "telegram-desktop"
+]
+
+[monitor]
+enabled=false
+packages=[
+    "cpupower-gui",
+    "hdparm",
+    "smartmontools",
+    "turbostat",
+    "hwinfo"
 ]
 
 [benchmark]
 enabled=false
 packages=[
     "blender-benchmark",
+    "unigine-heaven",
     "cpu-x",
     "crazydiskinfo",
     "kdiskmark",
@@ -286,7 +314,9 @@ enabled="not is_wsl"
 packages=[
     "blender",
     "docker",
-    "docker-compose",
+    # "docker-compose",
+    # "genymotion", # android simulator
+    "obs-studio",
     "gimp",
     "jdk-openjdk"
 ]
@@ -294,11 +324,9 @@ packages=[
 [devices]
 enabled="is_personal and not is_wsl"
 packages=[
-    "galaxybudsclient-bin",
-    "obinskit",
     "openrgb-bin",
     "i2c-tools", # for =openrgb=
-    "vial-appimage"
+    # "vial-appimage"
 ]
 
 [research]
@@ -323,7 +351,8 @@ packages=[
 enabled="not is_wsl"
 packages=[
     "iptables-nft",
-    "sshguard",
+    # "sshguard", # not much useful
+    "network-manager-applet" # wifi system tray icon
 ]
 
 [font-manager]
