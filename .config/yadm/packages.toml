@@ -242,6 +242,9 @@ packages=[
     "pacman-log-orphans-hook" # notify orphans packages
 ]
 
+[paru-private]
+directory="~/.config/paru"
+
 [proxy]
 enabled="not is_wsl"
 packages=[
