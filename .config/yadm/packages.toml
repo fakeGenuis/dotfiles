@@ -254,7 +254,7 @@ packages=[
 [remote]
 enabled="not is_wsl"
 packages=[
-    "barrier",
+    "deskflow", # share keyboard
     "realvnc-vnc-viewer",
     "scrcpy",
     "tigervnc-server",
