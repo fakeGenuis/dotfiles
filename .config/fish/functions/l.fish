@@ -1,4 +1,4 @@
 # Defined in - @ line 1
-function l --wraps='exa' --description 'exa(ls) with icons'
-    exa --icons $argv
+function l --wraps='eza' --description 'eza(ls) with icons'
+    eza --icons $argv
 end
