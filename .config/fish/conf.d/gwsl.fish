@@ -10,3 +10,7 @@ if status is-login; and string match -qri wsl (uname -a)
     # proxy in wsl (set network mode to mirrored solves everything!)
     # now ALL_PROXY can be a fixed environment variable
 end
+
+if status is-interactive; and not pgrep -af xcape &>/dev/null
+    xcape -e "Control_L=Escape" &
+end
