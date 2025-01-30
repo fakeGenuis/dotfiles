@@ -142,10 +142,8 @@ packages=["blueman", "bluez", "bluez-utils"]
 packages=[
     "ttf-opensans",
     "adobe-source-serif-fonts",
-    "ttf-lxgw-wenkai",
     "ttf-sarasa-gothic-sc",
-    "noto-fonts-emoji", # emoji support
-    "ttf-firacode-nerd"
+    "noto-fonts-emoji" # emoji support
 ]
 
 [input_method]
