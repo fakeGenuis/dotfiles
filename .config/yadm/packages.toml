@@ -140,8 +140,6 @@ packages=["blueman", "bluez", "bluez-utils"]
 
 [fontconfig]
 packages=[
-    "ttf-opensans",
-    "adobe-source-serif-fonts",
     "ttf-sarasa-gothic-sc",
     "noto-fonts-emoji" # emoji support
 ]
