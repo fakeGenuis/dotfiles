@@ -234,6 +234,7 @@ packages=[
 
 [pacman]
 packages=[
+    "expac",                  # query installed packages
     "pacman-contrib",         # =checkupdates, paccache=
     "paccache-hook",          # clean pacman cache
     "rebuild-detector",       # detect packages need to rebuild
