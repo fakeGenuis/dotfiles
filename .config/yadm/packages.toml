@@ -47,6 +47,7 @@ packages=[
 
 [amd]
 # for cpu with integrated graphics
+enabled="not is_wsl"
 packages=[
     "amd-ucode",
     # "amdgpu_top-bin",
@@ -165,9 +166,10 @@ packages=[
 packages=[
     "bc",
     "fish",
+    "xcape",         # CapsLK as Esc in wsl
     "starship",      # shell prompt pretty
     "xorg-xdpyinfo", # set =GDK_SCALE= depends on resolution
-    # "xorg-xprop", # required by =gnome-keyring=
+    # "xorg-xprop",    # required by =gnome-keyring=
     "fish-done"      # notify background shell work done
 ]
 
