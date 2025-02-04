@@ -1,6 +1,6 @@
 /*****----- Global Properties -----*****/
 @import "~/.cache/wal/colors.rasi" * {
-  icon-font: "Material Design Icons 18";
+  icon-font: "Symbols Nerd Font Mono 18";
 
   border-colour: var(selected);
   handle-colour: var(selected);
@@ -95,7 +95,7 @@ textbox-prompt-colon {
   horizontal-align: 0.5;
   expand: false;
   str: "";
-  padding: 0.1em 0.8em 0.1em 0.4em;
+  padding: 0.2em 0.3em 0.2em 0.3em;
   font: @icon-font;
   /* background-color: @alternate-background; */
   /* text-color: inherit; */
@@ -240,7 +240,7 @@ button {
   vertical-align: 0.5;
   horizontal-align: 0.5;
   font: @icon-font;
-  padding: 0.1em 0.75em 0.1em 0.35em;
+  padding: 0.2em 0.25em 0.2em 0.25em;
   background-color: @alternate-background;
   text-color: inherit;
   cursor: pointer;
