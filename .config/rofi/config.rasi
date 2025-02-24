@@ -1,7 +1,7 @@
 configuration {
   /* you need ln last two file in $PATH */
   modes: "combi,run,ssh,bookmarks: rofi-bookmarks.py,brave: brave_search.sh";
-  font: "Maple NF 14";
+  font: "Maple6 NF 14";
   /*  location: 0;*/
   /*  yoffset: 0;*/
   /*  xoffset: 0;*/
