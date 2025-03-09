@@ -16,6 +16,9 @@ if status is-login
     # bat related
     set -gx MANROFFOPT -c
     set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
+
+    # Default NET interface Name
+    set -gx DNETN (ip route show default | awk '/default/ {print $5}')
 end
 
 if status is-interactive

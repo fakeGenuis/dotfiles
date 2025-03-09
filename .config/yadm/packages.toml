@@ -212,7 +212,7 @@ packages=[
 [shell-utilities]
 packages=[
     "bat",            # better =cat=
-    "bpytop",         # system monitor
+    "btop",           # system monitor
     "eza",            # better =ls=
     "zoxide",         # better =cd=
     "fzf",            # extend `zoxide' with selection
