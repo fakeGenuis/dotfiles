@@ -24,6 +24,7 @@ packages=[
 enabled="not is_wsl"
 packages=[
     "grub",               # bootloader
+    "grub-customizer",
     "efibootmgr"         # =grub= write boot entries to NVRAM
     # "mkinitcpio-firmware" # suppress warnnings when mkinitcpio
 ]
@@ -32,6 +33,7 @@ packages=[
 packages=[
     "gnome-keyring",
     "xdg-user-dirs",  # no abused dir at home
+    "accountsservice" # user avatar
 ]
 
 [nvidia]
@@ -66,7 +68,6 @@ packages=[
     "xorg-xdpyinfo",   # for =betterlockscreen=
     "xorg-xwininfo",   # Option for ~picom-trans~
     "dragon-drop",
-    "accountsservice", # user avatar
     "mons"
 ]
 
@@ -107,7 +108,7 @@ packages=[
     "gtk2", # pinenty
     "bibata-cursor-theme-bin",
     "papirus-icon-theme",
-    "ttf-sarasa-gothic-sc",
+    "ttf-sarasa-gothic-sc", # default font for gtk
     "orchis-theme-dracula-git",
     "gtk-engine-murrine" # gtk2 support with orchis-theme-git
 ]
@@ -157,7 +158,7 @@ packages=[
 [doom]
 directory="~/.config/doom/"
 packages=[
-    "emacs-nativecomp",
+    "emacs",
     "fd",
     "ripgrep"
 ]
@@ -179,6 +180,7 @@ packages=[
     "alacritty",
     "dracula-alacritty-git",
     "librewolf-bin",
+    "zen-browser-bin",
     "python-pywalfox-librewolf", # sync walfox theme
     # "neovim", # always use emacs!
     "nextcloud-client"
@@ -196,7 +198,6 @@ packages=[
 packages=[
     "base-devel", # =gcc, which, make, sudo=
     "gdb",
-    "ollama-cuda", # LLMs
     "python-tomli", # required by this script
     "python",
     "git",
@@ -221,7 +222,7 @@ packages=[
     "man-db",         # man page
     "fastfetch",
     "openbsd-netcat", # ssh using http tunnel using =nc=
-    "p7zip",
+    "7zip",
     "proxychains-ng", # force proxy
     # "ranger",         # command line file browser
     "tmsu-bin",       # tag manager system
@@ -236,9 +237,9 @@ packages=[
 packages=[
     "expac",                  # query installed packages
     "pacman-contrib",         # =checkupdates, paccache=
-    "paccache-hook",          # clean pacman cache
-    "rebuild-detector",       # detect packages need to rebuild
-    "pacman-log-orphans-hook" # notify orphans packages
+    # "paccache-hook",          # clean pacman cache
+    # "rebuild-detector",       # detect packages need to rebuild
+    # "pacman-log-orphans-hook" # notify orphans packages
 ]
 
 [paru-private]
@@ -253,7 +254,7 @@ packages=[
 [remote]
 enabled="not is_wsl"
 packages=[
-    "deskflow", # share keyboard
+    # "deskflow", # share keyboard
     "realvnc-vnc-viewer",
     "scrcpy",
     "tigervnc-server",
@@ -278,7 +279,7 @@ packages=[
 enabled="is_personal and not is_wsl"
 packages=[
     "mpv",
-    "qimgv-git", # image viewer
+    "qimgv", # image viewer
     "steam-native-runtime",
 ]
 
@@ -319,6 +320,7 @@ packages=[
     # "docker-compose",
     # "genymotion", # android simulator
     "obs-studio",
+    "ollama-cuda", # LLMs
     "gimp",
     "jdk-openjdk"
 ]
@@ -334,10 +336,9 @@ packages=[
 [research]
 enabled="not is_wsl and not is_laptop"
 packages=[
-    "fermat",
     "jupyter-notebook",
     "mathematica",
-    "miktex",
+    # "miktex",
     "zotero-bin"
 ]
 
@@ -375,6 +376,7 @@ packages=[
     "ttf-agave-nerd",
     "ttf-bqn386-git",
     "ttf-firacode-nerd",        # ligature
+    "ttf-maple",
     "ttf-recursive",
     # ui
     "ttf-comic-shanns-v2",
@@ -386,7 +388,7 @@ packages=[
     "ttf-arphic-ukai",
     "ttf-kose-git",
     "ttf-lxgw-wenkai",
-    "ttf-yozai-font",
+    "ttf-yozai-font", # cute hand-write
     "ttf-lxgw-neo-xihei",
     "wqy-microhei"
 ]
