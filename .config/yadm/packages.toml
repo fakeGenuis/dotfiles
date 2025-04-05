@@ -33,7 +33,21 @@ packages=[
 packages=[
     "gnome-keyring",
     "xdg-user-dirs",  # no abused dir at home
-    "accountsservice" # user avatar
+    "not is_wsl accountsservice" # user avatar
+]
+
+[wsl-extra]
+enabled="is_wsl"
+packages=[
+    "base"
+]
+
+[network]
+enabled="not is_wsl"
+packages=[
+    "iptables-nft",
+    # "sshguard", # not much useful
+    "network-manager-applet" # wifi system tray icon
 ]
 
 [nvidia]
@@ -62,7 +76,7 @@ packages=[
 
 [display-server]
 # only enable when there is display manager
-enabled=false
+enabled="not is_wsl"
 packages=[
     "xorg-server",
     "xorg-xdpyinfo",   # for =betterlockscreen=
@@ -95,12 +109,6 @@ enabled="not is_wsl"
 directory="~/.config/awesome/"
 packages=[
     "awesome-git"
-]
-
-[wsl-extra]
-enabled="is_wsl"
-packages=[
-    "base"
 ]
 
 [gtk]
@@ -182,7 +190,8 @@ packages=[
     "librewolf-bin",
     "zen-browser-bin",
     "python-pywalfox-librewolf", # sync walfox theme
-    # "neovim", # always use emacs!
+    # "neovim",                    # always use emacs!
+    "peek",                      # screen recorder
     "nextcloud-client"
 ]
 
@@ -203,11 +212,6 @@ packages=[
     "git",
     "openssh",
     "paru"
-]
-
-[utilities]
-packages=[
-    "peek" # screen recorder
 ]
 
 [shell-utilities]
@@ -261,20 +265,6 @@ packages=[
     "x11vnc"
 ]
 
-[virtual]
-enabled=false
-# enabled="is_personal and not is_laptop and not is_wsl"
-packages=[
-    "dnsmasq",
-    "edk2-ovmf",
-    "genymotion", # android x86
-    "libvirt",
-    "qemu-desktop",
-    "swtpm",
-    "virt-manager",
-    "virtio-win"
-]
-
 [amuse]
 enabled="is_personal and not is_wsl"
 packages=[
@@ -284,32 +274,11 @@ packages=[
 ]
 
 [communicate]
+enabled="is_personal and not is_wsl"
 packages=[
     "wechat-universal-bwrap",
     # "wemeet-bin",
     "telegram-desktop"
-]
-
-[monitor]
-enabled=false
-packages=[
-    "cpupower-gui",
-    "hdparm",
-    "smartmontools",
-    "turbostat",
-    "hwinfo"
-]
-
-[benchmark]
-enabled=false
-packages=[
-    "blender-benchmark",
-    "unigine-heaven",
-    "cpu-x",
-    "crazydiskinfo",
-    "kdiskmark",
-    "nvme-cli",
-    "s-tui"
 ]
 
 [more-dev]
@@ -350,12 +319,40 @@ packages=[
     "chntpw"     # dual boot bluetooth repair
 ]
 
-[network]
-enabled="not is_wsl"
+[virtual]
+enabled=false
+# enabled="is_personal and not is_laptop and not is_wsl"
 packages=[
-    "iptables-nft",
-    # "sshguard", # not much useful
-    "network-manager-applet" # wifi system tray icon
+    "dnsmasq",
+    "edk2-ovmf",
+    "genymotion", # android x86
+    "libvirt",
+    "qemu-desktop",
+    "swtpm",
+    "virt-manager",
+    "virtio-win"
+]
+
+[monitor]
+enabled=false
+packages=[
+    "cpupower-gui",
+    "hdparm",
+    "smartmontools",
+    "turbostat",
+    "hwinfo"
+]
+
+[benchmark]
+enabled=false
+packages=[
+    "blender-benchmark",
+    "unigine-heaven",
+    "cpu-x",
+    "crazydiskinfo",
+    "kdiskmark",
+    "nvme-cli",
+    "s-tui"
 ]
 
 [font-manager]

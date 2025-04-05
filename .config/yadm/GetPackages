@@ -19,9 +19,12 @@ def extract_group(name: str) -> List[str]:
 
 
 FLAGS = dict()
+
+
 def update_flags() -> None:
-    global FLAGS
-    if FLAGS: return
+    # global FLAGS
+    if FLAGS:
+        return
 
     with open(f"{SCRIPT_DIR}/packages.toml", "rb") as f:
         conf = tomli.load(f)
@@ -34,8 +37,18 @@ def update_flags() -> None:
             FLAGS[flag] = False
 
 
+def flag_eval(flag_string: str) -> bool:
+    # =tomli.load= replace "not" to "!", substitute back
+    flag_string = flag_string.replace("!", "not")
+
+    for flag in FLAGS:
+        flag_string = flag_string.replace(flag, f'FLAGS["{flag}"]')
+
+    return eval(flag_string)
+
+
 def get_flag(module: dict, default: bool) -> bool:
-    global FLAGS
+    # global FLAGS
     if module.get("enabled", None) is None:
         return default
 
@@ -44,22 +57,27 @@ def get_flag(module: dict, default: bool) -> bool:
 
     update_flags()
 
-    # =tomli.load= replace "not" to "!", substitute back
-    flag_string = module["enabled"].replace("!", "not")
+    return flag_eval(module["enabled"])
 
-    for flag in FLAGS:
-        flag_string = flag_string.replace(flag, f"FLAGS[\"{flag}\"]")
 
-    return eval(flag_string)
+def needed_packages(packages: list) -> list:
+    # sperated by space, only last element is package name
+    return [
+        pkg
+        for pkg in packages
+        if " " not in pkg or flag_eval(" ".join(pkg.split(" ")[:-1]))
+    ]
 
 
 def module_install(conf: dict, module: str, default, lvl=0) -> List[str]:
     installs = []
     module_dict = conf[module]
-    if type(module_dict) is not dict or (lvl == 0 and (not get_flag(module_dict, default))):
+    if type(module_dict) is not dict or (
+        lvl == 0 and (not get_flag(module_dict, default))
+    ):
         return installs
 
-    installs += module_dict.get("packages", [])
+    installs = needed_packages(module_dict.get("packages", []))
 
     if "groups" in module_dict:
         for name in module_dict["groups"]:
@@ -68,7 +86,7 @@ def module_install(conf: dict, module: str, default, lvl=0) -> List[str]:
     if "depends_on" in module_dict:
         for other_module in module_dict["depends_on"]:
             # "depends on" has highest priority
-            installs += module_install(conf, other_module, default, lvl=lvl+1)
+            installs += module_install(conf, other_module, default, lvl=lvl + 1)
 
     if ("directory" in module_dict) and os.path.isfile(
         sub_file_name := expand_sub_packages(module_dict["directory"])
@@ -94,7 +112,9 @@ def install(file_name: str) -> list:
 def remove(reverse=False) -> list:
     """Get packages already installed but not owned by any module"""
 
-    installed = subprocess.check_output("pacman -Qeq", shell=True, text=True).splitlines()
+    installed = subprocess.check_output(
+        "pacman -Qeq", shell=True, text=True
+    ).splitlines()
 
     defined = install("packages.toml")
 
@@ -104,9 +124,14 @@ def remove(reverse=False) -> list:
     return [package for package in installed if package not in defined]
 
 
-parser = argparse.ArgumentParser(description='Helper for declarative packages by pacman\nBy default list packages declared not installed.', formatter_class=RawTextHelpFormatter)
+parser = argparse.ArgumentParser(
+    description="Helper for declarative packages by pacman\nBy default list packages declared not installed.",
+    formatter_class=RawTextHelpFormatter,
+)
 
-parser.add_argument('--remove', action="store_true", help='list packages installed not declared')
+parser.add_argument(
+    "--remove", action="store_true", help="list packages installed not declared"
+)
 
 args = parser.parse_args()
 
