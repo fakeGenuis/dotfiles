@@ -11,7 +11,7 @@ if status is-login
 
     set -gx QT_QPA_PLATFORMTHEME qt6ct
     set -gx VISUAL "emacsclient -c -a= -F '((height . 50) (width . 150))'"
-    set -gx EDITOR nvim
+    set -gx EDITOR "emacsclient -s utility -c"
 
     # bat related
     set -gx MANROFFOPT -c
