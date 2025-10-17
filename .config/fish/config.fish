@@ -1,3 +1,13 @@
+# https://www.emacswiki.org/emacs/TrampMode
+# https://stackoverflow.com/a/37421917
+# fish with tramp
+if test "$TERM" = dumb
+    function fish_prompt
+        echo "\$ "
+    end
+    return
+end
+
 # GPG ssh agent
 set -gx GPG_TTY (tty)
 set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
@@ -27,11 +37,4 @@ end
 function fish_greeting
 end
 
-# https://www.emacswiki.org/emacs/TrampMode
-# https://stackoverflow.com/a/37421917
-# fish with tramp
-if test "$TERM" = dumb
-    function fish_prompt
-        echo "\$ "
-    end
-end
+direnv hook fish | source
