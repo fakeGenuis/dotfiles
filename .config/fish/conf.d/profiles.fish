@@ -3,13 +3,13 @@
 
 if status is-login
     # fcitx
-    set -gx GTK_IM_MODULE fcitx
-    set -gx QT_IM_MODULE fcitx
-    set -gx XMODIFIERS @im=fcitx
-    set -gx SDL_IM_MODULE fcitx
-    set -gx INPUT_METHOD fcitx
+    # set -gx GTK_IM_MODULE fcitx
+    # set -gx QT_IM_MODULE fcitx
+    # set -gx XMODIFIERS @im=fcitx
+    # set -gx SDL_IM_MODULE fcitx
+    # set -gx INPUT_METHOD fcitx
 
-    set -gx QT_QPA_PLATFORMTHEME qt6ct
+    # set -gx QT_QPA_PLATFORMTHEME qt6ct
     set -gx VISUAL "emacsclient -c -a= -F '((height . 50) (width . 150))'"
     set -gx EDITOR "emacsclient -s utility -c"
 

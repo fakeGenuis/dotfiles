@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 # https://wiki.archlinux.org/title/HiDPI
 
-if status is-login; and test -n "$DISPLAY"
+if status is-login; and test "$XDG_SESSION_TYPE" = x11; and test -n "$DISPLAY"
     set XDPI (xdpyinfo | grep resolution | awk '{print $2}' | cut -d'x' -f1)
     # fractional scaled dpi (1.25, 1.5, ., 2) x 96
     set -gx XDPI (echo "scale=0; ($XDPI + 12)/24*24" | bc -l)

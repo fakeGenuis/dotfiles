@@ -1,6 +1,6 @@
 # https://github.com/alacritty/alacritty/issues/7473
 [general]
-import = ["/usr/share/alacritty/dracula.toml"]
+import = ["~/.config/alacritty/dank-theme.toml"]
 
 [env]
 TERM = "xterm-256color"

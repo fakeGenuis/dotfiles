@@ -17,7 +17,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
     zoxide init fish | source
     starship init fish | source
-    test -e ~/.cache/wal/sequences && cat ~/.cache/wal/sequences
+    # test -e ~/.cache/wal/sequences && cat ~/.cache/wal/sequences
 end
 
 # emacs vterm shell-side configuration
@@ -33,7 +33,6 @@ if test "$INSIDE_EMACS" = vterm -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
     end
 end
 
-# `neofetch` as fish greeting
 function fish_greeting
 end
 
