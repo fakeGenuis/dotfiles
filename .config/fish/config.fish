@@ -8,6 +8,9 @@ if test "$TERM" = dumb
     return
 end
 
+function fish_greeting
+end
+
 # GPG ssh agent
 set -gx GPG_TTY (tty)
 set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
@@ -17,7 +20,7 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
     zoxide init fish | source
     starship init fish | source
-    # test -e ~/.cache/wal/sequences && cat ~/.cache/wal/sequences
+    direnv hook fish | source
 end
 
 # emacs vterm shell-side configuration
@@ -32,8 +35,3 @@ if test "$INSIDE_EMACS" = vterm -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
         emacsclient $argv
     end
 end
-
-function fish_greeting
-end
-
-direnv hook fish | source
