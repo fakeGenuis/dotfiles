@@ -25,6 +25,7 @@ end
 
 # emacs vterm shell-side configuration
 if test "$INSIDE_EMACS" = vterm -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
+    set -gx TERM xterm-256color
     source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
     # reset PAGER, (=cat in emacs 31)
     # https://github.com/akermu/emacs-libvterm/issues/745
