@@ -69,6 +69,43 @@ def needed_packages(packages: list) -> list:
     ]
 
 
+def is_module(d: dict) -> bool:
+    """Check if dict is a module (not a group/category).
+    A module has packages, groups, depends_on, directory, or enabled fields."""
+    if not isinstance(d, dict):
+        return False
+    module_keys = {"packages", "groups", "depends_on", "directory", "enabled"}
+    return bool(d.keys() & module_keys)
+
+
+def flatten_conf(conf: dict) -> dict:
+    """Flatten nested module structure.
+    Input: {'display': {'gtk': {...}, 'sddm': {...}}, 'dev': {...}}
+    Output: {'display.gtk': {...}, 'display.sddm': {...}, 'dev': {...}}
+    Special keys like 'enable_default' and 'flags' are preserved at root level."""
+    result = {}
+
+    def _flatten(obj: dict, prefix: str = ""):
+        for key, value in obj.items():
+            if key in ("enable_default", "flags"):
+                if prefix == "":
+                    result[key] = value
+                continue
+
+            full_key = f"{prefix}.{key}" if prefix else key
+
+            if isinstance(value, dict):
+                if is_module(value):
+                    # It's a module, add it
+                    result[full_key] = value
+                else:
+                    # It's a group, recurse into it
+                    _flatten(value, full_key)
+
+    _flatten(conf)
+    return result
+
+
 def module_install(conf: dict, module: str, default, lvl=0) -> List[str]:
     installs = []
     module_dict = conf[module]
@@ -100,11 +137,15 @@ def install(file_name: str) -> list:
     """Get all packages needed to be installed."""
     with open(file_name, "rb") as f:
         conf = tomli.load(f)
-    default = conf["enable_default"]
+    default = conf.get("enable_default", True)
+
+    # Flatten nested structure
+    flat_conf = flatten_conf(conf)
 
     installs = []
-    for module in conf:
-        installs += module_install(conf, module, default)
+    for module in flat_conf:
+        if module not in ("enable_default", "flags"):
+            installs += module_install(flat_conf, module, default)
 
     return sorted(set(installs))
 
