@@ -135,6 +135,14 @@ packages=[
     "mons"
 ]
 
+[desktop.awesome]
+enabled=false
+directory="~/.config/awesome/"
+depends_on=["display.xorg"]
+packages=[
+    "awesome-git"
+]
+
 [desktop.display-manager.sddm]
 enabled=false
 depends_on=["desktop.xorg"]
@@ -419,6 +427,8 @@ packages=[
     "deskflow", # share keyboard
     "reframe",
     "remmina"
+    # "tigervnc-server",
+    # "realvnc-vnc-viewer"
 ]
 
 [tools.benchmark]
