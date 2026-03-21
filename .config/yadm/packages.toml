@@ -1,19 +1,46 @@
 title="declarative packages configuration"
 # nix is somewhat too complicate for me
 
-# default select for module/directory
-enable_default=true
+# active_profile can be overridden by future CLI support.
+# profile names are expanded through depends_on/exclude with prefix matching.
+active_profile="laboratory"
 
-[flags]
-is_wsl="which powershell.exe &>/dev/null"
-is_laptop="ls /sys/class/power_supply | grep BAT &>/dev/null"
-is_personal="[ \"$(yadm config local.class)\" = \"personal\" ]"
+########################################
+# Profiles: choose one machine preset, then expand its module selections.
+########################################
+[profiles.personal]
+depends_on=["all"]
+exclude=[
+    "hardware.printer",
+]
+
+[profiles.laboratory]
+depends_on=["all"]
+exclude=[
+    "system.windows",
+    "hardware.personal-devices",
+    "apps.amuse",
+    "apps.communication",
+]
+
+[profiles.laptop]
+depends_on=[
+    "system.portal",
+    "desktop.theme",
+    "desktop.fonts",
+    "dev.shell",
+    "dev.editors",
+    "dev.ai",
+    "tools.cli",
+    "tools.packaging",
+    "local",
+]
+exclude=[]
 
 ########################################
 # System: machine baseline and core services that make the OS boot and function.
 ########################################
 [system.base]
-enabled="not is_wsl"
 packages=[
     "base",
     "linux",
@@ -24,7 +51,6 @@ packages=[
 ]
 
 [system.boot]
-enabled="not is_wsl"
 packages=[
     "grub",               # bootloader
     "grub-customizer",
@@ -48,7 +74,6 @@ packages=[
 ]
 
 [system.sound]
-enabled="not is_wsl"
 packages=[
     "pipewire",
     "pipewire-alsa",
@@ -58,11 +83,9 @@ packages=[
 ]
 
 [system.bluetooth]
-enabled="not is_wsl"
 packages=["blueman", "bluez", "bluez-utils"]
 
 [system.inputmethod]
-enabled="not is_wsl"
 groups=["fcitx5-im"]
 packages=[
     "fcitx5-nord",
@@ -72,7 +95,6 @@ packages=[
 ]
 
 [system.windows]
-enabled="is_personal and not is_wsl"
 packages=[
     "ntfs-3g",   # mount ntfs partition
     "os-prober", # other os entries in grub
@@ -97,13 +119,13 @@ packages=[
 packages = [
     "cliphist",
     "dms-shell-bin",
+    "niri",
     "grim",
     "keyd",
     "xwayland-satellite"
 ]
 
 [desktop.xorg]
-# only enable when there is display manager
 enabled=false
 packages=[
     "xorg-server",
@@ -146,7 +168,6 @@ packages=[
 ]
 
 [desktop.theme.qt]
-enabled="not is_wsl"
 packages=[
     "kvantum",
     "kvantum-qt5", # qt5 style theme
@@ -204,11 +225,9 @@ packages=[
 ]
 
 [desktop.terminal]
-enabled="not is_wsl"
 packages=["alacritty"]
 
 [desktop.capture]
-enabled="not is_wsl"
 packages=[
     "flameshot",
     "peek", # screen recorder
@@ -218,7 +237,6 @@ packages=[
 # Hardware: drivers and device-specific packages tied to physical hardware.
 ########################################
 [hardware.nvidia]
-enabled="not is_wsl"
 packages=[
     # "nvidia-open-dkms",
     "nvidia-580xx-dkms", # for old hardware
@@ -242,7 +260,6 @@ packages=[
 ]
 
 [hardware.usb]
-enabled="not is_wsl"
 packages=[
     "udiskie",             # automount usb drive
     "usbutils",            # =lsusb=
@@ -250,7 +267,6 @@ packages=[
 ]
 
 [hardware.personal-devices]
-enabled="is_personal and not is_wsl"
 packages=[
     "openrgb-bin",
     "i2c-tools", # for =openrgb=
@@ -305,7 +321,6 @@ packages=[
 ]
 
 [dev.extra]
-enabled="not is_wsl"
 packages=[
     # "blender",
     "rsync",
@@ -338,7 +353,6 @@ packages=[
 # Research: domain-specific scientific and notebook environments.
 ########################################
 [research.base]
-enabled="not is_wsl and not is_laptop"
 packages=[
     "jupyter-notebook",
     "mathematica",
@@ -350,14 +364,12 @@ packages=[
 # Applications: end-user apps you run directly rather than infrastructure.
 ########################################
 [apps.browser]
-enabled="not is_wsl"
 packages=["librewolf-bin"]
 
 [apps.sync]
 packages=["syncthing", "nextcloud-client"]
 
 [apps.amuse]
-enabled="is_personal and not is_wsl"
 packages=[
     "mpv",
     "qimgv", # image viewer
@@ -365,7 +377,6 @@ packages=[
 ]
 
 [apps.communication]
-enabled="is_personal and not is_wsl"
 packages=[
     "wechat-universal-bwrap",
     # "wemeet-bin",
@@ -404,7 +415,6 @@ packages=[
 ]
 
 [tools.remote]
-enabled="not is_wsl"
 packages=[
     "deskflow", # share keyboard
     "reframe",
