@@ -328,19 +328,17 @@ packages=[
     "openai-codex"
 ]
 
-[dev.extra]
+[dev.vcs]
 packages=[
-    # "blender",
     "rsync",
     "git-filter-repo",
     "git-lfs",
+]
+
+[dev.containers]
+packages=[
     "docker",
     "docker-compose",
-    # "genymotion", # android simulator
-    # "obs-studio",
-    # "ollama-cuda", # LLMs
-    "gimp",
-    "jdk-openjdk"
 ]
 
 [dev.virtualization]
