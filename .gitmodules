@@ -2,3 +2,6 @@
 	path = .config/doom
 	url = git@github.com:fakeGenuis/doom.git
 	branch = master
+[submodule ".config/niri"]
+	path = .config/niri
+	url = git@github.com:fakeGenuis/dms-niri.git
