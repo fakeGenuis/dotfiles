@@ -10,58 +10,68 @@ is_laptop="ls /sys/class/power_supply | grep BAT &>/dev/null"
 is_personal="[ \"$(yadm config local.class)\" = \"personal\" ]"
 
 # packages in the archwiki "Installation guide"
-[essential]
+[system.base]
 enabled="not is_wsl"
 packages=[
     "base",
     "linux",
     "linux-headers",
-    "linux-firmware",
-    "networkmanager"
+    "linux-firmware-nvidia",
+    "linux-firmware-realtek",
+    "linux-firmware-other"
 ]
 
-[boot]
+[system.boot]
 enabled="not is_wsl"
 packages=[
     "grub",               # bootloader
     "grub-customizer",
+    "grub-theme-stylish-color-2k-git",
     "efibootmgr"         # =grub= write boot entries to NVRAM
-    # "mkinitcpio-firmware" # suppress warnnings when mkinitcpio
 ]
 
-[user]
+[system.network]
+packages=[
+    "networkmanager",
+    "iptables-nft",
+    "sshguard",
+    "clash-verge-rev-bin",
+]
+
+[display.wayland]
+packages = [
+"cliphist",
+"dms-shell-bin",
+"grim",
+"keyd",
+"matugen", "nwg-look",
+"xwayland-satellite"
+]
+
+[development.llm]
+packages=[
+"claude-code", "gemini-cli", "openai-codex"
+]
+
+[desktop.user]
 packages=[
     "gnome-keyring",
     "xdg-user-dirs",  # no abused dir at home
-    "not is_wsl accountsservice" # user avatar
+    "accountsservice" # user avatar
 ]
 
-[wsl-extra]
-enabled="is_wsl"
-packages=[
-    "base"
-]
-
-[network]
+[hardware.nvidia]
 enabled="not is_wsl"
 packages=[
-    "iptables-nft",
-    # "sshguard", # not much useful
-    "network-manager-applet" # wifi system tray icon
-]
-
-[nvidia]
-enabled="not is_wsl"
-packages=[
-    "nvidia-open-dkms",
-    "nvidia-utils",
-    "nvidia-settings",
+    # "nvidia-open-dkms",
+    "nvidia-580xx-dkms", # for old hardware
+    # "nvidia-utils",
+    # "nvidia-settings",
     "libva-nvidia-driver", # hardware video acceleration
-    "nvidia-prime",
     "nvtop"
 ]
 
-[amd]
+[hardware.amd]
 # for cpu with integrated graphics
 enabled="not is_wsl"
 packages=[
@@ -74,7 +84,7 @@ packages=[
     "xf86-video-amdgpu" # xorg
 ]
 
-[display-server]
+[display.xorg]
 # only enable when there is display manager
 enabled="not is_wsl"
 packages=[
@@ -85,17 +95,17 @@ packages=[
     "mons"
 ]
 
-[sddm]
-enabled="not is_wsl"
+[display.manager.sddm]
+enabled=false
 depends_on=["display-server"]
 packages=[
     "sddm",
     "sddm-theme-corners-git",
-    # "sddm-sugar-light",
+    "sddm-sugar-light",
     # "sddm-sugar-candy-git"
 ]
 
-[lightdm]
+[display.manager.lightdm]
 enabled=false
 depends_on=["display-server"]
 packages=[
@@ -104,24 +114,25 @@ packages=[
     "lightdm-webkit-theme-litarvan"
 ]
 
-[awesome]
-enabled="not is_wsl"
-directory="~/.config/awesome/"
+[display.manager.greetd]
+enabled=false
+depends_on=["display-server"]
 packages=[
-    "awesome-git"
+    "greetd-dms-greeter-git"
 ]
 
-[gtk]
+[display.gtk]
 packages=[
     "gtk2", # pinenty
+    "adw-gtk-theme",
+    "python-pywal",
+    "python-pywalfox-librewolf", # sync walfox theme
     "bibata-cursor-theme-bin",
     "papirus-icon-theme",
-    "ttf-sarasa-gothic-sc", # default font for gtk
-    "orchis-theme-dracula-git",
-    "gtk-engine-murrine" # gtk2 support with orchis-theme-git
+    "ttf-sarasa_ui-sc", # default font for gtk
 ]
 
-[qt5ct]
+[display.qt]
 enabled="not is_wsl"
 packages=[
     "kvantum",
@@ -129,73 +140,74 @@ packages=[
     "kvantum-theme-orchis-git",
     "papirus-icon-theme",
     "qt5-styleplugins",
+    "qt5-wayland",
     "qt5ct",
     "qt6ct", # for some qt6 applications
 ]
 
-[sound]
+[desktop.sound]
 enabled="not is_wsl"
 packages=[
     "pipewire",
     "pipewire-alsa",
     "pipewire-jack",
     "pipewire-pulse",
-    "playerctl",
     "wireplumber"
 ]
 
-[bluetooth]
+[desktop.bluetooth]
 enabled="not is_wsl"
 packages=["blueman", "bluez", "bluez-utils"]
 
-[fontconfig]
+[display.fontconfig]
 packages=[
     "ttf-sarasa-gothic-sc",
+    "adobe-source-code-pro-fonts",
     "noto-fonts-emoji" # emoji support
 ]
 
-[input_method]
+[desktop.inputmethod]
 enabled="not is_wsl"
 groups=["fcitx5-im"]
 packages=[
     "fcitx5-nord",
     "fcitx5-rime",
-    "rime-cloverpinyin"
+    "rime-cloverpinyin",
+    "rime-pinyin-zhwiki"
 ]
 
-[doom]
+[applications.doom]
 directory="~/.config/doom/"
-packages=[
-    "emacs",
-    "fd",
-    "ripgrep"
-]
+packages=["emacs-pgtk-igc-git", "fd", "ripgrep"]
 
-[fish]
+[development.shell]
+directory="~/.config/fish/"
 packages=[
-    "bc",
     "fish",
+    "wget",
+    "bc",
+    "tmux",
     "xcape",         # CapsLK as Esc in wsl
     "starship",      # shell prompt pretty
+    "python-pipenv",
+    "python-pipx",
+    "direnv",
+    "zoxide",
     "xorg-xdpyinfo", # set =GDK_SCALE= depends on resolution
-    # "xorg-xprop",    # required by =gnome-keyring=
     "fish-done"      # notify background shell work done
 ]
 
-[other-applications]
+[applications.base]
 enabled="not is_wsl"
 packages=[
     "alacritty",
-    "dracula-alacritty-git",
+    "flameshot",
     "librewolf-bin",
-    "zen-browser-bin",
-    "python-pywalfox-librewolf", # sync walfox theme
-    # "neovim",                    # always use emacs!
     "peek",                      # screen recorder
     "nextcloud-client"
 ]
 
-[usb]
+[hardware.usb]
 enabled="not is_wsl"
 packages=[
     "udiskie",             # automount usb drive
@@ -203,18 +215,20 @@ packages=[
     "ventoy-bin",          # usb bootable media
 ]
 
-[base-dev]
+[development.base]
 packages=[
     "base-devel", # =gcc, which, make, sudo=
+    "gcc",
+    "gcc-fortran",
     "gdb",
-    "python-tomli", # required by this script
     "python",
+    "python-tomli", # required by this script
     "git",
     "openssh",
     "paru"
 ]
 
-[shell-utilities]
+[tools.cli]
 packages=[
     "bat",            # better =cat=
     "btop",           # system monitor
@@ -222,58 +236,47 @@ packages=[
     "zoxide",         # better =cd=
     "fzf",            # extend `zoxide' with selection
     "gdu-bin",        # =du= on all directories
-    # "inxi",           # system information tool
     "man-db",         # man page
-    "fastfetch",
+    "fastfetch",      # btw, ..
     "openbsd-netcat", # ssh using http tunnel using =nc=
     "7zip",
     "proxychains-ng", # force proxy
-    # "ranger",         # command line file browser
     "tmsu-bin",       # tag manager system
-    # "tokei",          # count lines of code
     "trash-cli",
     "unrar",
     "unzip",
     "yadm"            # reason you are here
 ]
 
-[pacman]
+[tools.pacman]
 packages=[
     "expac",                  # query installed packages
+    "pacfinder",
     "pacman-contrib",         # =checkupdates, paccache=
-    # "paccache-hook",          # clean pacman cache
-    # "rebuild-detector",       # detect packages need to rebuild
-    # "pacman-log-orphans-hook" # notify orphans packages
+    "rebuild-detector",       # detect packages need to rebuild
 ]
 
-[paru-private]
+[tools.private]
 directory="~/.config/paru"
+packages=["syncthing"]
 
-[proxy]
+[tools.remote]
 enabled="not is_wsl"
 packages=[
-    "xray-bin", "qv2ray"
+    "deskflow", # share keyboard
+    "reframe",
+    "remmina"
 ]
 
-[remote]
-enabled="not is_wsl"
-packages=[
-    # "deskflow", # share keyboard
-    "realvnc-vnc-viewer",
-    "scrcpy",
-    "tigervnc-server",
-    "x11vnc"
-]
-
-[amuse]
+[desktop.amuse]
 enabled="is_personal and not is_wsl"
 packages=[
     "mpv",
     "qimgv", # image viewer
-    "steam-native-runtime",
+    "steam",
 ]
 
-[communicate]
+[applications.communicate]
 enabled="is_personal and not is_wsl"
 packages=[
     "wechat-universal-bwrap",
@@ -281,12 +284,15 @@ packages=[
     "telegram-desktop"
 ]
 
-[more-dev]
+[development.more]
 enabled="not is_wsl"
 packages=[
     "blender",
+    "rsync",
+    "git-filter-repo",
+    "git-lfs",
     "docker",
-    # "docker-compose",
+    "docker-compose",
     # "genymotion", # android simulator
     "obs-studio",
     "ollama-cuda", # LLMs
@@ -294,24 +300,24 @@ packages=[
     "jdk-openjdk"
 ]
 
-[devices]
+[hardware.devices]
 enabled="is_personal and not is_wsl"
 packages=[
     "openrgb-bin",
     "i2c-tools", # for =openrgb=
-    # "vial-appimage"
+    "via-appimage"
 ]
 
-[research]
+[research.base]
 enabled="not is_wsl and not is_laptop"
 packages=[
     "jupyter-notebook",
     "mathematica",
-    # "miktex",
+    "miktex",
     "zotero-bin"
 ]
 
-[windows]
+[system.windows]
 enabled="is_personal and not is_wsl"
 packages=[
     "ntfs-3g",   # mount ntfs partition
@@ -319,7 +325,7 @@ packages=[
     "chntpw"     # dual boot bluetooth repair
 ]
 
-[virtual]
+[development.virtual]
 enabled=false
 # enabled="is_personal and not is_laptop and not is_wsl"
 packages=[
@@ -333,17 +339,18 @@ packages=[
     "virtio-win"
 ]
 
-[monitor]
+[system.monitor]
 enabled=false
 packages=[
     "cpupower-gui",
+    "dmidecode",
     "hdparm",
     "smartmontools",
     "turbostat",
     "hwinfo"
 ]
 
-[benchmark]
+[tools.benchmark]
 enabled=false
 packages=[
     "blender-benchmark",
@@ -355,7 +362,7 @@ packages=[
     "s-tui"
 ]
 
-[font-manager]
+[display.fontmanager]
 enabled=false
 # those are all my favorite fonts
 packages=[
@@ -389,3 +396,6 @@ packages=[
     "ttf-lxgw-neo-xihei",
     "wqy-microhei"
 ]
+
+[hardware.printer]
+packages = ["cups", "hplip"]
