@@ -104,7 +104,7 @@ packages = [
 
 [desktop.xorg]
 # only enable when there is display manager
-enabled="not is_wsl"
+enabled=false
 packages=[
     "xorg-server",
     "xorg-xdpyinfo",   # for =betterlockscreen=
@@ -133,14 +133,12 @@ packages=[
 ]
 
 [desktop.display-manager.greetd]
-enabled=false
 packages=[
     "greetd-dms-greeter-git"
 ]
 
 [desktop.theme.gtk]
 packages=[
-    "gtk2", # pinenty
     "adw-gtk-theme",
     "python-pywal",
     "python-pywalfox-librewolf", # sync walfox theme
@@ -153,7 +151,6 @@ packages=[
     "kvantum",
     "kvantum-qt5", # qt5 style theme
     "kvantum-theme-orchis-git",
-    "qt5-styleplugins",
     "qt5-wayland",
     "qt5ct",
     "qt6ct", # for some qt6 applications
@@ -169,7 +166,6 @@ packages=[
 [desktop.fonts]
 packages=[
     "ttf-sarasa_ui-sc",         # default UI font
-    "ttf-sarasa-gothic-sc",
     "adobe-source-code-pro-fonts",
     "noto-fonts-emoji" # emoji support
 ]
@@ -234,7 +230,7 @@ packages=[
 
 [hardware.amd]
 # for cpu with integrated graphics
-enabled="not is_wsl"
+enabled=false
 packages=[
     "amd-ucode",
     # "amdgpu_top-bin",
@@ -281,11 +277,11 @@ packages=[
 ]
 
 [dev.shell]
-directory="~/.config/fish/"
 packages=[
     "fish",
     "wget",
     "bc",
+    "jq",
     "tmux",
     "xcape",         # CapsLK as Esc in wsl
     "starship",      # shell prompt pretty
@@ -293,7 +289,8 @@ packages=[
     "python-pipx",
     "direnv",
     "zoxide",
-    "fish-done"      # notify background shell work done
+    "fish-done",     # notify background shell work done
+    "xorg-xdpyinfo"
 ]
 
 [dev.editors]
@@ -310,15 +307,15 @@ packages=[
 [dev.extra]
 enabled="not is_wsl"
 packages=[
-    "blender",
+    # "blender",
     "rsync",
     "git-filter-repo",
     "git-lfs",
     "docker",
     "docker-compose",
     # "genymotion", # android simulator
-    "obs-studio",
-    "ollama-cuda", # LLMs
+    # "obs-studio",
+    # "ollama-cuda", # LLMs
     "gimp",
     "jdk-openjdk"
 ]
@@ -349,6 +346,9 @@ packages=[
     "zotero-bin"
 ]
 
+########################################
+# Applications: end-user apps you run directly rather than infrastructure.
+########################################
 [apps.browser]
 enabled="not is_wsl"
 packages=["librewolf-bin"]
@@ -385,9 +385,10 @@ packages=[
     "man-db",         # man page
     "fastfetch",      # btw, ..
     "openbsd-netcat", # ssh using http tunnel using =nc=
+    "zip",
     "7zip",
     "proxychains-ng", # force proxy
-    "tmsu-bin",       # tag manager system
+    # "tmsu-bin",       # tag manager system
     "trash-cli",
     "unrar",
     "unzip",
@@ -421,3 +422,9 @@ packages=[
     "nvme-cli",
     "s-tui"
 ]
+
+########################################
+# Local: machine-private package extensions outside yadm tracking.
+########################################
+[local.private]
+directory="~/.config/paru/"
