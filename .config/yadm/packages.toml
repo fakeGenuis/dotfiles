@@ -291,7 +291,6 @@ packages=["cups", "hplip"]
 packages=[
     "base-devel", # =gcc, which, make, sudo=
     "gcc",
-    "gcc-fortran",
     "gdb",
     "python",
     "python-tomli", # required by this script
@@ -343,7 +342,6 @@ packages=[
 
 [dev.virtualization]
 enabled=false
-# enabled="is_personal and not is_laptop and not is_wsl"
 packages=[
     "dnsmasq",
     "edk2-ovmf",
