@@ -38,26 +38,63 @@ packages=[
     "clash-verge-rev-bin",
 ]
 
-[display.wayland]
+[system.portal]
+packages=[
+    "gnome-keyring",
+    "xdg-user-dirs",  # no abused dir at home
+    "accountsservice" # user avatar
+]
+
+[system.sound]
+enabled="not is_wsl"
+packages=[
+    "pipewire",
+    "pipewire-alsa",
+    "pipewire-jack",
+    "pipewire-pulse",
+    "wireplumber"
+]
+
+[system.bluetooth]
+enabled="not is_wsl"
+packages=["blueman", "bluez", "bluez-utils"]
+
+[system.inputmethod]
+enabled="not is_wsl"
+groups=["fcitx5-im"]
+packages=[
+    "fcitx5-nord",
+    "fcitx5-rime",
+    "rime-cloverpinyin",
+    "rime-pinyin-zhwiki"
+]
+
+[system.windows]
+enabled="is_personal and not is_wsl"
+packages=[
+    "ntfs-3g",   # mount ntfs partition
+    "os-prober", # other os entries in grub
+    "chntpw"     # dual boot bluetooth repair
+]
+
+[system.monitor]
+enabled=false
+packages=[
+    "cpupower-gui",
+    "dmidecode",
+    "hdparm",
+    "smartmontools",
+    "turbostat",
+    "hwinfo"
+]
+
+[desktop.wayland]
 packages = [
 "cliphist",
 "dms-shell-bin",
 "grim",
 "keyd",
-"matugen", "nwg-look",
 "xwayland-satellite"
-]
-
-[development.llm]
-packages=[
-"claude-code", "gemini-cli", "openai-codex"
-]
-
-[desktop.user]
-packages=[
-    "gnome-keyring",
-    "xdg-user-dirs",  # no abused dir at home
-    "accountsservice" # user avatar
 ]
 
 [hardware.nvidia]
@@ -84,7 +121,7 @@ packages=[
     "xf86-video-amdgpu" # xorg
 ]
 
-[display.xorg]
+[desktop.xorg]
 # only enable when there is display manager
 enabled="not is_wsl"
 packages=[
@@ -95,9 +132,9 @@ packages=[
     "mons"
 ]
 
-[display.manager.sddm]
+[desktop.display-manager.sddm]
 enabled=false
-depends_on=["display-server"]
+depends_on=["desktop.xorg"]
 packages=[
     "sddm",
     "sddm-theme-corners-git",
@@ -105,82 +142,62 @@ packages=[
     # "sddm-sugar-candy-git"
 ]
 
-[display.manager.lightdm]
+[desktop.display-manager.lightdm]
 enabled=false
-depends_on=["display-server"]
+depends_on=["desktop.xorg"]
 packages=[
     "lightdm",
     "lightdm-webkit-theme-aether",
     "lightdm-webkit-theme-litarvan"
 ]
 
-[display.manager.greetd]
+[desktop.display-manager.greetd]
 enabled=false
-depends_on=["display-server"]
 packages=[
     "greetd-dms-greeter-git"
 ]
 
-[display.gtk]
+[desktop.theme.gtk]
 packages=[
     "gtk2", # pinenty
     "adw-gtk-theme",
     "python-pywal",
     "python-pywalfox-librewolf", # sync walfox theme
     "bibata-cursor-theme-bin",
-    "papirus-icon-theme",
-    "ttf-sarasa_ui-sc", # default font for gtk
 ]
 
-[display.qt]
+[desktop.theme.qt]
 enabled="not is_wsl"
 packages=[
     "kvantum",
     "kvantum-qt5", # qt5 style theme
     "kvantum-theme-orchis-git",
-    "papirus-icon-theme",
     "qt5-styleplugins",
     "qt5-wayland",
     "qt5ct",
     "qt6ct", # for some qt6 applications
 ]
 
-[desktop.sound]
-enabled="not is_wsl"
+[desktop.theme.shared]
 packages=[
-    "pipewire",
-    "pipewire-alsa",
-    "pipewire-jack",
-    "pipewire-pulse",
-    "wireplumber"
+    "matugen",
+    "nwg-look",
+    "papirus-icon-theme",
 ]
 
-[desktop.bluetooth]
-enabled="not is_wsl"
-packages=["blueman", "bluez", "bluez-utils"]
-
-[display.fontconfig]
+[desktop.fonts]
 packages=[
+    "ttf-sarasa_ui-sc",         # default UI font
     "ttf-sarasa-gothic-sc",
     "adobe-source-code-pro-fonts",
     "noto-fonts-emoji" # emoji support
 ]
 
-[desktop.inputmethod]
-enabled="not is_wsl"
-groups=["fcitx5-im"]
-packages=[
-    "fcitx5-nord",
-    "fcitx5-rime",
-    "rime-cloverpinyin",
-    "rime-pinyin-zhwiki"
-]
-
-[applications.doom]
+[dev.editors]
 directory="~/.config/doom/"
 packages=["emacs-pgtk-igc-git", "fd", "ripgrep"]
 
-[development.shell]
+[dev.shell]
 directory="~/.config/fish/"
 packages=[
     "fish",
@@ -193,18 +210,18 @@ packages=[
     "python-pipx",
     "direnv",
     "zoxide",
-    "xorg-xdpyinfo", # set =GDK_SCALE= depends on resolution
     "fish-done"      # notify background shell work done
 ]
 
-[applications.base]
+[desktop.terminal]
+enabled="not is_wsl"
+packages=["alacritty"]
+
+[desktop.capture]
 enabled="not is_wsl"
 packages=[
-    "alacritty",
     "flameshot",
-    "librewolf-bin",
     "peek",                      # screen recorder
-    "nextcloud-client"
 ]
 
 [hardware.usb]
@@ -215,12 +232,10 @@ packages=[
     "ventoy-bin",          # usb bootable media
 ]
 
-[development.base]
+[dev.base]
 packages=[
     "base-devel", # =gcc, which, make, sudo=
     "gcc",
-    "gcc-fortran",
-    "gdb",
     "python",
     "python-tomli", # required by this script
     "git",
@@ -228,12 +243,45 @@ packages=[
     "paru"
 ]
 
+[dev.debug]
+packages=[
+    "gcc-fortran",
+    "gdb",
+]
+
+[dev.ai]
+packages=[
+"claude-code", "gemini-cli", "openai-codex"
+]
+
+[apps.browser]
+enabled="not is_wsl"
+packages=["librewolf-bin"]
+
+[apps.sync]
+packages=["syncthing", "nextcloud-client"]
+
+[apps.media]
+enabled="is_personal and not is_wsl"
+packages=[
+    "mpv",
+    "qimgv", # image viewer
+    "steam",
+]
+
+[apps.communication]
+enabled="is_personal and not is_wsl"
+packages=[
+    "wechat-universal-bwrap",
+    # "wemeet-bin",
+    "telegram-desktop"
+]
+
 [tools.cli]
 packages=[
     "bat",            # better =cat=
     "btop",           # system monitor
     "eza",            # better =ls=
-    "zoxide",         # better =cd=
     "fzf",            # extend `zoxide' with selection
     "gdu-bin",        # =du= on all directories
     "man-db",         # man page
@@ -248,17 +296,13 @@ packages=[
     "yadm"            # reason you are here
 ]
 
-[tools.pacman]
+[tools.packaging]
 packages=[
     "expac",                  # query installed packages
     "pacfinder",
     "pacman-contrib",         # =checkupdates, paccache=
     "rebuild-detector",       # detect packages need to rebuild
 ]
-
-[tools.private]
-directory="~/.config/paru"
-packages=["syncthing"]
 
 [tools.remote]
 enabled="not is_wsl"
@@ -268,23 +312,7 @@ packages=[
     "remmina"
 ]
 
-[desktop.amuse]
-enabled="is_personal and not is_wsl"
-packages=[
-    "mpv",
-    "qimgv", # image viewer
-    "steam",
-]
-
-[applications.communicate]
-enabled="is_personal and not is_wsl"
-packages=[
-    "wechat-universal-bwrap",
-    # "wemeet-bin",
-    "telegram-desktop"
-]
-
-[development.more]
+[dev.extra]
 enabled="not is_wsl"
 packages=[
     "blender",
@@ -300,7 +328,7 @@ packages=[
     "jdk-openjdk"
 ]
 
-[hardware.devices]
+[hardware.personal-devices]
 enabled="is_personal and not is_wsl"
 packages=[
     "openrgb-bin",
@@ -317,15 +345,7 @@ packages=[
     "zotero-bin"
 ]
 
-[system.windows]
-enabled="is_personal and not is_wsl"
-packages=[
-    "ntfs-3g",   # mount ntfs partition
-    "os-prober", # other os entries in grub
-    "chntpw"     # dual boot bluetooth repair
-]
-
-[development.virtual]
+[dev.virtualization]
 enabled=false
 # enabled="is_personal and not is_laptop and not is_wsl"
 packages=[
@@ -337,17 +357,6 @@ packages=[
     "swtpm",
     "virt-manager",
     "virtio-win"
-]
-
-[system.monitor]
-enabled=false
-packages=[
-    "cpupower-gui",
-    "dmidecode",
-    "hdparm",
-    "smartmontools",
-    "turbostat",
-    "hwinfo"
 ]
 
 [tools.benchmark]
@@ -362,7 +371,7 @@ packages=[
     "s-tui"
 ]
 
-[display.fontmanager]
+[desktop.fonts.extra]
 enabled=false
 # those are all my favorite fonts
 packages=[
@@ -372,7 +381,6 @@ packages=[
     "ttc-iosevka-aile",
     "ttf-fira-sans",
     "ttf-opensans",
-    "ttf-sarasa-gothic-sc",
     # serif
     "adobe-source-serif-fonts",
     "gentium-plus-font",
@@ -386,7 +394,6 @@ packages=[
     "ttf-comic-shanns-v2",
     # emoji
     "ttf-material-design-icons-git",
-    "noto-fonts-emoji",
     "quirvira",
     # chinese
     "ttf-arphic-ukai",
