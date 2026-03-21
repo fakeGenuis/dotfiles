@@ -9,7 +9,9 @@ is_wsl="which powershell.exe &>/dev/null"
 is_laptop="ls /sys/class/power_supply | grep BAT &>/dev/null"
 is_personal="[ \"$(yadm config local.class)\" = \"personal\" ]"
 
-# packages in the archwiki "Installation guide"
+########################################
+# System: machine baseline and core services that make the OS boot and function.
+########################################
 [system.base]
 enabled="not is_wsl"
 packages=[
@@ -88,37 +90,16 @@ packages=[
     "hwinfo"
 ]
 
+########################################
+# Desktop: graphical session, theming, fonts, terminal, and capture tools.
+########################################
 [desktop.wayland]
 packages = [
-"cliphist",
-"dms-shell-bin",
-"grim",
-"keyd",
-"xwayland-satellite"
-]
-
-[hardware.nvidia]
-enabled="not is_wsl"
-packages=[
-    # "nvidia-open-dkms",
-    "nvidia-580xx-dkms", # for old hardware
-    # "nvidia-utils",
-    # "nvidia-settings",
-    "libva-nvidia-driver", # hardware video acceleration
-    "nvtop"
-]
-
-[hardware.amd]
-# for cpu with integrated graphics
-enabled="not is_wsl"
-packages=[
-    "amd-ucode",
-    # "amdgpu_top-bin",
-    "mesa",             # 3D hardware video acceleration
-    "lib32-mesa",
-    # "libva-utils",      # vainfo
-    "mesa-utils",       # glxinfo
-    "xf86-video-amdgpu" # xorg
+    "cliphist",
+    "dms-shell-bin",
+    "grim",
+    "keyd",
+    "xwayland-satellite"
 ]
 
 [desktop.xorg]
@@ -193,9 +174,111 @@ packages=[
     "noto-fonts-emoji" # emoji support
 ]
 
-[dev.editors]
-directory="~/.config/doom/"
-packages=["emacs-pgtk-igc-git", "fd", "ripgrep"]
+[desktop.fonts.extra]
+enabled=false
+# those are all my favorite fonts
+packages=[
+    "font-manager",
+    # "fontforge", # build custom fonts
+    # sans
+    "ttc-iosevka-aile",
+    "ttf-fira-sans",
+    "ttf-opensans",
+    # serif
+    "adobe-source-serif-fonts",
+    "gentium-plus-font",
+    # code
+    "ttf-agave-nerd",
+    "ttf-bqn386-git",
+    "ttf-firacode-nerd",        # ligature
+    "ttf-maple",
+    "ttf-recursive",
+    # ui
+    "ttf-comic-shanns-v2",
+    # emoji
+    "ttf-material-design-icons-git",
+    "quirvira",
+    # chinese
+    "ttf-arphic-ukai",
+    "ttf-kose-git",
+    "ttf-lxgw-wenkai",
+    "ttf-yozai-font", # cute hand-write
+    "ttf-lxgw-neo-xihei",
+    "wqy-microhei"
+]
+
+[desktop.terminal]
+enabled="not is_wsl"
+packages=["alacritty"]
+
+[desktop.capture]
+enabled="not is_wsl"
+packages=[
+    "flameshot",
+    "peek", # screen recorder
+]
+
+########################################
+# Hardware: drivers and device-specific packages tied to physical hardware.
+########################################
+[hardware.nvidia]
+enabled="not is_wsl"
+packages=[
+    # "nvidia-open-dkms",
+    "nvidia-580xx-dkms", # for old hardware
+    # "nvidia-utils",
+    # "nvidia-settings",
+    "libva-nvidia-driver", # hardware video acceleration
+    "nvtop"
+]
+
+[hardware.amd]
+# for cpu with integrated graphics
+enabled="not is_wsl"
+packages=[
+    "amd-ucode",
+    # "amdgpu_top-bin",
+    "mesa",             # 3D hardware video acceleration
+    "lib32-mesa",
+    # "libva-utils",      # vainfo
+    "mesa-utils",       # glxinfo
+    "xf86-video-amdgpu" # xorg
+]
+
+[hardware.usb]
+enabled="not is_wsl"
+packages=[
+    "udiskie",             # automount usb drive
+    "usbutils",            # =lsusb=
+    "ventoy-bin",          # usb bootable media
+]
+
+[hardware.personal-devices]
+enabled="is_personal and not is_wsl"
+packages=[
+    "openrgb-bin",
+    "i2c-tools", # for =openrgb=
+    "via-appimage"
+]
+
+[hardware.printer]
+packages=["cups", "hplip"]
+
+########################################
+# Development: toolchains, shells, editors, AI helpers, and local build/runtime tooling.
+########################################
+[dev.base]
+packages=[
+    "base-devel", # =gcc, which, make, sudo=
+    "gcc",
+    "gcc-fortran",
+    "gdb",
+    "python",
+    "python-tomli", # required by this script
+    "git",
+    "openssh",
+    "paru"
+]
 
 [dev.shell]
 directory="~/.config/fish/"
@@ -213,45 +296,57 @@ packages=[
     "fish-done"      # notify background shell work done
 ]
 
-[desktop.terminal]
-enabled="not is_wsl"
-packages=["alacritty"]
-
-[desktop.capture]
-enabled="not is_wsl"
-packages=[
-    "flameshot",
-    "peek",                      # screen recorder
-]
-
-[hardware.usb]
-enabled="not is_wsl"
-packages=[
-    "udiskie",             # automount usb drive
-    "usbutils",            # =lsusb=
-    "ventoy-bin",          # usb bootable media
-]
-
-[dev.base]
-packages=[
-    "base-devel", # =gcc, which, make, sudo=
-    "gcc",
-    "python",
-    "python-tomli", # required by this script
-    "git",
-    "openssh",
-    "paru"
-]
-
-[dev.debug]
-packages=[
-    "gcc-fortran",
-    "gdb",
-]
+[dev.editors]
+directory="~/.config/doom/"
+packages=["emacs-pgtk-igc-git", "fd", "ripgrep"]
 
 [dev.ai]
 packages=[
-"claude-code", "gemini-cli", "openai-codex"
+    "claude-code",
+    "gemini-cli",
+    "openai-codex"
+]
+
+[dev.extra]
+enabled="not is_wsl"
+packages=[
+    "blender",
+    "rsync",
+    "git-filter-repo",
+    "git-lfs",
+    "docker",
+    "docker-compose",
+    # "genymotion", # android simulator
+    "obs-studio",
+    "ollama-cuda", # LLMs
+    "gimp",
+    "jdk-openjdk"
+]
+
+[dev.virtualization]
+enabled=false
+# enabled="is_personal and not is_laptop and not is_wsl"
+packages=[
+    "dnsmasq",
+    "edk2-ovmf",
+    "genymotion", # android x86
+    "libvirt",
+    "qemu-desktop",
+    "swtpm",
+    "virt-manager",
+    "virtio-win"
+]
+
+########################################
+# Research: domain-specific scientific and notebook environments.
+########################################
+[research.base]
+enabled="not is_wsl and not is_laptop"
+packages=[
+    "jupyter-notebook",
+    "mathematica",
+    "miktex",
+    "zotero-bin"
 ]
 
 [apps.browser]
@@ -261,7 +356,7 @@ packages=["librewolf-bin"]
 [apps.sync]
 packages=["syncthing", "nextcloud-client"]
 
-[apps.media]
+[apps.amuse]
 enabled="is_personal and not is_wsl"
 packages=[
     "mpv",
@@ -277,6 +372,9 @@ packages=[
     "telegram-desktop"
 ]
 
+########################################
+# Tools: general-purpose utilities for package management, remote access, and diagnostics.
+########################################
 [tools.cli]
 packages=[
     "bat",            # better =cat=
@@ -312,53 +410,6 @@ packages=[
     "remmina"
 ]
 
-[dev.extra]
-enabled="not is_wsl"
-packages=[
-    "blender",
-    "rsync",
-    "git-filter-repo",
-    "git-lfs",
-    "docker",
-    "docker-compose",
-    # "genymotion", # android simulator
-    "obs-studio",
-    "ollama-cuda", # LLMs
-    "gimp",
-    "jdk-openjdk"
-]
-
-[hardware.personal-devices]
-enabled="is_personal and not is_wsl"
-packages=[
-    "openrgb-bin",
-    "i2c-tools", # for =openrgb=
-    "via-appimage"
-]
-
-[research.base]
-enabled="not is_wsl and not is_laptop"
-packages=[
-    "jupyter-notebook",
-    "mathematica",
-    "miktex",
-    "zotero-bin"
-]
-
-[dev.virtualization]
-enabled=false
-# enabled="is_personal and not is_laptop and not is_wsl"
-packages=[
-    "dnsmasq",
-    "edk2-ovmf",
-    "genymotion", # android x86
-    "libvirt",
-    "qemu-desktop",
-    "swtpm",
-    "virt-manager",
-    "virtio-win"
-]
-
 [tools.benchmark]
 enabled=false
 packages=[
@@ -370,39 +421,3 @@ packages=[
     "nvme-cli",
     "s-tui"
 ]
-
-[desktop.fonts.extra]
-enabled=false
-# those are all my favorite fonts
-packages=[
-    "font-manager",
-    # "fontforge", # build custom fonts
-    # sans
-    "ttc-iosevka-aile",
-    "ttf-fira-sans",
-    "ttf-opensans",
-    # serif
-    "adobe-source-serif-fonts",
-    "gentium-plus-font",
-    # code
-    "ttf-agave-nerd",
-    "ttf-bqn386-git",
-    "ttf-firacode-nerd",        # ligature
-    "ttf-maple",
-    "ttf-recursive",
-    # ui
-    "ttf-comic-shanns-v2",
-    # emoji
-    "ttf-material-design-icons-git",
-    "quirvira",
-    # chinese
-    "ttf-arphic-ukai",
-    "ttf-kose-git",
-    "ttf-lxgw-wenkai",
-    "ttf-yozai-font", # cute hand-write
-    "ttf-lxgw-neo-xihei",
-    "wqy-microhei"
-]
-
-[hardware.printer]
-packages = ["cups", "hplip"]
