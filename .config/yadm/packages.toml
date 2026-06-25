@@ -122,6 +122,15 @@ packages = [
     "niri",
     "grim",
     "keyd",
+]
+
+[desktop.niri]
+packages = [
+    "niri",
+    "xdg-desktop-portal-gtk",
+    # "xdg-desktop-portal-gnome", # for screencast
+    "gnome-keyring",
+    "lxqt-policykit",
     "xwayland-satellite"
 ]
 
