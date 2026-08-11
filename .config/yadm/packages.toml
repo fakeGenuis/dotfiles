@@ -61,7 +61,7 @@ packages=[
 [system.network]
 packages=[
     "networkmanager",
-    "iptables-nft",
+    "iptables",
     "sshguard",
     "clash-verge-rev-bin",
 ]
@@ -88,7 +88,7 @@ packages=["blueman", "bluez", "bluez-utils"]
 [system.inputmethod]
 groups=["fcitx5-im"]
 packages=[
-    "fcitx5-nord",
+    "fcitx5-breeze",
     "fcitx5-rime",
     "rime-cloverpinyin",
     "rime-pinyin-zhwiki"
@@ -118,7 +118,7 @@ packages=[
 [desktop.wayland]
 packages = [
     "cliphist",
-    "dms-shell-bin",
+    "dms-shell",
     "niri",
     "grim",
     "keyd",
@@ -127,6 +127,7 @@ packages = [
 [desktop.niri]
 packages = [
     "niri",
+    "dms-shell-niri",
     "xdg-desktop-portal-gtk",
     # "xdg-desktop-portal-gnome", # for screencast
     "gnome-keyring",
@@ -327,13 +328,16 @@ packages=[
 
 [dev.editors]
 directory="~/.config/doom/"
-packages=["emacs-pgtk-igc-git", "fd", "ripgrep"]
+packages=["emacs-wayland", "fd", "ripgrep"]
 
 [dev.ai]
 packages=[
+    "cc-switch-bin",
     "claude-code",
     "gemini-cli",
-    "openai-codex"
+    "openai-codex",
+    "opencode-bin",
+    "deepseek-reasonix-tui-bin"
 ]
 
 [dev.vcs]
@@ -380,7 +384,9 @@ packages=[
 packages=["librewolf-bin"]
 
 [apps.sync]
-packages=["syncthing", "nextcloud-client"]
+packages=["syncthing",
+  "nextcloud-client", "libcanberra" # dependence
+]
 
 [apps.amuse]
 packages=[
