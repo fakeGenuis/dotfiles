@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
 
-import tomli, os, subprocess, argparse
-from typing import List
+import argparse
+import os
+import subprocess
+from typing import Dict, List, Set
+
+import tomli
 from argparse import RawTextHelpFormatter
 
 
 # Get the directory of the current script
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+RESERVED_ROOTS = {"profiles"}
+MODULE_FIELDS = {"enabled", "packages", "groups", "depends_on", "directory"}
 
 
 def expand_sub_packages(directory: str) -> str:
@@ -18,100 +24,85 @@ def extract_group(name: str) -> List[str]:
     return output.splitlines()
 
 
-FLAGS = dict()
-
-
-def update_flags() -> None:
-    # global FLAGS
-    if FLAGS:
-        return
-
-    with open(f"{SCRIPT_DIR}/packages.toml", "rb") as f:
-        conf = tomli.load(f)
-
-    for flag in conf["flags"]:
-        try:
-            subprocess.run(conf["flags"][flag], check=True, shell=True)
-            FLAGS[flag] = True
-        except subprocess.CalledProcessError:
-            FLAGS[flag] = False
-
-
-def flag_eval(flag_string: str) -> bool:
-    # =tomli.load= replace "not" to "!", substitute back
-    flag_string = flag_string.replace("!", "not")
-
-    for flag in FLAGS:
-        flag_string = flag_string.replace(flag, f'FLAGS["{flag}"]')
-
-    return eval(flag_string)
-
-
-def get_flag(module: dict, default: bool) -> bool:
-    # global FLAGS
-    if module.get("enabled", None) is None:
-        return default
-
-    if isinstance(module["enabled"], bool):
-        return module["enabled"]
-
-    update_flags()
-
-    return flag_eval(module["enabled"])
-
-
 def needed_packages(packages: list) -> list:
-    # sperated by space, only last element is package name
-    return [
-        pkg
-        for pkg in packages
-        if " " not in pkg or flag_eval(" ".join(pkg.split(" ")[:-1]))
-    ]
+    return list(packages)
 
 
-def is_module(d: dict) -> bool:
-    """Check if dict is a module (not a group/category).
-    A module has packages, groups, depends_on, directory, or enabled fields."""
-    if not isinstance(d, dict):
-        return False
-    module_keys = {"packages", "groups", "depends_on", "directory", "enabled"}
-    return bool(d.keys() & module_keys)
+def flatten_modules(conf: dict, prefix: str = "") -> Dict[str, dict]:
+    modules = {}
+
+    for key, value in conf.items():
+        if not isinstance(value, dict):
+            continue
+
+        module_name = f"{prefix}.{key}" if prefix else key
+        if not prefix and key in RESERVED_ROOTS:
+            continue
+
+        if MODULE_FIELDS.intersection(value.keys()):
+            modules[module_name] = value
+
+        modules.update(flatten_modules(value, module_name))
+
+    return modules
 
 
-def flatten_conf(conf: dict) -> dict:
-    """Flatten nested module structure.
-    Input: {'display': {'gtk': {...}, 'sddm': {...}}, 'dev': {...}}
-    Output: {'display.gtk': {...}, 'display.sddm': {...}, 'dev': {...}}
-    Special keys like 'enable_default' and 'flags' are preserved at root level."""
-    result = {}
-
-    def _flatten(obj: dict, prefix: str = ""):
-        for key, value in obj.items():
-            if key in ("enable_default", "flags"):
-                if prefix == "":
-                    result[key] = value
-                continue
-
-            full_key = f"{prefix}.{key}" if prefix else key
-
-            if isinstance(value, dict):
-                if is_module(value):
-                    # It's a module, add it
-                    result[full_key] = value
-                else:
-                    # It's a group, recurse into it
-                    _flatten(value, full_key)
-
-    _flatten(conf)
-    return result
+def get_enabled(module: dict) -> bool:
+    return module.get("enabled", True) is not False
 
 
-def module_install(conf: dict, module: str, default, lvl=0) -> List[str]:
+def expand_selector(
+    selector: str,
+    modules: Dict[str, dict],
+    roots: Set[str],
+    allow_all: bool = False,
+) -> Set[str]:
+    if selector == "all":
+        if not allow_all:
+            raise ValueError('"all" is only valid in profile depends_on')
+        expanded = set()
+        for root in roots:
+            expanded.update(expand_selector(root, modules, roots))
+        return expanded
+
+    expanded = {name for name in modules if name == selector or name.startswith(f"{selector}.")}
+    if not expanded:
+        raise ValueError(f"Unknown module selector: {selector}")
+
+    return expanded
+
+
+def collect_module_deps(
+    modules: Dict[str, dict], roots: Set[str], selected: Set[str]
+) -> Set[str]:
+    resolved = set()
+    visiting = set()
+
+    def visit(module_name: str) -> None:
+        if module_name in resolved:
+            return
+        if module_name in visiting:
+            raise ValueError(f"Cyclic module dependency detected at {module_name}")
+
+        visiting.add(module_name)
+        module = modules[module_name]
+        if get_enabled(module):
+            resolved.add(module_name)
+            for dep in module.get("depends_on", []):
+                for dep_name in expand_selector(dep, modules, roots):
+                    visit(dep_name)
+        visiting.remove(module_name)
+
+    for module_name in selected:
+        visit(module_name)
+
+    return resolved
+
+
+def module_install(modules: Dict[str, dict], module: str) -> List[str]:
     installs = []
-    module_dict = conf[module]
-    if type(module_dict) is not dict or (
-        lvl == 0 and (not get_flag(module_dict, default))
-    ):
+    module_dict = modules[module]
+    if not get_enabled(module_dict):
         return installs
 
     installs = needed_packages(module_dict.get("packages", []))
@@ -119,11 +110,6 @@ def module_install(conf: dict, module: str, default, lvl=0) -> List[str]:
     if "groups" in module_dict:
         for name in module_dict["groups"]:
             installs += extract_group(name)
-
-    if "depends_on" in module_dict:
-        for other_module in module_dict["depends_on"]:
-            # "depends on" has highest priority
-            installs += module_install(conf, other_module, default, lvl=lvl + 1)
 
     if ("directory" in module_dict) and os.path.isfile(
         sub_file_name := expand_sub_packages(module_dict["directory"])
@@ -133,31 +119,54 @@ def module_install(conf: dict, module: str, default, lvl=0) -> List[str]:
     return installs
 
 
-def install(file_name: str) -> list:
+def select_profile_modules(
+    conf: dict, modules: Dict[str, dict], profile_name: str | None = None
+) -> List[str]:
+    if "profiles" not in conf:
+        return sorted(name for name, module in modules.items() if get_enabled(module))
+
+    profile_name = profile_name or conf["active_profile"]
+    profiles = conf["profiles"]
+    if profile_name not in profiles:
+        raise ValueError(f"Unknown active_profile: {profile_name}")
+
+    roots = {key for key, value in conf.items() if isinstance(value, dict) and key not in RESERVED_ROOTS}
+    profile = profiles[profile_name]
+    selected = set()
+
+    for selector in profile.get("depends_on", []):
+        selected.update(expand_selector(selector, modules, roots, allow_all=True))
+
+    selected = collect_module_deps(modules, roots, selected)
+
+    for selector in profile.get("exclude", []):
+        selected -= expand_selector(selector, modules, roots)
+
+    return sorted(name for name in selected if get_enabled(modules[name]))
+
+
+def install(file_name: str, profile_name: str | None = None) -> list:
     """Get all packages needed to be installed."""
     with open(file_name, "rb") as f:
         conf = tomli.load(f)
-    default = conf.get("enable_default", True)
-
-    # Flatten nested structure
-    flat_conf = flatten_conf(conf)
+    modules = flatten_modules(conf)
+    selected_modules = select_profile_modules(conf, modules, profile_name=profile_name)
 
     installs = []
-    for module in flat_conf:
-        if module not in ("enable_default", "flags"):
-            installs += module_install(flat_conf, module, default)
+    for module in selected_modules:
+        installs += module_install(modules, module)
 
     return sorted(set(installs))
 
 
-def remove(reverse=False) -> list:
+def remove(reverse=False, profile_name: str | None = None) -> list:
     """Get packages already installed but not owned by any module"""
 
     installed = subprocess.check_output(
         "pacman -Qeq", shell=True, text=True
     ).splitlines()
 
-    defined = install("packages.toml")
+    defined = install("packages.toml", profile_name=profile_name)
 
     if reverse:
         installed, defined = defined, installed
@@ -165,18 +174,26 @@ def remove(reverse=False) -> list:
     return [package for package in installed if package not in defined]
 
 
-parser = argparse.ArgumentParser(
-    description="Helper for declarative packages by pacman\nBy default list packages declared not installed.",
-    formatter_class=RawTextHelpFormatter,
-)
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Helper for declarative packages by pacman\nBy default list packages declared not installed.",
+        formatter_class=RawTextHelpFormatter,
+    )
 
-parser.add_argument(
-    "--remove", action="store_true", help="list packages installed not declared"
-)
+    parser.add_argument(
+        "--remove", action="store_true", help="list packages installed not declared"
+    )
+    parser.add_argument(
+        "--profile", help="override active_profile from packages.toml"
+    )
 
-args = parser.parse_args()
+    args = parser.parse_args()
 
-if args.remove:
-    print("\n".join(remove()))
-else:
-    print("\n".join(remove(reverse=True)))
+    if args.remove:
+        print("\n".join(remove(profile_name=args.profile)))
+    else:
+        print("\n".join(remove(reverse=True, profile_name=args.profile)))
+
+
+if __name__ == "__main__":
+    main()
