@@ -29,8 +29,6 @@ if test "$INSIDE_EMACS" = vterm -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
     # reset PAGER, (=cat in emacs 31)
     # https://github.com/akermu/emacs-libvterm/issues/745
     set -e PAGER
-    # restore default fish_title
-    source "/usr/share/fish/functions/fish_title.fish"
     function e --wraps=emacsclient --description 'alias e=emacsclient'
         emacsclient $argv
     end
