@@ -16,7 +16,8 @@ end
 
 if status is-interactive && [ -t 0 ]
     # colored password prompt
-    # not work in ~status is-login~, error "tput: No value for $TERM and no -T specified"
-    set -gx SUDO_PROMPT "$(tput setaf 1 bold)""[sudo]$(tput sgr0)" \
-        "$(tput setaf 6)password for$(tput sgr0) $(tput setaf 5)%p$(tput sgr0): "
+    set -gx SUDO_PROMPT (string join '' \
+        (set_color --bold red) '[sudo]' (set_color normal) ' ' \
+        (set_color cyan) 'password for' (set_color normal) ' ' \
+        (set_color magenta) '%p' (set_color normal) ': ')
 end
