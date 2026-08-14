@@ -8,12 +8,13 @@ if test "$TERM" = dumb
     return
 end
 
-function fish_greeting
-end
+set -g fish_greeting
 
 # GPG ssh agent
 set -gx GPG_TTY (tty)
-set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+if not set -q SSH_AUTH_SOCK
+    set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+end
 gpg-connect-agent updatestartuptty /bye >/dev/null
 
 if status is-interactive
@@ -30,7 +31,4 @@ if test "$INSIDE_EMACS" = vterm -a -f "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
     # reset PAGER, (=cat in emacs 31)
     # https://github.com/akermu/emacs-libvterm/issues/745
     set -e PAGER
-    function e --wraps=emacsclient --description 'alias e=emacsclient'
-        emacsclient $argv
-    end
 end

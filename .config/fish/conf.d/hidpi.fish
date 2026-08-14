@@ -1,4 +1,3 @@
-#!/usr/bin/env fish
 # https://wiki.archlinux.org/title/HiDPI
 
 if status is-login; and test "$XDG_SESSION_TYPE" = x11; and test -n "$DISPLAY"

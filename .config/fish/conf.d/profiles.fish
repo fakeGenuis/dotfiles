@@ -1,4 +1,3 @@
-#!/usr/bin/env fish
 # This file acts like ~/.profile and ~/.pam_enviroments in bash
 
 if status is-login
