@@ -119,12 +119,11 @@ packages=[
 packages = [
     "cliphist",
     "dms-shell",
-    "niri",
     "grim",
-    "keyd",
 ]
 
 [desktop.niri]
+enabled = false
 packages = [
     "niri",
     "dms-shell-niri",
@@ -133,6 +132,14 @@ packages = [
     "gnome-keyring",
     "lxqt-policykit",
     "xwayland-satellite"
+]
+
+[desktop.hyprland]
+directory="~/.config/hypr/"
+packages = [
+    "dms-shell-hyprland",
+    "adw-gtk-theme", # dms GTK colors
+    "qt6ct-kde" # dms QT colors; conflicts with qt6ct (see desktop.theme.qt)
 ]
 
 [desktop.xorg]
@@ -179,7 +186,6 @@ packages=[
 
 [desktop.theme.gtk]
 packages=[
-    "adw-gtk-theme",
     "python-pywal",
     "python-pywalfox-librewolf", # sync walfox theme
     "bibata-cursor-theme-bin",
@@ -192,7 +198,7 @@ packages=[
     "kvantum-theme-orchis-git",
     "qt5-wayland",
     "qt5ct",
-    "qt6ct", # for some qt6 applications
+    # "qt6ct", # for some qt6 applications; conflicts with qt6ct-kde (see desktop.hyprland)
 ]
 
 [desktop.theme.shared]
