@@ -208,9 +208,8 @@ packages=[
 
 [desktop.fonts]
 packages=[
-    "ttf-sarasa_ui-sc",         # default UI font
-    "adobe-source-code-pro-fonts",
-    "noto-fonts-emoji" # emoji support
+    "ttf-sarasa_ui-sc", # default UI font
+    "noto-fonts-emoji"  # emoji support
 ]
 
 [desktop.fonts.extra]
