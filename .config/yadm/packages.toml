@@ -20,6 +20,7 @@ exclude=[
     "system.windows",
     "hardware.personal-devices",
     "apps.amuse",
+    "apps.gaming",
     "apps.communication",
 ]
 
@@ -88,7 +89,7 @@ packages=["blueman", "bluez", "bluez-utils"]
 [system.inputmethod]
 groups=["fcitx5-im"]
 packages=[
-    "fcitx5-breeze",
+    "fcitx5-nord",
     "fcitx5-rime",
     "rime-cloverpinyin",
     "rime-pinyin-zhwiki"
@@ -118,7 +119,6 @@ packages=[
 ########################################
 [desktop.wayland]
 packages = [
-    "cliphist",
     "dms-shell",
     "grim",
 ]
@@ -195,9 +195,6 @@ packages=[
 
 [desktop.theme.qt]
 packages=[
-    "kvantum",
-    "kvantum-qt5", # qt5 style theme
-    "kvantum-theme-orchis-git",
     "qt5-wayland",
     "qt5ct",
     # "qt6ct", # for some qt6 applications; conflicts with qt6ct-kde (see desktop.hyprland)
@@ -278,19 +275,19 @@ packages=[
 # for cpu with integrated graphics
 enabled=false
 packages=[
-    # "amdgpu_top-bin",
+    "amdgpu_top-bin",
     "mesa",             # 3D hardware video acceleration
     "lib32-mesa",
-    # "libva-utils",      # vainfo
+    "libva-utils",      # vainfo
     "mesa-utils",       # glxinfo
     "xf86-video-amdgpu" # xorg
 ]
 
 [hardware.usb]
 packages=[
-    "udiskie",             # automount usb drive
-    "usbutils",            # =lsusb=
-    "ventoy-bin",          # usb bootable media
+    "udiskie",    # automount usb drive
+    "usbutils",   # =lsusb=
+    "ventoy-bin", # usb bootable media
 ]
 
 [hardware.personal-devices]
