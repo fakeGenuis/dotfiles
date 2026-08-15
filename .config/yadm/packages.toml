@@ -46,6 +46,7 @@ packages=[
     "linux",
     "linux-headers",
     "linux-firmware-nvidia",
+    "linux-firmware-mediatek",
     "linux-firmware-realtek",
     "linux-firmware-other"
 ]
@@ -54,7 +55,6 @@ packages=[
 packages=[
     "grub",               # bootloader
     "grub-customizer",
-    "grub-theme-stylish-color-2k-git",
     "efibootmgr"         # =grub= write boot entries to NVRAM
 ]
 
@@ -96,9 +96,10 @@ packages=[
 
 [system.windows]
 packages=[
-    "ntfs-3g",   # mount ntfs partition
-    "os-prober", # other os entries in grub
-    "chntpw"     # dual boot bluetooth repair
+    "ntfs-3g",     # mount ntfs partition
+    "os-prober",   # other os entries in grub
+    "chntpw",      # dual boot bluetooth repair
+    "bt-synckeys", # bluetooth key sync
 ]
 
 [system.monitor]
@@ -137,6 +138,7 @@ packages = [
 [desktop.hyprland]
 directory="~/.config/hypr/"
 packages = [
+    "hyprland",
     "dms-shell-hyprland",
     "adw-gtk-theme", # dms GTK colors
     "qt6ct-kde" # dms QT colors; conflicts with qt6ct (see desktop.theme.qt)
@@ -155,7 +157,7 @@ packages=[
 [desktop.awesome]
 enabled=false
 directory="~/.config/awesome/"
-depends_on=["display.xorg"]
+depends_on=["desktop.xorg"]
 packages=[
     "awesome-git"
 ]
@@ -204,7 +206,6 @@ packages=[
 [desktop.theme.shared]
 packages=[
     "matugen",
-    "nwg-look",
     "papirus-icon-theme",
 ]
 
@@ -262,19 +263,21 @@ packages=[
 ########################################
 [hardware.nvidia]
 packages=[
-    # "nvidia-open-dkms",
-    "nvidia-580xx-dkms", # for old hardware
-    # "nvidia-utils",
-    # "nvidia-settings",
+    "nvidia-open-dkms",
+    # "nvidia-580xx-dkms", # for old hardware
     "libva-nvidia-driver", # hardware video acceleration
     "nvtop"
 ]
 
 [hardware.amd]
+packages=[
+    "amd-ucode",
+]
+
+[hardware.amd.gpu]
 # for cpu with integrated graphics
 enabled=false
 packages=[
-    "amd-ucode",
     # "amdgpu_top-bin",
     "mesa",             # 3D hardware video acceleration
     "lib32-mesa",
@@ -305,9 +308,7 @@ packages=["cups", "hplip"]
 ########################################
 [dev.base]
 packages=[
-    "base-devel", # =gcc, which, make, sudo=
-    "gcc",
-    "gdb",
+    "base-devel", # =gcc, which, make, gdb, sudo=
     "python",
     "python-tomli", # required by this script
     "git",
@@ -340,10 +341,8 @@ packages=["emacs-wayland", "fd", "ripgrep"]
 packages=[
     "cc-switch-bin",
     "claude-code",
-    "gemini-cli",
     "openai-codex",
-    "opencode-bin",
-    "deepseek-reasonix-tui-bin"
+    "opencode-bin"
 ]
 
 [dev.vcs]
@@ -390,22 +389,28 @@ packages=[
 packages=["librewolf-bin"]
 
 [apps.sync]
-packages=["syncthing",
-  "nextcloud-client", "libcanberra" # dependence
-]
+packages=["syncthing", "nextcloud-client"]
 
 [apps.amuse]
 packages=[
     "mpv",
     "qimgv", # image viewer
+]
+
+[apps.gaming]
+packages=[
     "steam",
+    "mangohud",     # resource monitor in game
+    "goverlay",     # change appearance of mangohud
+    "uudeck-bwrap", # multiplayer game delay reducing
 ]
 
 [apps.communication]
 packages=[
     "wechat-universal-bwrap",
     # "wemeet-bin",
-    "telegram-desktop"
+    "telegram-desktop",
+    "linuxqq-nt-bwrap",
 ]
 
 ########################################
