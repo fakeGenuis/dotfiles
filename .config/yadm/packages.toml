@@ -29,6 +29,7 @@ depends_on=[
     "system.portal",
     "desktop.theme",
     "desktop.fonts",
+    "dev.base",
     "dev.shell",
     "dev.editors",
     "dev.ai",
@@ -117,10 +118,12 @@ packages=[
 ########################################
 # Desktop: graphical session, theming, fonts, terminal, and capture tools.
 ########################################
-[desktop.wayland]
+[desktop.dms]
 packages = [
     "dms-shell",
-    "grim",
+    "python-pywal",
+    "python-pywalfox-librewolf", # sync walfox theme
+    "matugen"
 ]
 
 [desktop.niri]
@@ -188,9 +191,9 @@ packages=[
 
 [desktop.theme.gtk]
 packages=[
-    "python-pywal",
-    "python-pywalfox-librewolf", # sync walfox theme
-    "bibata-cursor-theme-bin",
+    "orchis-theme-dracula-git",
+    "gtk-engine-murrine",
+    "gtk2"
 ]
 
 [desktop.theme.qt]
@@ -202,13 +205,13 @@ packages=[
 
 [desktop.theme.shared]
 packages=[
-    "matugen",
     "papirus-icon-theme",
+    "bibata-cursor-theme-bin",
 ]
 
 [desktop.fonts]
 packages=[
-    "ttf-sarasa_ui-sc", # default UI font
+    "ttf-sarasa-gothic-sc", # default UI font
     "noto-fonts-emoji"  # emoji support
 ]
 
@@ -251,6 +254,7 @@ packages=["alacritty"]
 [desktop.capture]
 packages=[
     "flameshot",
+    "grim",
     "peek", # screen recorder
 ]
 
