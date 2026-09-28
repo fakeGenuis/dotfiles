@@ -1,50 +1,26 @@
-title="declarative packages configuration"
-# nix is somewhat too complicate for me
+title = "Shared package declarations"
 
-# active_profile can be overridden by future CLI support.
-# profile names are expanded through depends_on/exclude with prefix matching.
-active_profile="personal"
+# Bits: personal | laboratory | laptop.
+# Missing on inherits; explicit on replaces the inherited mask.
+# Excluded parents still allow selected descendants.
+# Package suffixes override the mask: "base:111"; ":000" selects no device.
+# Groups inherit their node mask and remain symbolic until pacman expansion.
+# Dependencies use exact paths within the source file and never enable nodes.
+# Directory mounts inherit the node mask; relative paths use the source folder.
+# Missing manifests fail unless optional=true. Private files stay external.
+# Repeated package declarations are merged with all selected sources retained.
 
-########################################
-# Profiles: choose one machine preset, then expand its module selections.
-########################################
-[profiles.personal]
-depends_on=["all"]
-exclude=[
-    "hardware.printer",
-]
-
-[profiles.laboratory]
-depends_on=["all"]
-exclude=[
-    "system.windows",
-    "hardware.personal-devices",
-    "apps.amuse",
-    "apps.gaming",
-    "apps.communication",
-]
-
-[profiles.laptop]
-depends_on=[
-    "system.portal",
-    "desktop.theme",
-    "desktop.fonts",
-    "dev.base",
-    "dev.shell",
-    "dev.editors",
-    "dev.ai",
-    "tools.cli",
-    "tools.packaging",
-    "local",
-]
-exclude=[]
+on = 0b111
 
 ########################################
 # System: machine baseline and core services that make the OS boot and function.
 ########################################
+[system]
+on = 0b110
+
 [system.base]
 packages=[
-    "base",
+    "base:111", # Also needed in WSL
     "linux",
     "linux-headers",
     "linux-firmware-nvidia",
@@ -69,6 +45,7 @@ packages=[
 ]
 
 [system.portal]
+on = 0b111
 packages=[
     "gnome-keyring",
     "xdg-user-dirs",  # no abused dir at home
@@ -97,6 +74,7 @@ packages=[
 ]
 
 [system.windows]
+on = 0b100
 packages=[
     "ntfs-3g",     # mount ntfs partition
     "os-prober",   # other os entries in grub
@@ -105,7 +83,7 @@ packages=[
 ]
 
 [system.monitor]
-enabled=false
+on = 0b000
 packages=[
     "cpupower-gui",
     "dmidecode",
@@ -118,6 +96,9 @@ packages=[
 ########################################
 # Desktop: graphical session, theming, fonts, terminal, and capture tools.
 ########################################
+[desktop]
+on = 0b110
+
 [desktop.dms]
 packages = [
     "dms-shell",
@@ -127,7 +108,7 @@ packages = [
 ]
 
 [desktop.niri]
-enabled = false
+on = 0b000
 packages = [
     "niri",
     "dms-shell-niri",
@@ -140,6 +121,7 @@ packages = [
 
 [desktop.hyprland]
 directory="~/.config/hypr/"
+optional=true # This checkout may have no package manifest
 packages = [
     "hyprland",
     "dms-shell-hyprland",
@@ -148,7 +130,7 @@ packages = [
 ]
 
 [desktop.xorg]
-enabled=false
+on = 0b000
 packages=[
     "xorg-server",
     "xorg-xdpyinfo",   # for =betterlockscreen=
@@ -158,7 +140,7 @@ packages=[
 ]
 
 [desktop.awesome]
-enabled=false
+on = 0b000
 directory="~/.config/awesome/"
 depends_on=["desktop.xorg"]
 packages=[
@@ -166,7 +148,7 @@ packages=[
 ]
 
 [desktop.display-manager.sddm]
-enabled=false
+on = 0b000
 depends_on=["desktop.xorg"]
 packages=[
     "sddm",
@@ -176,7 +158,7 @@ packages=[
 ]
 
 [desktop.display-manager.lightdm]
-enabled=false
+on = 0b000
 depends_on=["desktop.xorg"]
 packages=[
     "lightdm",
@@ -188,6 +170,9 @@ packages=[
 packages=[
     "greetd-dms-greeter-git"
 ]
+
+[desktop.theme]
+on = 0b111
 
 [desktop.theme.gtk]
 packages=[
@@ -210,13 +195,14 @@ packages=[
 ]
 
 [desktop.fonts]
+on = 0b111
 packages=[
     "ttf-sarasa-gothic-sc", # default UI font
     "noto-fonts-emoji"  # emoji support
 ]
 
 [desktop.fonts.extra]
-enabled=false
+on = 0b000
 # those are all my favorite fonts
 packages=[
     "font-manager",
@@ -261,6 +247,9 @@ packages=[
 ########################################
 # Hardware: drivers and device-specific packages tied to physical hardware.
 ########################################
+[hardware]
+on = 0b110
+
 [hardware.nvidia]
 packages=[
     "nvidia-open-dkms",
@@ -276,7 +265,7 @@ packages=[
 
 [hardware.amd.gpu]
 # for cpu with integrated graphics
-enabled=false
+on = 0b000
 packages=[
     "amdgpu_top-bin",
     "mesa",             # 3D hardware video acceleration
@@ -294,6 +283,7 @@ packages=[
 ]
 
 [hardware.personal-devices]
+on = 0b100
 packages=[
     "openrgb-bin",
     "i2c-tools", # for =openrgb=
@@ -301,11 +291,14 @@ packages=[
 ]
 
 [hardware.printer]
+on = 0b010
 packages=["cups", "hplip"]
 
 ########################################
 # Development: toolchains, shells, editors, AI helpers, and local build/runtime tooling.
 ########################################
+[dev]
+
 [dev.base]
 packages=[
     "base-devel", # =gcc, which, make, gdb, sudo=
@@ -346,6 +339,7 @@ packages=[
 ]
 
 [dev.vcs]
+on = 0b110
 packages=[
     "rsync",
     "git-filter-repo",
@@ -353,13 +347,14 @@ packages=[
 ]
 
 [dev.containers]
+on = 0b110
 packages=[
     "docker",
     "docker-compose",
 ]
 
 [dev.virtualization]
-enabled=false
+on = 0b000
 packages=[
     "dnsmasq",
     "edk2-ovmf",
@@ -374,6 +369,9 @@ packages=[
 ########################################
 # Research: domain-specific scientific and notebook environments.
 ########################################
+[research]
+on = 0b110
+
 [research.base]
 packages=[
     "jupyter-notebook",
@@ -385,6 +383,9 @@ packages=[
 ########################################
 # Applications: end-user apps you run directly rather than infrastructure.
 ########################################
+[apps]
+on = 0b110
+
 [apps.browser]
 packages=["librewolf-bin"]
 
@@ -392,12 +393,14 @@ packages=["librewolf-bin"]
 packages=["syncthing", "nextcloud-client"]
 
 [apps.amuse]
+on = 0b100
 packages=[
     "mpv",
     "qimgv", # image viewer
 ]
 
 [apps.gaming]
+on = 0b100
 packages=[
     "steam",
     "mangohud",     # resource monitor in game
@@ -406,6 +409,7 @@ packages=[
 ]
 
 [apps.communication]
+on = 0b100
 packages=[
     "wechat-universal-bwrap",
     # "wemeet-bin",
@@ -416,6 +420,8 @@ packages=[
 ########################################
 # Tools: general-purpose utilities for package management, remote access, and diagnostics.
 ########################################
+[tools]
+
 [tools.cli]
 packages=[
     "bat",            # better =cat=
@@ -445,6 +451,7 @@ packages=[
 ]
 
 [tools.remote]
+on = 0b110
 packages=[
     "deskflow", # share keyboard
     "reframe",
@@ -454,7 +461,7 @@ packages=[
 ]
 
 [tools.benchmark]
-enabled=false
+on = 0b000
 packages=[
     "blender-benchmark",
     "unigine-heaven",
@@ -468,5 +475,8 @@ packages=[
 ########################################
 # Local: machine-private package extensions outside yadm tracking.
 ########################################
+[local]
+
 [local.private]
 directory="~/.config/paru/"
+optional=true # Local private declarations may be absent

@@ -2,15 +2,15 @@
 
 ## Phase 1: Declaration engine
 
-- [ ] Add `pkgdecl.py` with `check` and `list` commands.
-- [ ] Use `packages.toml` as the default configuration.
-- [ ] Validate masks, package suffixes, and field types.
-- [ ] Project the tree with inherited masks and explicit overrides.
-- [ ] Mount external files without moving or tracking them.
-- [ ] Preserve package and group sources when merging declarations.
-- [ ] Check dependencies without enabling excluded nodes.
-- [ ] Test overrides, mounts, cycles, conflicts, and CLI failures.
-- [ ] Document the format and verify the local declarations.
+- [x] Add `pkgdecl.py` with `check` and `list` commands.
+- [x] Use `packages.toml` as the default configuration.
+- [x] Validate masks, package suffixes, and field types.
+- [x] Project the tree with inherited masks and explicit overrides.
+- [x] Mount external files without moving or tracking them.
+- [x] Preserve package and group sources when merging declarations.
+- [x] Check dependencies without enabling excluded nodes.
+- [x] Test overrides, mounts, cycles, conflicts, and CLI failures.
+- [x] Document the format and verify the local declarations.
 
 ## Phase 2: Installed state
 
