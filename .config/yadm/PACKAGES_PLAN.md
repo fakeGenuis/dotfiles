@@ -14,11 +14,11 @@
 
 ## Phase 2: Installed state
 
-- [ ] Read package groups and installed state through pacman.
-- [ ] Report missing, dependency-installed, and undeclared packages.
-- [ ] Account for providers and distinguish orphans from explicit packages.
-- [ ] List, explain, and search packages.
-- [ ] Offer plain package-name output for shell pipelines.
+- [x] Read package groups and installed state through pacman.
+- [x] Report missing, dependency-installed, and undeclared packages.
+- [x] Account for providers and distinguish orphans from explicit packages.
+- [x] List, explain, and search packages.
+- [x] Offer plain package-name output for shell pipelines.
 
 ## Phase 3: Declaration editing
 
