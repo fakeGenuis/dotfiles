@@ -4,7 +4,7 @@
 
 - [x] Add `pkgdecl.py` with `check` and `list` commands.
 - [x] Use `packages.toml` as the default configuration.
-- [x] Validate masks, package suffixes, and field types.
+- [x] Read device bits from configuration; check masks and package suffixes.
 - [x] Project the tree with inherited masks and explicit overrides.
 - [x] Mount external files without moving or tracking them.
 - [x] Preserve package and group sources when merging declarations.
@@ -29,9 +29,16 @@
 
 ## Boundaries
 
-- Device bits are personal=4, laboratory=2, laptop=1.
+- Device names and bits are defined in `packages.toml`.
 - Explicit masks replace inherited masks; excluded parents do not stop traversal.
 - Dependencies are constraints, not selection rules.
 - External files remain external; plain package lists inherit their mount mask.
 - Phase 1 performs no package-manager queries or system changes.
 - Installation and removal remain the responsibility of pacman or paru.
+
+## Implementation style
+
+- Keep plain functions and dictionaries; add abstractions only when needed.
+- Avoid schema frameworks, field whitelists, and legacy compatibility modes.
+- Check core semantics rather than every possible malformed input.
+- Keep comments, documentation, and tests concise.

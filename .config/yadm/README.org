@@ -1,94 +1,49 @@
 #+title: Package declarations
 
-* Requirements
-Python 3.11 or later. No third-party Python dependencies are needed.
+* Usage
+Requires Python 3.11 or later. Commands read =packages.toml= beside the script;
+use =--file PATH= for another file.
 
-* Commands
-Validate all three device profiles:
 #+begin_src sh
 ./pkgdecl.py check
-#+end_src
-
-List the WSL declarations, or include their sources:
-#+begin_src sh
 ./pkgdecl.py list --profile laptop
 ./pkgdecl.py list --profile laptop --json
+python -m unittest -v test_pkgdecl.py
 #+end_src
 
-Use =--file PATH= on either command to read another configuration.
-The default is =packages.toml= beside the script, regardless of the working directory.
-=check --profile NAME= validates selection constraints for one device.
-Syntax, references, and cycles are always checked across the loaded tree.
-
-Phase 1 reads declarations only. It does not query installed packages, expand
-pacman groups, or install or remove anything. Text output contains a kind and
-a name; it is not an installation command input. JSON output also includes
-source files, mounted node paths, and effective masks. It can contain private
-package names and paths when private files are mounted.
+=check= checks all configured devices; =--profile= checks one.
+=list= returns package and group declarations, not installed-state differences.
+JSON includes source files, node paths, and masks, including private declarations.
+Groups remain symbolic. No pacman queries or system changes occur in phase 1.
 
 * Format
-The file is the root node. Device bits are personal (4), laboratory (2),
-and laptop (1). Write masks with three binary digits for readability.
+Device names and bits belong to the root configuration:
 
 #+begin_src toml
+profiles = { personal = 0b100, laboratory = 0b010, laptop = 0b001 }
 on = 0b111
 
 [system]
 on = 0b110
-
-[system.base]
 packages = ["base:111", "linux", "linux-headers"]
 #+end_src
 
-A missing =on= inherits the parent mask. An explicit mask replaces it;
-it is never intersected with the parent. The root defaults to =0b111=.
-The loader validates integer values from 0 to 7; TOML does not preserve
-whether an integer was written in binary or decimal.
+Each device has a distinct single bit. An omitted root mask selects all devices.
+Other omitted masks inherit; explicit masks replace. Excluded parents still
+allow selected descendants. Package suffixes override their node's mask; write
+one digit per bit position. Group names inherit the node mask. Duplicate names
+retain all selected sources. Ordinary TOML tables are branches; other unused
+metadata has no effect. There is no legacy selection mode.
 
-Plain package names inherit their node mask. A suffix such as =:001=
-overrides it for that package. Suffixes require exactly three binary digits.
-=0b000= or =:000= selects no device, but traversal continues into children.
-Group names in =groups= inherit the node mask and do not accept suffixes.
-Repeated selected names are merged while retaining all declaration sources.
+* Files and dependencies
+=directory= mounts that folder's =packages.toml=. Relative paths use the source
+file's folder; =~= expands to the home directory. Mounted files inherit the
+mount mask and remain external. Missing files fail unless =optional=true=.
 
-* External files
-=directory= mounts =packages.toml= from that folder as a child root.
-Relative paths are resolved against the containing file, not the working
-directory. =~= expands to the current user's home directory.
+=depends_on= uses exact paths within the same source file. Dependencies must
+be selected for the device; they never enable excluded nodes. Constraints also
+apply when a descendant restores selection. File and dependency cycles fail.
 
-#+begin_src toml
-[local.private]
-directory = "~/.config/paru/"
-optional = true
-#+end_src
-
-Mounted roots inherit the mount mask and may override it. Files are read even
-under excluded nodes because descendants can restore selection. Missing files
-are errors unless the mount has =optional=true=. Optional mounts still reject
-malformed files and cycles. External files are never copied or written.
-
-Existing external files with plain package lists work without migration.
-The legacy header =enable_default=true= is accepted as inert metadata;
-other legacy selection rules must be replaced with masks.
-
-* Dependencies
-=depends_on= contains exact node paths within the same source file.
-For example, =depends_on=["desktop.xorg"]= refers to that file's node,
-not a prefix selector. A mounted file has its own reference scope.
-
-Dependencies are constraints: an active node requires each dependency node's
-mask to include the chosen device. They never select excluded nodes. A node
-is active when its mask selects the device or its subtree yields selected
-packages or groups, including package-level overrides. This preserves ancestor
-constraints when a descendant restores selection.
-
-Unknown references, dependency cycles, file cycles, and invalid fields are
-errors. Diagnostics identify the source file and node where available.
-
-* Development
-#+begin_src sh
-python -m unittest -v test_pkgdecl.py
-#+end_src
-
-See [[file:PACKAGES_PLAN.md][the implementation checklist]] for later phases.
-=GetPackages= is retired; installed-state comparison returns in phase 2.
+* Scope
+See [[file:PACKAGES_PLAN.md][the checklist]]. =GetPackages= is retired.
+Installed-state queries and declaration editing belong to later phases.

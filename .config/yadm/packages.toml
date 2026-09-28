@@ -1,4 +1,5 @@
 title = "Shared package declarations"
+profiles = { personal = 0b100, laboratory = 0b010, laptop = 0b001 }
 
 # Bits: personal | laboratory | laptop.
 # Missing on inherits; explicit on replaces the inherited mask.
