@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Read package declarations without querying pacman."""
+"""Inspect package declarations and local pacman state."""
 
 import argparse
 from graphlib import TopologicalSorter
 import json
+import os
 from pathlib import Path
+import re
+import subprocess
 import sys
 import tomllib
 
@@ -97,17 +100,96 @@ def project(root, profile):
             for (kind, name), sources in sorted(merged.items())]
 
 
+def pacman(*args):
+    result = subprocess.run(["pacman", *args], capture_output=True, text=True,
+                            env={**os.environ, "LC_ALL": "C"})
+    if result.returncode:
+        raise ValueError(result.stderr.strip() or f"pacman {' '.join(args)} failed")
+    return result.stdout
+
+
+def installed_packages():
+    packages = {}
+    for block in pacman("-Qi").strip().split("\n\n"):
+        fields = {}
+        for line in block.splitlines():
+            if line.startswith(" "):
+                fields[key] += " " + line.strip()
+            else:
+                key, value = line.split(":", 1)
+                key = key.strip()
+                fields[key] = value.strip()
+        def words(key):
+            return [] if fields[key] == "None" else fields[key].split()
+        name = fields["Name"]
+        packages[name] = dict(name=name, installed=True, version=fields["Version"],
+                              description=fields["Description"],
+                              reason="explicit" if fields["Install Reason"].startswith("Explicit") else "dependency",
+                              provides=[re.split("[<>=]", p)[0] for p in words("Provides")],
+                              required_by=words("Required By"), optional_for=words("Optional For"))
+    return packages
+
+
+def expand_groups(entries):
+    groups, packages = {}, {}
+    if any(item["kind"] == "group" for item in entries):
+        for line in pacman("-Sgg").splitlines():
+            group, name = line.split()
+            groups.setdefault(group, []).append(name)
+    for item in entries:
+        names = [item["name"]] if item["kind"] == "package" else groups.get(item["name"], [])
+        if not names:
+            raise ValueError(f"Unknown repository group: {item['name']}")
+        for name in names:
+            sources = packages.setdefault(name, [])
+            for source in item["sources"]:
+                source = dict(source, group=item["name"]) if item["kind"] == "group" else source
+                if source not in sources:
+                    sources.append(source)
+    return packages
+
+
+def compare(declared, installed):
+    rows = {name: dict(info, declarations=[], sources=[]) for name, info in installed.items()}
+    providers = {}
+    for name, info in installed.items():
+        for provided in info["provides"]:
+            providers.setdefault(provided, []).append(name)
+    for name, sources in declared.items():
+        matches = [name] if name in installed else providers.get(name, [])
+        if not matches:
+            rows[name] = dict(name=name, installed=False, reason="missing", description="",
+                              declarations=[name], sources=sources)
+        for match in matches:
+            rows[match]["declarations"].append(name)
+            for source in sources:
+                if source not in rows[match]["sources"]:
+                    rows[match]["sources"].append(source)
+    for row in rows.values():
+        row["declared"] = bool(row["declarations"])
+        row["orphan"] = (row["reason"] == "dependency"
+                         and not row["required_by"] and not row["optional_for"])
+    return [rows[name] for name in sorted(rows)]
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("check", "list"):
+    for name in ("check", "list", "status", "missing", "dependencies", "undeclared",
+                 "orphans", "installed", "explain", "search"):
         command = commands.add_parser(name)
         command.add_argument("--file", type=Path,
                              default=Path(__file__).resolve().with_name("packages.toml"))
-        command.add_argument("--profile", required=name == "list",
+        command.add_argument("--profile", required=name != "check",
                              help="Device name from profiles; check defaults to all devices")
-        if name == "list":
-            command.add_argument("--json", action="store_true", help="Include declaration sources")
+        if name != "check":
+            output = command.add_mutually_exclusive_group()
+            output.add_argument("--json", action="store_true", help="Include declaration sources")
+            output.add_argument("--names", action="store_true", help="Print package names only")
+        if name == "undeclared":
+            command.add_argument("--all", action="store_true", help="Include dependency-installed packages")
+        if name in ("explain", "search"):
+            command.add_argument("query", help="Package name or search text")
     args = parser.parse_args(argv)
     try:
         root = load_tree(args.file)
@@ -116,13 +198,51 @@ def main(argv=None):
             for profile in profiles:
                 project(root, profile)
             print(f"Valid: {', '.join(profiles)}")
+            return 0
+        result = project(root, args.profile)
+        if args.command == "list":
+            if args.names:
+                for name in sorted(expand_groups(result)):
+                    print(name)
+                return 0
         else:
-            result = project(root, args.profile)
-            if args.json:
-                print(json.dumps(result, indent=2))
-            else:
-                for item in result:
+            result = compare(expand_groups(result), installed_packages())
+            filters = {
+                "status": lambda r: True,
+                "missing": lambda r: not r["installed"],
+                "dependencies": lambda r: r["reason"] == "dependency",
+                "undeclared": lambda r: r["installed"] and not r["declared"]
+                    and (args.all or r["reason"] == "explicit"),
+                "orphans": lambda r: r["orphan"],
+                "installed": lambda r: r["installed"],
+                "explain": lambda r: args.query == r["name"] or args.query in r["declarations"],
+                "search": lambda r: args.query.casefold() in " ".join(
+                    [r["name"], r["description"], *r["declarations"],
+                     *(s["file"] + " " + s["node"] for s in r["sources"])]).casefold(),
+            }
+            result = [row for row in result if filters[args.command](row)]
+            if args.command == "explain" and not result:
+                raise ValueError(f"Package not installed or declared: {args.query}")
+        if args.json:
+            print(json.dumps(result, indent=2))
+        else:
+            for item in result:
+                if args.names:
+                    print(item["name"])
+                elif args.command == "list":
                     print(f"{item['kind']}\t{item['name']}")
+                elif args.command == "explain":
+                    print(item["name"])
+                    for key, value in item.items():
+                        if key == "sources":
+                            for source in value:
+                                group = f" (group: {source['group']})" if "group" in source else ""
+                                print(f"  source: {source['file']} [{source['node']}] {source['on']}{group}")
+                        elif key != "name":
+                            print(f"  {key}: {', '.join(value) if isinstance(value, list) else value}")
+                else:
+                    state = "declared" if item["declared"] else "undeclared"
+                    print(f"{item['name']}\t{item['reason']}\t{state}")
     except (OSError, ValueError, KeyError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
