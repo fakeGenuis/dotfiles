@@ -2,6 +2,7 @@
 """Inspect package declarations and local pacman state."""
 
 import argparse
+import difflib
 from graphlib import TopologicalSorter
 import json
 import os
@@ -12,9 +13,12 @@ import sys
 import tomllib
 
 
-def load_tree(filename):
+def load_tree(filename, edits=None):
+    edits = edits or {}
+    def read(path):
+        return edits[path] if path in edits else path.read_text()
     path = Path(filename).resolve()
-    data = tomllib.loads(path.read_text())
+    data = tomllib.loads(read(path))
     profiles = data.pop("profiles")
     bits = list(profiles.values())
     if len(set(bits)) != len(bits) or any(type(b) is not int or b <= 0 or b & (b - 1) for b in bits):
@@ -31,7 +35,7 @@ def load_tree(filename):
             mask = table.get("on", inherited)
             if type(mask) is not int or mask < 0 or mask & ~all_bits:
                 raise ValueError(f"{path} [{name}]: invalid on mask: {mask}")
-            node = dict(file=str(path), node=name, on=mask,
+            node = dict(file=str(path), node=name, local=local, on=mask,
                         packages=table.get("packages", []), groups=table.get("groups", []),
                         depends_on=table.get("depends_on", []), children=[])
             scope[local] = node
@@ -42,8 +46,8 @@ def load_tree(filename):
             if "directory" in table:
                 folder = Path(table["directory"]).expanduser()
                 target = (path.parent / folder / "packages.toml").resolve()
-                if target.exists() or not table.get("optional", False):
-                    contents = tomllib.loads(target.read_text())
+                if target in edits or target.exists() or not table.get("optional", False):
+                    contents = tomllib.loads(read(target))
                     node["children"].append(load_file(target, contents, mask, name, (*stack, path)))
             return node
 
@@ -186,17 +190,115 @@ def print_table(headers, rows):
         line(row, {"missing": "31", "undeclared": "33", "dependency": "36", "declared": "32"}.get(state, "0"))
 
 
+def walk(node):
+    yield node
+    for child in node["children"]:
+        yield from walk(child)
+
+
+def insert_packages(text, node, packages):
+    """Insert into an ordinary table without rewriting existing text."""
+    expected = tomllib.loads(text)
+    if text and not text.endswith("\n"):
+        text += "\n"
+    table = expected
+    for key in node.split(".") if node else []:
+        table = table.setdefault(key, {})
+    table["packages"] = packages + table.get("packages", [])
+    headers = list(re.finditer(r"(?m)^[ \t]*\[([^\[\]\n]+)\][^\n]*$", text))
+    start, end = 0, headers[0].start() if headers else len(text)
+    if node:
+        for index, header in enumerate(headers):
+            name = ".".join(part.strip().strip("\"'") for part in header[1].split("."))
+            if name == node:
+                start = header.end() + 1
+                end = headers[index + 1].start() if index + 1 < len(headers) else len(text)
+                break
+        else:
+            text += ("\n" if text else "") + f"[{node}]\n"
+            start = end = len(text)
+    block = text[start:end]
+    array = re.search(r"(?m)^[ \t]*packages[ \t]*=[ \t]*\[", block)
+    values = ", ".join(json.dumps(package) for package in packages)
+    if array:
+        pos = start + array.end()
+        # Keep an opening-line comment with the array, and reuse item indentation.
+        opening = re.match(r"[ \t]*(?:#[^\n]*)?\n", text[pos:])
+        if opening:
+            pos += opening.end()
+            indent = re.match(r"[ \t]*", text[pos:])[0] or "    "
+            addition = "".join(f"{indent}{json.dumps(p)},\n" for p in packages)
+        else:
+            addition = values + (", " if table["packages"][len(packages):] else "")
+        text = text[:pos] + addition + text[pos:]
+    else:
+        text = text[:start] + f"packages = [{values}]\n" + text[start:]
+    if tomllib.loads(text) != expected:
+        raise ValueError("Unsupported table layout; edit this declaration manually")
+    return text
+
+
+def adopt(args):
+    target = (args.target or args.file).expanduser().resolve()
+    before = target.read_text() if target.exists() else ""
+    root = load_tree(args.file, {target: before})
+    nodes = list(walk(root))
+    local = "" if args.node == "." else args.node
+    if local and not re.fullmatch(r"[\w-]+(?:\.[\w-]+)*", local):
+        raise ValueError("Use a dotted node path, or . for the file root")
+    mounts = [n for n in nodes if n["file"] == str(target) and n["local"] == ""]
+    if not mounts:
+        raise ValueError(f"Target is not mounted by this configuration: {target}")
+    ancestors = [n for n in nodes if n["file"] == str(target)
+                 and (not n["local"] or local == n["local"] or local.startswith(n["local"] + "."))]
+    depth = max(len(n["local"]) for n in ancestors)
+    inherited = {n["on"] for n in ancestors if len(n["local"]) == depth}
+    bit = root["profiles"][args.profile]
+    mask = int(args.on, 2) if args.on else bit
+    if not mask & bit or mask & ~sum(root["profiles"].values()):
+        raise ValueError("The mask must include the current device and use configured bits")
+    installed = installed_packages()
+    rows = {r["name"]: r for r in compare(expand_groups(project(root, args.profile)), installed)}
+    additions = []
+    for name in dict.fromkeys(args.packages):
+        if name not in installed or installed[name]["reason"] != "explicit":
+            raise ValueError(f"Not explicitly installed: {name}")
+        if rows[name]["declared"]:
+            continue
+        aliases = {name, *installed[name]["provides"]}
+        for node in nodes:
+            if any(p.split(":", 1)[0] in aliases for p in node["packages"]):
+                raise ValueError(f"{name} already declared at {node['file']} [{node['local']}]; edit its mask")
+        width = max(root["profiles"].values()).bit_length()
+        additions.append(name if inherited == {mask} else f"{name}:{mask:0{width}b}")
+    if not additions:
+        print("No changes; packages are already declared.")
+        return
+    after = insert_packages(before, local, additions)
+    preview = load_tree(args.file, {target: after})
+    for profile in preview["profiles"]:
+        project(preview, profile)
+    print("".join(difflib.unified_diff(before.splitlines(True), after.splitlines(True),
+                                     fromfile=str(target), tofile=str(target))), end="")
+    if args.write:
+        if (target.read_text() if target.exists() else "") != before:
+            raise ValueError("Target changed during preview; retry")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(after)
+        print(f"Written: {target}")
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     for name in ("check", "list", "status", "missing", "dependencies", "undeclared",
-                 "orphans", "installed", "explain", "search"):
+                 "orphans", "installed", "explain", "search", "targets", "adopt"):
         command = commands.add_parser(name)
         command.add_argument("--file", type=Path,
                              default=Path(__file__).resolve().with_name("packages.toml"))
-        command.add_argument("--profile", required=name != "check",
+        command.add_argument("--profile", required=name not in ("check", "targets"),
                              help="Device name from profiles; check defaults to all devices")
-        if name != "check":
+        if name not in ("check", "targets", "adopt"):
             output = command.add_mutually_exclusive_group()
             output.add_argument("--json", action="store_true", help="Include declaration sources")
             output.add_argument("--names", action="store_true", help="Print package names only")
@@ -204,9 +306,23 @@ def main(argv=None):
             command.add_argument("--all", action="store_true", help="Include dependency-installed packages")
         if name in ("explain", "search"):
             command.add_argument("query", help="Package name or search text")
+        if name == "adopt":
+            command.add_argument("packages", nargs="+", help="Explicitly installed packages to declare")
+            command.add_argument("--target", type=Path, help="Mounted TOML file; defaults to --file")
+            command.add_argument("--node", required=True, help="Local dotted table path, or . for root")
+            command.add_argument("--on", help="Binary mask; defaults to the current device")
+            command.add_argument("--write", action="store_true", help="Write the previewed edit")
     args = parser.parse_args(argv)
     try:
+        if args.command == "adopt":
+            adopt(args)
+            return 0
         root = load_tree(args.file)
+        if args.command == "targets":
+            width = max(root["profiles"].values()).bit_length()
+            print_table(("FILE", "NODE", "ON"), [
+                (n["file"], n["local"] or ".", f"0b{n['on']:0{width}b}") for n in walk(root)])
+            return 0
         if args.command == "check":
             profiles = [args.profile] if args.profile else list(root["profiles"])
             for profile in profiles:
