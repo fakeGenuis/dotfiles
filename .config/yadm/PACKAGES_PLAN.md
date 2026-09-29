@@ -26,6 +26,7 @@
 - [x] Default adoption to the current device.
 - [x] Preview edits and preserve comments and formatting.
 - [x] Keep private declarations in their chosen external files.
+- [x] Add a numbered tidy flow with batch selection and final confirmation.
 
 ## Boundaries
 

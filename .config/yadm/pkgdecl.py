@@ -238,10 +238,11 @@ def insert_packages(text, node, packages):
     return text
 
 
-def adopt(args):
+def adoption_edit(args, installed=None, edits=None):
+    edits = edits or {}
     target = (args.target or args.file).expanduser().resolve()
-    before = target.read_text() if target.exists() else ""
-    root = load_tree(args.file, {target: before})
+    before = edits[target] if target in edits else target.read_text() if target.exists() else ""
+    root = load_tree(args.file, {**edits, target: before})
     nodes = list(walk(root))
     local = "" if args.node == "." else args.node
     if local and not re.fullmatch(r"[\w-]+(?:\.[\w-]+)*", local):
@@ -257,7 +258,7 @@ def adopt(args):
     mask = int(args.on, 2) if args.on else bit
     if not mask & bit or mask & ~sum(root["profiles"].values()):
         raise ValueError("The mask must include the current device and use configured bits")
-    installed = installed_packages()
+    installed = installed_packages() if installed is None else installed
     rows = {r["name"]: r for r in compare(expand_groups(project(root, args.profile)), installed)}
     additions = []
     for name in dict.fromkeys(args.packages):
@@ -272,33 +273,127 @@ def adopt(args):
         width = max(root["profiles"].values()).bit_length()
         additions.append(name if inherited == {mask} else f"{name}:{mask:0{width}b}")
     if not additions:
-        print("No changes; packages are already declared.")
-        return
+        return target, before, before
     after = insert_packages(before, local, additions)
-    preview = load_tree(args.file, {target: after})
+    preview = load_tree(args.file, {**edits, target: after})
     for profile in preview["profiles"]:
         project(preview, profile)
-    print("".join(difflib.unified_diff(before.splitlines(True), after.splitlines(True),
-                                     fromfile=str(target), tofile=str(target))), end="")
-    if args.write:
+    return target, before, after
+
+
+def preview_edits(originals, edits):
+    for target, after in edits.items():
+        print("".join(difflib.unified_diff(originals[target].splitlines(True), after.splitlines(True),
+                                         fromfile=str(target), tofile=str(target))), end="")
+
+
+def save_edits(originals, edits):
+    for target, before in originals.items():
         if (target.read_text() if target.exists() else "") != before:
-            raise ValueError("Target changed during preview; retry")
+            raise ValueError(f"Target changed during preview: {target}; retry")
+    for target, after in edits.items():
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(after)
         print(f"Written: {target}")
+
+
+def adopt(args):
+    target, before, after = adoption_edit(args)
+    if before == after:
+        print("No changes; packages are already declared.")
+        return
+    originals, edits = {target: before}, {target: after}
+    preview_edits(originals, edits)
+    if args.write:
+        save_edits(originals, edits)
+
+
+def choose(prompt, count, multiple=False):
+    while True:
+        answer = input(prompt).strip()
+        if not answer:
+            return []
+        try:
+            numbers = list(dict.fromkeys(int(n) - 1 for n in answer.replace(",", " ").split()))
+            if (multiple or len(numbers) == 1) and all(0 <= n < count for n in numbers):
+                return numbers
+        except ValueError:
+            pass
+        print(f"Enter {'numbers' if multiple else 'one number'} from 1 to {count}, or leave blank.")
+
+
+def tidy(args):
+    root = load_tree(args.file)
+    installed = installed_packages()
+    remaining = [r for r in compare(expand_groups(project(root, args.profile)), installed)
+                 if r["reason"] == "explicit" and not r["declared"]]
+    originals, edits, dependencies = {}, {}, []
+    while remaining:
+        print_table(("#", "PACKAGE", "REQUIRED BY", "OPTIONAL FOR", "DESCRIPTION"), [
+            (str(i), r["name"], ", ".join(r["required_by"]) or "-",
+             ", ".join(r["optional_for"]) or "-", r["description"]) for i, r in enumerate(remaining, 1)])
+        selected = choose("Packages (e.g. 1 3; Enter to review): ", len(remaining), multiple=True)
+        if not selected:
+            break
+        names = [remaining[i]["name"] for i in selected]
+        action = input("[a] Adopt, [d] mark as dependency, [s] skip (default): ").strip().lower()
+        if action == "a":
+            nodes = list(walk(load_tree(args.file, edits)))
+            files = list(dict.fromkeys(n["file"] for n in nodes))
+            print_table(("#", "FILE"), [(str(i), f) for i, f in enumerate(files, 1)])
+            choice = choose("Target file (Enter to go back): ", len(files))
+            if not choice:
+                continue
+            target = Path(files[choice[0]])
+            paths = list(dict.fromkeys(n["local"] or "." for n in nodes if n["file"] == str(target)))
+            print_table(("#", "NODE"), [(str(i), p) for i, p in enumerate(paths, 1)])
+            choice = choose("Target node (Enter to go back): ", len(paths))
+            if not choice:
+                continue
+            options = argparse.Namespace(file=args.file, profile=args.profile, packages=names,
+                                         target=target, node=paths[choice[0]], on=None)
+            try:
+                target, before, after = adoption_edit(options, installed, edits)
+            except ValueError as exc:
+                print(f"Cannot adopt: {exc}")
+                continue
+            originals.setdefault(target, before)
+            edits[target] = after
+        elif action == "d":
+            dependencies.extend(names)
+        elif action not in ("", "s"):
+            print("Choose a, d, or s.")
+            continue
+        remaining = [r for i, r in enumerate(remaining) if i not in selected]
+    if not edits and not dependencies:
+        print("No changes.")
+        return
+    preview_edits(originals, edits)
+    if dependencies:
+        print("Mark as dependencies: " + ", ".join(dependencies))
+    if input("Apply these changes? [y/N] ").strip().lower() not in ("y", "yes"):
+        print("Cancelled; no changes written.")
+        return
+    # Save declarations first; a failed pacman command leaves them in place.
+    save_edits(originals, edits)
+    if dependencies:
+        result = subprocess.run(["sudo", "pacman", "-D", "--asdeps", *dependencies])
+        if result.returncode:
+            raise ValueError("pacman failed; any saved declarations remain in place. Check installation marks")
+    print("Done.")
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     for name in ("check", "list", "status", "missing", "dependencies", "undeclared",
-                 "orphans", "installed", "explain", "search", "targets", "adopt"):
+                 "orphans", "installed", "explain", "search", "targets", "adopt", "tidy"):
         command = commands.add_parser(name)
         command.add_argument("--file", type=Path,
                              default=Path(__file__).resolve().with_name("packages.toml"))
         command.add_argument("--profile", required=name not in ("check", "targets"),
                              help="Device name from profiles; check defaults to all devices")
-        if name not in ("check", "targets", "adopt"):
+        if name not in ("check", "targets", "adopt", "tidy"):
             output = command.add_mutually_exclusive_group()
             output.add_argument("--json", action="store_true", help="Include declaration sources")
             output.add_argument("--names", action="store_true", help="Print package names only")
@@ -314,6 +409,9 @@ def main(argv=None):
             command.add_argument("--write", action="store_true", help="Write the previewed edit")
     args = parser.parse_args(argv)
     try:
+        if args.command == "tidy":
+            tidy(args)
+            return 0
         if args.command == "adopt":
             adopt(args)
             return 0
@@ -375,6 +473,9 @@ def main(argv=None):
                                 print(f"  source: {source['file']} [{source['node']}] {source['on']}{group}")
                         elif key != "name":
                             print(f"  {key}: {', '.join(value) if isinstance(value, list) else value}")
+    except (EOFError, KeyboardInterrupt):
+        print("\nInterrupted.", file=sys.stderr)
+        return 130
     except (OSError, ValueError, KeyError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

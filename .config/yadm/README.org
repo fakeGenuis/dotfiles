@@ -23,7 +23,8 @@ python -m unittest -v
 =list= returns package and group declarations, not installed-state differences.
 JSON includes source files, node paths, and masks, including private declarations.
 =list= keeps groups symbolic unless =--names= is used. =check= and plain =list=
-do not query pacman. Queries and previews are read-only; only =adopt --write= edits files.
+do not query pacman. Queries and previews are read-only. =adopt --write= and
+confirmed =tidy= sessions can make changes.
 
 * Installed state
 =status= shows explicit packages and declared packages, including missing ones
@@ -57,6 +58,22 @@ Install the missing names while keeping interactive confirmation:
 #+begin_src sh
 ./pkgdecl.py missing --profile laptop --names | xargs -r -o paru -S --needed
 #+end_src
+
+* Interactive cleanup
+#+begin_src sh
+./pkgdecl.py tidy --profile laptop
+#+end_src
+
+Select package numbers separated by spaces or commas. Choose =a= to adopt,
+=d= to mark as dependencies, or =s= to skip. Adoption offers numbered file
+and node lists and selects only the current device. Repeat for other batches.
+Enter on the package prompt reviews the pending work. Only a final =y= applies
+the displayed diffs and installation-mark changes; other answers cancel.
+
+This first version selects existing mounted files and nodes. Use =adopt= for
+new nodes, absent optional files, or a custom device mask. It does not uninstall
+packages. Dependency marking uses interactive =sudo pacman -D --asdeps=.
+Declarations are saved first; if pacman fails, those edits remain saved.
 
 * Adopt packages
 List existing target files and local node paths, then preview an addition:
