@@ -73,21 +73,23 @@ Install Reason : Installed as a dependency for another package
 
     def test_cli_filters_search_and_names(self):
         installed = {"fork": package("fork", provides=["mail"]),
+                     "declared-lib": package("declared-lib", "dependency"),
                      "lib": package("lib", "dependency", required=["fork"]),
                      "extra": package("extra")}
         with tempfile.TemporaryDirectory() as folder:
             config = Path(folder) / "packages.toml"
-            config.write_text('profiles={wsl=1}\npackages=["mail", "missing"]')
+            config.write_text('profiles={wsl=1}\npackages=["mail", "missing", "declared-lib"]')
             for command, options, expected in [
                 ("missing", [], "missing\n"),
-                ("dependencies", [], "lib\n"),
+                ("dependencies", [], "declared-lib\nlib\n"),
                 ("undeclared", [], "extra\n"),
                 ("undeclared", ["--all"], "extra\nlib\n"),
-                ("installed", [], "extra\nfork\nlib\n"),
-                ("orphans", [], ""),
+                ("installed", [], "extra\nfork\n"),
+                ("status", [], "declared-lib\nextra\nfork\nmissing\n"),
+                ("orphans", [], "declared-lib\n"),
                 ("explain", ["mail"], "fork\n"),
-                ("search", ["MAIL"], "extra\nfork\nlib\n"),
-                ("search", [str(config)], "fork\nmissing\n"),
+                ("search", ["MAIL"], "declared-lib\nextra\nfork\nlib\n"),
+                ("search", [str(config)], "declared-lib\nfork\nmissing\n"),
             ]:
                 with self.subTest(command=command, options=options):
                     output = StringIO()

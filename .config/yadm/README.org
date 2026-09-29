@@ -26,18 +26,22 @@ JSON includes source files, node paths, and masks, including private declaration
 do not query pacman. All commands are read-only.
 
 * Installed state
-=status= shows all installed packages and missing declarations. Other queries:
+=status= shows explicit packages and declared packages, including missing ones
+and declarations installed only as dependencies. Other queries:
 
 - =missing=: declared packages not satisfied by an installed name or provider.
 - =dependencies=: packages marked as dependency-installed by pacman.
 - =undeclared=: explicit packages not covered by declarations; =--all= includes dependencies.
 - =orphans=: dependency-installed packages with no required or optional users.
-- =installed=: all installed packages, with their reason and declaration status.
+- =installed=: explicitly installed packages, with their declaration status.
 - =explain NAME=: installed reason, direct dependents, providers, and declaration sources.
 - =search TEXT=: case-insensitive substring search over names, descriptions, and source paths.
 
 Queries require =--profile= and compare that declaration against the current machine.
-Text rows show name, installation reason, and declaration status. =--json= gives
+Text tables align names, installation reasons, and declaration status.
+Terminals use red for missing, yellow for undeclared, cyan for dependencies,
+and green for declared packages. Redirected output has no color; =NO_COLOR= also
+disables it. =--json= gives
 full details; =--names= emits one package name per line with no headings.
 
 Groups expand from existing local repository databases, without refreshing them.

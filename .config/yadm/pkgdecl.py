@@ -172,6 +172,20 @@ def compare(declared, installed):
     return [rows[name] for name in sorted(rows)]
 
 
+def print_table(headers, rows):
+    widths = [max(len(value) for value in column) for column in zip(headers, *rows)]
+    color = sys.stdout.isatty() and "NO_COLOR" not in os.environ and os.environ.get("TERM") != "dumb"
+
+    def line(values, code):
+        text = "  ".join(value.ljust(width) for value, width in zip(values, widths)).rstrip()
+        print(f"\033[{code}m{text}\033[0m" if color else text)
+
+    line(headers, "1;36")
+    for row in rows:
+        state = "missing" if "missing" in row else "dependency" if "dependency" in row else row[-1]
+        line(row, {"missing": "31", "undeclared": "33", "dependency": "36", "declared": "32"}.get(state, "0"))
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -208,13 +222,13 @@ def main(argv=None):
         else:
             result = compare(expand_groups(result), installed_packages())
             filters = {
-                "status": lambda r: True,
+                "status": lambda r: r["reason"] == "explicit" or r["declared"],
                 "missing": lambda r: not r["installed"],
                 "dependencies": lambda r: r["reason"] == "dependency",
                 "undeclared": lambda r: r["installed"] and not r["declared"]
                     and (args.all or r["reason"] == "explicit"),
                 "orphans": lambda r: r["orphan"],
-                "installed": lambda r: r["installed"],
+                "installed": lambda r: r["reason"] == "explicit",
                 "explain": lambda r: args.query == r["name"] or args.query in r["declarations"],
                 "search": lambda r: args.query.casefold() in " ".join(
                     [r["name"], r["description"], *r["declarations"],
@@ -225,12 +239,17 @@ def main(argv=None):
                 raise ValueError(f"Package not installed or declared: {args.query}")
         if args.json:
             print(json.dumps(result, indent=2))
+        elif not args.names and args.command != "explain":
+            if args.command == "list":
+                print_table(("PACKAGE", "KIND"), [(item["name"], item["kind"]) for item in result])
+            else:
+                print_table(("PACKAGE", "REASON", "DECLARATION"), [
+                    (item["name"], item["reason"], "declared" if item["declared"] else "undeclared")
+                    for item in result])
         else:
             for item in result:
                 if args.names:
                     print(item["name"])
-                elif args.command == "list":
-                    print(f"{item['kind']}\t{item['name']}")
                 elif args.command == "explain":
                     print(item["name"])
                     for key, value in item.items():
@@ -240,9 +259,6 @@ def main(argv=None):
                                 print(f"  source: {source['file']} [{source['node']}] {source['on']}{group}")
                         elif key != "name":
                             print(f"  {key}: {', '.join(value) if isinstance(value, list) else value}")
-                else:
-                    state = "declared" if item["declared"] else "undeclared"
-                    print(f"{item['name']}\t{item['reason']}\t{state}")
     except (OSError, ValueError, KeyError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
