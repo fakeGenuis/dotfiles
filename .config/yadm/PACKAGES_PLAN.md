@@ -22,10 +22,10 @@
 
 ## Phase 3: Declaration editing
 
-- [ ] Adopt installed packages into a selected file and subtree.
-- [ ] Default adoption to the current device.
-- [ ] Preview edits and preserve comments and formatting.
-- [ ] Keep private declarations in their chosen external files.
+- [x] Adopt installed packages into a selected file and subtree.
+- [x] Default adoption to the current device.
+- [x] Preview edits and preserve comments and formatting.
+- [x] Keep private declarations in their chosen external files.
 
 ## Boundaries
 

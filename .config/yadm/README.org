@@ -23,7 +23,7 @@ python -m unittest -v
 =list= returns package and group declarations, not installed-state differences.
 JSON includes source files, node paths, and masks, including private declarations.
 =list= keeps groups symbolic unless =--names= is used. =check= and plain =list=
-do not query pacman. All commands are read-only.
+do not query pacman. Queries and previews are read-only; only =adopt --write= edits files.
 
 * Installed state
 =status= shows explicit packages and declared packages, including missing ones
@@ -52,6 +52,41 @@ assumed equivalent. Declarations use unversioned package names.
 Undeclared does not mean safe to remove: an explicit package can still have
 dependents. Orphans may still be used directly. Explicit installation records
 do not reveal the user's original intent. Nothing is installed or removed.
+
+Install the missing names while keeping interactive confirmation:
+#+begin_src sh
+./pkgdecl.py missing --profile laptop --names | xargs -r -o paru -S --needed
+#+end_src
+
+* Adopt packages
+List existing target files and local node paths, then preview an addition:
+#+begin_src sh
+./pkgdecl.py targets
+./pkgdecl.py adopt foo bar --profile laptop --node dev.tools
+./pkgdecl.py adopt foo bar --profile laptop --node dev.tools --write
+#+end_src
+
+Replace =foo bar= with explicitly installed package names. =--node= selects
+a local dotted table path; a new path creates a subtree, and =.= selects the
+file root. The target defaults to the main configuration. For private packages:
+#+begin_src sh
+./pkgdecl.py adopt foo --profile laptop --target ~/.config/paru/packages.toml --node tools
+#+end_src
+
+The target must be mounted by the main configuration. A missing optional manifest
+can be created with =--write=. Only the selected file is written; private content
+is not copied into the main configuration. Previews include the proposed content.
+
+The default mask selects only the current device. Use =--on 111= for all three
+devices, or another mask that includes the current device. A package suffix is
+omitted when the target already inherits exactly that mask.
+
+Already selected packages are skipped. An existing declaration excluded on the
+current device is reported for manual mask adjustment instead of duplicated.
+All profiles are validated before writing. Additions preserve existing comments
+and item order; unsupported table layouts are rejected rather than rewritten.
+For generated manifests such as Doom's, update the generating source separately
+or choose a directly maintained file. The command does not run tangling tools.
 
 * Format
 Device names and bits belong to the root configuration:
@@ -83,4 +118,4 @@ apply when a descendant restores selection. File and dependency cycles fail.
 
 * Scope
 See [[file:PACKAGES_PLAN.md][the checklist]]. =GetPackages= is retired.
-Declaration editing belongs to phase 3.
+All three phases are implemented; installation and removal remain external.
