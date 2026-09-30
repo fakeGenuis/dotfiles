@@ -336,7 +336,7 @@ packages=[
     "cc-switch-bin",
     "claude-code",
     "openai-codex",
-    "opencode-bin"
+    "opencode"
 ]
 
 [dev.vcs]
@@ -376,8 +376,8 @@ on = 0b110
 [research.base]
 packages=[
     "jupyter-notebook",
-    "mathematica",
-    "miktex",
+    "mathematica:110",
+    "miktex:110",
     "zotero-bin"
 ]
 
