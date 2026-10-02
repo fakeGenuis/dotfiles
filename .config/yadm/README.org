@@ -4,6 +4,11 @@
 Requires Python 3.11 or later. Commands read =packages.toml= beside the script;
 use =--file PATH= for another file.
 
+Commands that select a profile default to =yadm config --get local.class=.
+Set it with =yadm config local.class laptop=; the value must exactly match a
+name in =packages.toml= → =profiles=. Use =--profile NAME= to override it for
+one command. An unset or unknown class produces an error instead of guessing.
+
 #+begin_src sh
 ./pkgdecl.py check
 ./pkgdecl.py list --profile laptop
@@ -38,7 +43,7 @@ and declarations installed only as dependencies. Other queries:
 - =explain NAME=: installed reason, direct dependents, providers, and declaration sources.
 - =search TEXT=: case-insensitive substring search over names, descriptions, and source paths.
 
-Queries require =--profile= and compare that declaration against the current machine.
+Queries use =local.class= (or =--profile=) and compare that declaration against the current machine.
 Text tables align names, installation reasons, and declaration status.
 Terminals use red for missing, yellow for undeclared, cyan for dependencies,
 and green for declared packages. Redirected output has no color; =NO_COLOR= also

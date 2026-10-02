@@ -1,13 +1,16 @@
 """Regression tests for tree selection and dependencies."""
 
 import json
+import io
+from contextlib import redirect_stdout, redirect_stderr
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
-from pkgdecl import load_tree, project
+from pkgdecl import load_tree, project, main
 
 
 class DeclarationTests(unittest.TestCase):
@@ -125,6 +128,40 @@ optional = true
         self.assertEqual(result.returncode, 1)
         self.assertEqual(result.stdout, "")
         self.assertIn("invalid package suffix", result.stderr)
+
+    def test_profile_defaults_to_yadm_class(self):
+        path = self.write('packages=["portable:001", "desktop:100"]')
+        output = io.StringIO()
+        with patch("pkgdecl.subprocess.run", return_value=subprocess.CompletedProcess(
+                [], 0, "laptop\n", "")) as run, redirect_stdout(output):
+            self.assertEqual(main(["list", "--file", str(path), "--json"]), 0)
+        run.assert_called_once_with(["yadm", "config", "--get", "local.class"],
+                                    capture_output=True, text=True)
+        self.assertEqual([r["name"] for r in json.loads(output.getvalue())], ["portable"])
+
+    def test_explicit_profile_and_global_commands_do_not_read_yadm(self):
+        path = self.write('packages=["base"]')
+        with patch("pkgdecl.subprocess.run") as run, redirect_stdout(io.StringIO()):
+            for command in (["list", "--profile", "personal"], ["check"], ["targets"]):
+                self.assertEqual(main([*command, "--file", str(path)]), 0)
+        run.assert_not_called()
+
+    def test_class_errors(self):
+        path = self.write('packages=["base"]')
+        for result, error in [
+            (subprocess.CompletedProcess([], 1, "", ""), "local.class is not set"),
+            (subprocess.CompletedProcess([], 0, "\n", ""), "local.class is not set"),
+            (subprocess.CompletedProcess([], 0, "unknown\n", ""), "Unknown profile"),
+            (subprocess.CompletedProcess([], 2, "", "config failure"), "config failure"),
+            (FileNotFoundError(), "yadm is not installed"),
+        ]:
+            output, errors = io.StringIO(), io.StringIO()
+            options = {"side_effect": result} if isinstance(result, Exception) else {"return_value": result}
+            with self.subTest(error=error), patch("pkgdecl.subprocess.run", **options), \
+                    redirect_stdout(output), redirect_stderr(errors):
+                self.assertEqual(main(["list", "--file", str(path)]), 1)
+            self.assertEqual(output.getvalue(), "")
+            self.assertIn(error, errors.getvalue())
 
 
 if __name__ == "__main__":

@@ -383,6 +383,20 @@ def tidy(args):
     print("Done.")
 
 
+def local_profile():
+    try:
+        result = subprocess.run(["yadm", "config", "--get", "local.class"],
+                                capture_output=True, text=True)
+    except FileNotFoundError:
+        raise ValueError("yadm is not installed; select a profile with --profile NAME") from None
+    if result.returncode == 1 or (result.returncode == 0 and not result.stdout.strip()):
+        raise ValueError("yadm local.class is not set; run 'yadm config local.class NAME' "
+                         "or use --profile NAME")
+    if result.returncode != 0:
+        raise ValueError(f"Cannot read yadm local.class: {result.stderr.strip()}")
+    return result.stdout.strip()
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
@@ -391,8 +405,9 @@ def main(argv=None):
         command = commands.add_parser(name)
         command.add_argument("--file", type=Path,
                              default=Path(__file__).resolve().with_name("packages.toml"))
-        command.add_argument("--profile", required=name not in ("check", "targets"),
-                             help="Device name from profiles; check defaults to all devices")
+        command.add_argument("--profile",
+                             help="Device name from profiles; defaults to yadm local.class "
+                                  "(check defaults to all devices)")
         if name not in ("check", "targets", "adopt", "tidy"):
             output = command.add_mutually_exclusive_group()
             output.add_argument("--json", action="store_true", help="Include declaration sources")
@@ -409,6 +424,8 @@ def main(argv=None):
             command.add_argument("--write", action="store_true", help="Write the previewed edit")
     args = parser.parse_args(argv)
     try:
+        if args.profile is None and args.command not in ("check", "targets"):
+            args.profile = local_profile()
         if args.command == "tidy":
             tidy(args)
             return 0
