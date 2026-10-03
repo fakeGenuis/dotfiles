@@ -1,143 +1,59 @@
 #+title: Package declarations
 
 * Usage
-Requires Python 3.11 or later. Commands read =packages.toml= beside the script;
-use =--file PATH= for another file.
-
-Commands that select a profile default to =yadm config --get local.class=.
-Set it with =yadm config local.class laptop=; the value must exactly match a
-name in =packages.toml= → =profiles=. Use =--profile NAME= to override it for
-one command. An unset or unknown class produces an error instead of guessing.
+Requires Python 3.11+. Reads =packages.toml= beside the script; override with
+=--file PATH=. The profile defaults to =yadm config --get local.class= and must
+match a name in =profiles=. Use =--profile NAME= to override it.
 
 #+begin_src sh
 ./pkgdecl.py check
-./pkgdecl.py list --profile laptop
-./pkgdecl.py list --profile laptop --json
-./pkgdecl.py missing --profile laptop
-./pkgdecl.py undeclared --profile laptop
-./pkgdecl.py dependencies --profile laptop
-./pkgdecl.py orphans --profile laptop
-./pkgdecl.py installed --profile laptop
-./pkgdecl.py explain tree-sitter --profile laptop
-./pkgdecl.py search emacs --profile laptop
-./pkgdecl.py missing --profile laptop --names
-python -m unittest -v
+./pkgdecl.py missing
+./pkgdecl.py undeclared
+./pkgdecl.py explain PACKAGE
+./pkgdecl.py missing --names | xargs -r -o paru -S --needed
 #+end_src
 
-=check= checks all configured devices; =--profile= checks one.
-=list= returns package and group declarations, not installed-state differences.
-JSON includes source files, node paths, and masks, including private declarations.
-=list= keeps groups symbolic unless =--names= is used. =check= and plain =list=
-do not query pacman. Queries and previews are read-only. =adopt --write= and
-confirmed =tidy= sessions can make changes.
+=--names= prints package names; =--json= includes details and declaration sources.
+Installation and removal are handled by pacman/paru. Undeclared or orphaned
+packages are not necessarily unused.
 
-* Installed state
-=status= shows explicit packages and declared packages, including missing ones
-and declarations installed only as dependencies. Other queries:
+* Commands
+| Command       | Purpose                                                        |
+|---------------+----------------------------------------------------------------|
+| check         | Validate all profiles, or just =--profile NAME=                 |
+| list          | Selected declarations; groups expand with =--names=             |
+| status        | Explicitly installed packages plus selected declarations       |
+| missing       | Declarations not satisfied by installed packages or providers  |
+| undeclared    | Undeclared explicit packages; =--all= includes dependencies     |
+| dependencies  | Packages installed as dependencies                             |
+| orphans       | Dependency-installed packages with no required or optional users |
+| installed     | Explicitly installed packages                                  |
+| explain NAME  | Package details and declaration sources                        |
+| search TEXT   | Search names, descriptions, and sources                         |
+| targets       | Mounted files and declaration nodes                            |
+| adopt PKG ... | Preview adding explicit packages; =--write= saves               |
+| tidy          | Interactively adopt or mark packages as dependencies            |
 
-- =missing=: declared packages not satisfied by an installed name or provider.
-- =dependencies=: packages marked as dependency-installed by pacman.
-- =undeclared=: explicit packages not covered by declarations; =--all= includes dependencies.
-- =orphans=: dependency-installed packages with no required or optional users.
-- =installed=: explicitly installed packages, with their declaration status.
-- =explain NAME=: installed reason, direct dependents, providers, and declaration sources.
-- =search TEXT=: case-insensitive substring search over names, descriptions, and source paths.
-
-Queries use =local.class= (or =--profile=) and compare that declaration against the current machine.
-Text tables align names, installation reasons, and declaration status.
-Terminals use red for missing, yellow for undeclared, cyan for dependencies,
-and green for declared packages. Redirected output has no color; =NO_COLOR= also
-disables it. =--json= gives
-full details; =--names= emits one package name per line with no headings.
-
-Groups expand from existing local repository databases, without refreshing them.
-Exact installed names take precedence; otherwise installed =provides= entries
-satisfy a declaration. Different package variants without =provides= are not
-assumed equivalent. Declarations use unversioned package names.
-
-Undeclared does not mean safe to remove: an explicit package can still have
-dependents. Orphans may still be used directly. Explicit installation records
-do not reveal the user's original intent. Nothing is installed or removed.
-
-Install the missing names while keeping interactive confirmation:
-#+begin_src sh
-./pkgdecl.py missing --profile laptop --names | xargs -r -o paru -S --needed
-#+end_src
-
-* Interactive cleanup
-#+begin_src sh
-./pkgdecl.py tidy --profile laptop
-#+end_src
-
-Select package numbers separated by spaces or commas. Choose =a= to adopt,
-=d= to mark as dependencies, or =s= to skip. Adoption offers numbered file
-and node lists and selects only the current device. Repeat for other batches.
-Enter on the package prompt reviews the pending work. Only a final =y= applies
-the displayed diffs and installation-mark changes; other answers cancel.
-
-This first version selects existing mounted files and nodes. Use =adopt= for
-new nodes, absent optional files, or a custom device mask. It does not uninstall
-packages. Dependency marking uses interactive =sudo pacman -D --asdeps=.
-Declarations are saved first; if pacman fails, those edits remain saved.
-
-* Adopt packages
-List existing target files and local node paths, then preview an addition:
-#+begin_src sh
-./pkgdecl.py targets
-./pkgdecl.py adopt foo bar --profile laptop --node dev.tools
-./pkgdecl.py adopt foo bar --profile laptop --node dev.tools --write
-#+end_src
-
-Replace =foo bar= with explicitly installed package names. =--node= selects
-a local dotted table path; a new path creates a subtree, and =.= selects the
-file root. The target defaults to the main configuration. For private packages:
-#+begin_src sh
-./pkgdecl.py adopt foo --profile laptop --target ~/.config/paru/packages.toml --node tools
-#+end_src
-
-The target must be mounted by the main configuration. A missing optional manifest
-can be created with =--write=. Only the selected file is written; private content
-is not copied into the main configuration. Previews include the proposed content.
-
-The default mask selects only the current device. Use =--on 111= for all three
-devices, or another mask that includes the current device. A package suffix is
-omitted when the target already inherits exactly that mask.
-
-Already selected packages are skipped. An existing declaration excluded on the
-current device is reported for manual mask adjustment instead of duplicated.
-All profiles are validated before writing. Additions preserve existing comments
-and item order; unsupported table layouts are rejected rather than rewritten.
-For generated manifests such as Doom's, update the generating source separately
-or choose a directly maintained file. The command does not run tangling tools.
+=adopt= requires =--node PATH= (=.= for root). =--target FILE= selects a mounted
+file; =--on MASK= overrides the default current-profile mask. Existing excluded
+entries require manual adjustment. Edit generating sources for generated files.
+=tidy= shows a preview and asks for confirmation before writing.
 
 * Format
-Device names and bits belong to the root configuration:
-
 #+begin_src toml
 profiles = { personal = 0b100, laboratory = 0b010, laptop = 0b001 }
 on = 0b111
 
 [system]
 on = 0b110
-packages = ["base:111", "linux", "linux-headers"]
+packages = ["base:111", "linux"]
 #+end_src
 
-Each device has a distinct single bit. An omitted root mask selects all devices.
-Other omitted masks inherit; explicit masks replace. Excluded parents still
-allow selected descendants. Package suffixes override their node's mask; write
-one digit per bit position. Group names inherit the node mask. Duplicate names
-retain all selected sources. Ordinary TOML tables are branches; other unused
-metadata has no effect. There is no legacy selection mode.
-
-* Files and dependencies
-=directory= mounts that folder's =packages.toml=. Relative paths use the source
-file's folder; =~= expands to the home directory. Mounted files inherit the
-mount mask and remain external. Missing files fail unless =optional=true=.
-
-=depends_on= uses exact paths within the same source file. Dependencies must
-be selected for the device; they never enable excluded nodes. Constraints also
-apply when a descendant restores selection. File and dependency cycles fail.
-
-* Scope
-See [[file:PACKAGES_PLAN.md][the checklist]]. =GetPackages= is retired.
-All three phases are implemented; installation and removal remain external.
+- Each profile has a distinct bit. Missing =on= inherits; explicit masks replace.
+- Package suffixes override node masks. =000= excludes all profiles; selected
+  descendants can still be enabled below an excluded parent.
+- =groups= lists pacman groups and uses the node mask.
+- =directory= mounts another folder's =packages.toml=; relative paths use the
+  source file's directory. =optional=true= permits a missing file.
+- =depends_on= names nodes in the same file that must already be selected;
+  it does not enable them. Cycles are rejected.
