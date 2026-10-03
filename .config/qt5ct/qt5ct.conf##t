@@ -1,9 +1,9 @@
 [Appearance]
-color_scheme_path={{env.HOME}}/.local/share/color-schemes/DankMatugen.colors
+color_scheme_path={{env.HOME}}/.config/qt5ct/colors/matugen.conf
 custom_palette=true
 icon_theme=Papirus
 standard_dialogs=default
-style=kvantum
+style=Fusion
 
 [Fonts]
 fixed="Maple6 NF,10,-1,5,50,0,0,0,0,0,Regular"
