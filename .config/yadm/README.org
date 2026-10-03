@@ -25,19 +25,11 @@ packages are not necessarily unused.
 | status        | Explicitly installed packages plus selected declarations       |
 | missing       | Declarations not satisfied by installed packages or providers  |
 | undeclared    | Undeclared explicit packages; =--all= includes dependencies     |
-| dependencies  | Packages installed as dependencies                             |
-| orphans       | Dependency-installed packages with no required or optional users |
-| installed     | Explicitly installed packages                                  |
 | explain NAME  | Package details and declaration sources                        |
-| search TEXT   | Search names, descriptions, and sources                         |
-| targets       | Mounted files and declaration nodes                            |
-| adopt PKG ... | Preview adding explicit packages; =--write= saves               |
-| tidy          | Interactively adopt or mark packages as dependencies            |
 
-=adopt= requires =--node PATH= (=.= for root). =--target FILE= selects a mounted
-file; =--on MASK= overrides the default current-profile mask. Existing excluded
-entries require manual adjustment. Edit generating sources for generated files.
-=tidy= shows a preview and asks for confirmation before writing.
+Edit declarations directly in TOML; edit the source for generated manifests.
+Use =pacman -Qe= for explicit packages, =-Qd= for dependencies, and =-Qdt=
+for orphans.
 
 * Format
 #+begin_src toml
