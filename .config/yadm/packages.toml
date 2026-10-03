@@ -25,7 +25,7 @@ packages=[
     "linux",
     "linux-headers",
     "linux-firmware-nvidia",
-    "linux-firmware-mediatek",
+    "linux-firmware-mediatek:100",
     "linux-firmware-realtek",
     "linux-firmware-other"
 ]
@@ -68,7 +68,6 @@ packages=["blueman", "bluez", "bluez-utils"]
 [system.inputmethod]
 groups=["fcitx5-im"]
 packages=[
-    "fcitx5-nord",
     "fcitx5-rime",
     "rime-cloverpinyin",
     "rime-pinyin-zhwiki"
@@ -177,9 +176,8 @@ on = 0b111
 
 [desktop.theme.gtk]
 packages=[
-    "orchis-theme-dracula-git",
-    "gtk-engine-murrine",
-    "gtk2"
+    "gtk-engine-murrine:001",
+    "gtk2:001"
 ]
 
 [desktop.theme.qt]
@@ -198,7 +196,7 @@ packages=[
 [desktop.fonts]
 on = 0b111
 packages=[
-    "ttf-sarasa-gothic-sc", # default UI font
+    "ttf-sarasa_ui-sc", # default UI font
     "noto-fonts-emoji"  # emoji support
 ]
 
@@ -253,15 +251,15 @@ on = 0b110
 
 [hardware.nvidia]
 packages=[
-    "nvidia-open-dkms",
-    # "nvidia-580xx-dkms", # for old hardware
+    "nvidia-open-dkms:100",
+    "nvidia-580xx-dkms:010", # for old hardware
     "libva-nvidia-driver", # hardware video acceleration
     "nvtop"
 ]
 
-[hardware.amd]
+[hardware.amd.cpu]
 packages=[
-    "amd-ucode",
+    "amd-ucode:100",
 ]
 
 [hardware.amd.gpu]
