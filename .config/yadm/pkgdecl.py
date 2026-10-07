@@ -90,14 +90,14 @@ def resolve_dependencies(scope, path):
 
 
 def parse_package_entry(item, node):
-    """Accept a package string or [package string, declaration reason]."""
+    """Return package strings and their shared reason (the last array item)."""
     if isinstance(item, str):
-        return item, None
-    if isinstance(item, list) and len(item) == 2 and all(isinstance(value, str) for value in item):
-        return item[0], item[1]
+        return [item], None
+    if isinstance(item, list) and len(item) >= 2 and all(isinstance(value, str) for value in item):
+        return item[:-1], item[-1]
     raise ValueError(
         f"{node['file']} [{node['node']}]: invalid package entry: {item!r}; "
-        'expected "name[:mask]" or ["name[:mask]", "reason"]'
+        'expected "name[:mask]" or ["name[:mask]", ..., "reason"]'
     )
 
 
@@ -105,19 +105,20 @@ def node_entries(node, bit, width):
     """Select this node's entries, including per-package mask overrides."""
     entries = []
     for item in node["packages"]:
-        item, reason = parse_package_entry(item, node)
-        name, mask = item, node["on"]
-        if ":" in item:
-            name, suffix = item.rsplit(":", 1)
-            if len(suffix) != width or set(suffix) - {"0", "1"}:
-                raise ValueError(f"{node['file']} [{node['node']}]: invalid package suffix: {item}")
-            mask = int(suffix, 2)
-        if not mask & bit:
-            continue
-        source = dict(file=node["file"], node=node["node"], on=f"0b{mask:0{width}b}")
-        if reason is not None:
-            source["reason"] = reason
-        entries.append((name, source))
+        packages, reason = parse_package_entry(item, node)
+        for package in packages:
+            name, mask = package, node["on"]
+            if ":" in package:
+                name, suffix = package.rsplit(":", 1)
+                if len(suffix) != width or set(suffix) - {"0", "1"}:
+                    raise ValueError(f"{node['file']} [{node['node']}]: invalid package suffix: {package}")
+                mask = int(suffix, 2)
+            if not mask & bit:
+                continue
+            source = dict(file=node["file"], node=node["node"], on=f"0b{mask:0{width}b}")
+            if reason is not None:
+                source["reason"] = reason
+            entries.append((name, source))
     return entries
 
 

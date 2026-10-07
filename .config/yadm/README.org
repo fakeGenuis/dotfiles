@@ -41,7 +41,10 @@ on = 0b110
 packages = [["base:111", "Also needed in WSL"], "linux"]
 #+end_src
 
-- Package entries accept ="name[:mask]"= or =["name[:mask]", "reason"]=.
+- Package entries accept ="name[:mask]"= or =["name[:mask]", ..., "reason"]=.
+  Arrays contain at least two strings: the last is the shared reason, and each
+  preceding package keeps its own optional mask. For example:
+  =["perl-yaml-tiny", "perl-file-homedir", "Required by latexindent.pl"]=.
   =explain= shows the reason beneath each source; JSON retains it in
   =sources[].reason=. The top-level =reason= still means pacman installation reason.
 - Each profile has a distinct bit. Missing =on= inherits; explicit masks replace.
