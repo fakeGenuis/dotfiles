@@ -21,9 +21,9 @@ packages=[
 
 [system.boot]
 packages=[
-    "grub",               # bootloader
+    "grub",
     "grub-customizer",
-    "efibootmgr"         # =grub= write boot entries to NVRAM
+    "efibootmgr"
 ]
 
 [system.network]
@@ -65,8 +65,8 @@ packages=[
 [system.windows]
 on = 0b100
 packages=[
-    "ntfs-3g",     # mount ntfs partition
-    "os-prober",   # other os entries in grub
+    "ntfs-3g",
+    "os-prober",
     "chntpw",      # dual boot bluetooth repair
     "bt-synckeys", # bluetooth key sync
 ]
@@ -89,7 +89,7 @@ on = 0b110
 packages = [
     "dms-shell",
     "python-pywal",
-    "python-pywalfox-librewolf", # sync walfox theme
+    "python-pywalfox-librewolf",
     "matugen"
 ]
 
@@ -99,7 +99,6 @@ packages = [
     "niri",
     "dms-shell-niri",
     "xdg-desktop-portal-gtk",
-    # "xdg-desktop-portal-gnome", # for screencast
     "gnome-keyring",
     "lxqt-policykit",
     "xwayland-satellite"
@@ -112,7 +111,7 @@ packages = [
     "hyprland",
     "dms-shell-hyprland",
     "adw-gtk-theme", # dms GTK colors
-    "qt6ct-kde" # dms QT colors; conflicts with qt6ct (see desktop.theme.qt)
+    "qt6ct-kde" # dms QT colors
 ]
 
 [desktop.xorg]
@@ -140,7 +139,6 @@ packages=[
     "sddm",
     "sddm-theme-corners-git",
     "sddm-sugar-light",
-    # "sddm-sugar-candy-git"
 ]
 
 [desktop.display-manager.lightdm]
@@ -170,7 +168,6 @@ packages=[
 packages=[
     "qt5-wayland",
     "qt5ct",
-    # "qt6ct", # for some qt6 applications; conflicts with qt6ct-kde (see desktop.hyprland)
 ]
 
 [desktop.theme.shared]
@@ -183,38 +180,31 @@ packages=[
 on = 0b111
 packages=[
     "ttf-sarasa_ui-sc", # default UI font
-    "noto-fonts-emoji"  # emoji support
+    "noto-fonts-emoji"
 ]
 
 [desktop.fonts.extra]
 on = 0b000
-# those are all my favorite fonts
 packages=[
     "font-manager",
-    # "fontforge", # build custom fonts
-    # sans
+    # "fontforge",
     "ttc-iosevka-aile",
     "ttf-fira-sans",
     "ttf-opensans",
-    # serif
     "adobe-source-serif-fonts",
     "gentium-plus-font",
-    # code
     "ttf-agave-nerd",
     "ttf-bqn386-git",
-    "ttf-firacode-nerd",        # ligature
+    "ttf-firacode-nerd",
     "ttf-maple",
     "ttf-recursive",
-    # ui
     "ttf-comic-shanns-v2",
-    # emoji
     "ttf-material-design-icons-git",
     "quirvira",
-    # chinese
     "ttf-arphic-ukai",
     "ttf-kose-git",
     "ttf-lxgw-wenkai",
-    "ttf-yozai-font", # cute hand-write
+    "ttf-yozai-font",
     "ttf-lxgw-neo-xihei",
     "wqy-microhei"
 ]
@@ -226,7 +216,7 @@ packages=["alacritty"]
 packages=[
     "flameshot",
     "grim",
-    "peek", # screen recorder
+    "peek",
 ]
 
 [hardware]
@@ -235,8 +225,8 @@ on = 0b110
 [hardware.nvidia]
 packages=[
     "nvidia-open-dkms:100",
-    "nvidia-580xx-dkms:010", # for old hardware
-    "libva-nvidia-driver", # hardware video acceleration
+    "nvidia-580xx-dkms:010",
+    "libva-nvidia-driver",
     "nvtop"
 ]
 
@@ -250,25 +240,25 @@ packages=[
 on = 0b000
 packages=[
     "amdgpu_top-bin",
-    "mesa",             # 3D hardware video acceleration
+    "mesa",
     "lib32-mesa",
-    "libva-utils",      # vainfo
-    "mesa-utils",       # glxinfo
-    "xf86-video-amdgpu" # xorg
+    "libva-utils",      # =vainfo=
+    "mesa-utils",       # =glxinfo=
+    "xf86-video-amdgpu"
 ]
 
 [hardware.usb]
 packages=[
-    "udiskie",    # automount usb drive
+    "udiskie",
     "usbutils",   # =lsusb=
-    "ventoy-bin", # usb bootable media
+    "ventoy-bin",
 ]
 
 [hardware.personal-devices]
 on = 0b100
 packages=[
     "openrgb-bin",
-    "i2c-tools", # for =openrgb=
+    "i2c-tools", # =openrgb=
     "via-appimage"
 ]
 
@@ -280,7 +270,7 @@ packages=["cups", "hplip"]
 
 [dev.base]
 packages=[
-    "base-devel", # =gcc, which, make, gdb, sudo=
+    "base-devel",
     "python",
     "python-tomli", # required by this script
     "git",
@@ -296,12 +286,12 @@ packages=[
     "jq",
     "tmux",
     "xcape",         # CapsLK as Esc in wsl
-    "starship",      # shell prompt pretty
+    "starship",
     "python-pipenv",
     "python-pipx",
     "direnv",
     "zoxide",
-    "fish-done",     # notify background shell work done
+    "fish-done",
     "xorg-xdpyinfo"
 ]
 
@@ -369,15 +359,15 @@ packages=["syncthing", "nextcloud-client"]
 on = 0b100
 packages=[
     "mpv",
-    "qimgv", # image viewer
+    "qimgv",
 ]
 
 [apps.gaming]
 on = 0b100
 packages=[
     "steam",
-    "mangohud",     # resource monitor in game
-    "goverlay",     # change appearance of mangohud
+    "mangohud",
+    "goverlay",
     "uudeck-bwrap", # multiplayer game delay reducing
 ]
 
@@ -385,7 +375,6 @@ packages=[
 on = 0b100
 packages=[
     "wechat-universal-bwrap",
-    # "wemeet-bin",
     "telegram-desktop",
     "linuxqq-nt-bwrap",
 ]
@@ -394,40 +383,37 @@ packages=[
 
 [tools.cli]
 packages=[
-    "bat",            # better =cat=
-    "btop",           # system monitor
-    "eza",            # better =ls=
-    "fzf",            # extend `zoxide' with selection
-    "gdu-bin",        # =du= on all directories
-    "man-db",         # man page
-    "fastfetch",      # btw, ..
+    "bat",
+    "btop",
+    "eza",
+    "fzf",
+    "gdu-bin",
+    "man-db",
+    "fastfetch",
     "openbsd-netcat", # ssh using http tunnel using =nc=
     "zip",
     "7zip",
-    "proxychains-ng", # force proxy
-    # "tmsu-bin",       # tag manager system
+    "proxychains-ng",
     "trash-cli",
     "unrar",
     "unzip",
-    "yadm"            # reason you are here
+    "yadm"
 ]
 
 [tools.packaging]
 packages=[
-    "expac",                  # query installed packages
+    "expac",
     "pacfinder",
     "pacman-contrib",         # =checkupdates, paccache=
-    "rebuild-detector",       # detect packages need to rebuild
+    "rebuild-detector",
 ]
 
 [tools.remote]
 on = 0b110
 packages=[
-    "deskflow", # share keyboard
+    "deskflow",
     "reframe",
     "remmina"
-    # "tigervnc-server",
-    # "realvnc-vnc-viewer"
 ]
 
 [tools.benchmark]
