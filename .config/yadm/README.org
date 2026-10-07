@@ -38,9 +38,12 @@ on = 0b111
 
 [system]
 on = 0b110
-packages = ["base:111", "linux"]
+packages = [["base:111", "Also needed in WSL"], "linux"]
 #+end_src
 
+- Package entries accept ="name[:mask]"= or =["name[:mask]", "reason"]=.
+  =explain= shows the reason beneath each source; JSON retains it in
+  =sources[].reason=. The top-level =reason= still means pacman installation reason.
 - Each profile has a distinct bit. Missing =on= inherits; explicit masks replace.
 - Package suffixes override node masks. =000= excludes all profiles; selected
   descendants can still be enabled below an excluded parent.

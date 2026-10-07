@@ -10,7 +10,7 @@ on = 0b110
 
 [system.base]
 packages=[
-    "base:111", # Also needed in WSL
+    ["base:111", "Also needed in WSL"],
     "linux",
     "linux-headers",
     "linux-firmware-nvidia",
@@ -38,8 +38,8 @@ packages=[
 on = 0b111
 packages=[
     "gnome-keyring",
-    "xdg-user-dirs",  # no abused dir at home
-    "accountsservice" # user avatar
+    ["xdg-user-dirs", "no abused dir at home"],
+    ["accountsservice", "user avatar"]
 ]
 
 [system.sound]
@@ -70,8 +70,8 @@ on = 0b100
 packages=[
     "ntfs-3g",
     "os-prober",
-    "chntpw",      # dual boot bluetooth repair
-    "bt-synckeys", # bluetooth key sync
+    ["chntpw", "dual boot bluetooth repair"],
+    ["bt-synckeys", "bluetooth key sync"],
 ]
 
 [system.monitor]
@@ -112,16 +112,16 @@ directory="~/.config/hypr/"
 packages = [
     "hyprland",
     "dms-shell-hyprland",
-    "adw-gtk-theme", # dms GTK colors
-    "qt6ct-kde" # dms QT colors
+    ["adw-gtk-theme", "dms GTK colors"],
+    ["qt6ct-kde", "dms QT colors"]
 ]
 
 [desktop.xorg]
 on = 0b000
 packages=[
     "xorg-server",
-    "xorg-xdpyinfo",   # for =betterlockscreen=
-    "xorg-xwininfo",   # Option for ~picom-trans~
+    ["xorg-xdpyinfo", "for =betterlockscreen="],
+    ["xorg-xwininfo", "Option for =picom-trans="],
     "dragon-drop",
     "mons"
 ]
@@ -181,15 +181,14 @@ packages=[
 [desktop.fonts]
 on = 0b111
 packages=[
-    "ttf-sarasa_ui-sc", # default UI font
+    ["ttf-sarasa_ui-sc", "default UI font"],
     "noto-fonts-emoji"
 ]
 
 [desktop.fonts.extra]
 on = 0b000
 packages=[
-    "font-manager",
-    # "fontforge",
+    ["font-manager", "=fontforge="],
     "ttc-iosevka-aile",
     "ttf-fira-sans",
     "ttf-opensans",
@@ -238,21 +237,20 @@ packages=[
 ]
 
 [hardware.amd.gpu]
-# for cpu with integrated graphics
 on = 0b000
 packages=[
     "amdgpu_top-bin",
     "mesa",
     "lib32-mesa",
-    "libva-utils",      # =vainfo=
-    "mesa-utils",       # =glxinfo=
+    ["libva-utils", "=vainfo="],
+    ["mesa-utils", "=glxinfo="],
     "xf86-video-amdgpu"
 ]
 
 [hardware.usb]
 packages=[
     "udiskie",
-    "usbutils",   # =lsusb=
+    ["usbutils", "=lsusb="],
     "ventoy-bin",
 ]
 
@@ -260,7 +258,7 @@ packages=[
 on = 0b100
 packages=[
     "openrgb-bin",
-    "i2c-tools", # =openrgb=
+    ["i2c-tools", "=openrgb="],
     "via-appimage"
 ]
 
@@ -286,7 +284,7 @@ packages=[
     "bc",
     "jq",
     "tmux",
-    "xcape",         # CapsLK as Esc in wsl
+    ["xcape", "CapsLK as Esc in wsl"],
     "starship",
     "python-pipenv",
     "python-pipx",
@@ -328,7 +326,7 @@ on = 0b000
 packages=[
     "dnsmasq",
     "edk2-ovmf",
-    "genymotion", # android x86
+    ["genymotion", "android x86"],
     "libvirt",
     "qemu-desktop",
     "swtpm",
@@ -369,7 +367,7 @@ packages=[
     "steam",
     "mangohud",
     "goverlay",
-    "uudeck-bwrap", # multiplayer game delay reducing
+    ["uudeck-bwrap", "multiplayer game delay reducing"],
 ]
 
 [apps.communication]
@@ -391,7 +389,7 @@ packages=[
     "gdu-bin",
     "man-db",
     "fastfetch",
-    "openbsd-netcat", # ssh using http tunnel using =nc=
+    ["openbsd-netcat", "ssh using http tunnel using =nc="],
     "zip",
     "7zip",
     "proxychains-ng",
@@ -405,7 +403,7 @@ packages=[
 packages=[
     "expac",
     "pacfinder",
-    "pacman-contrib",         # =checkupdates, paccache=
+    ["pacman-contrib", "=checkupdates, paccache="],
     "rebuild-detector",
 ]
 

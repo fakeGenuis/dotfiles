@@ -89,10 +89,23 @@ def resolve_dependencies(scope, path):
         node["depends_on"] = [scope[name] for name in node["depends_on"]]
 
 
+def parse_package_entry(item, node):
+    """Accept a package string or [package string, declaration reason]."""
+    if isinstance(item, str):
+        return item, None
+    if isinstance(item, list) and len(item) == 2 and all(isinstance(value, str) for value in item):
+        return item[0], item[1]
+    raise ValueError(
+        f"{node['file']} [{node['node']}]: invalid package entry: {item!r}; "
+        'expected "name[:mask]" or ["name[:mask]", "reason"]'
+    )
+
+
 def node_entries(node, bit, width):
     """Select this node's entries, including per-package mask overrides."""
     entries = []
     for item in node["packages"]:
+        item, reason = parse_package_entry(item, node)
         name, mask = item, node["on"]
         if ":" in item:
             name, suffix = item.rsplit(":", 1)
@@ -102,6 +115,8 @@ def node_entries(node, bit, width):
         if not mask & bit:
             continue
         source = dict(file=node["file"], node=node["node"], on=f"0b{mask:0{width}b}")
+        if reason is not None:
+            source["reason"] = reason
         entries.append((name, source))
     return entries
 
@@ -372,6 +387,8 @@ def print_package_details(package):
         if key == "sources":
             for source in value:
                 print(f"  source: {source['file']} [{source['node']}] {source['on']}")
+                if "reason" in source:
+                    print(f"    declared because: {source['reason']}")
             continue
         text = ', '.join(value) if isinstance(value, list) else value
         print(f"  {key}: {text}")
