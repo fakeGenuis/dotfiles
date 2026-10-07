@@ -55,8 +55,11 @@ packages=[
 packages=["blueman", "bluez", "bluez-utils"]
 
 [system.inputmethod]
-groups=["fcitx5-im"]
 packages=[
+    "fcitx5",
+    "fcitx5-configtool",
+    "fcitx5-gtk",
+    "fcitx5-qt",
     "fcitx5-rime",
     "rime-cloverpinyin",
     "rime-pinyin-zhwiki"
@@ -272,7 +275,6 @@ packages=["cups", "hplip"]
 packages=[
     "base-devel",
     "python",
-    "python-tomli", # required by this script
     "git",
     "openssh",
     "paru"
@@ -341,8 +343,8 @@ on = 0b110
 [research.base]
 packages=[
     "jupyter-notebook",
-    "mathematica:110",
-    "miktex:110",
+    "mathematica",
+    "miktex",
     "zotero-bin"
 ]
 

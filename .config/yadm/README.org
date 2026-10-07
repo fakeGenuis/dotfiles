@@ -21,7 +21,7 @@ packages are not necessarily unused.
 | Command       | Purpose                                                        |
 |---------------+----------------------------------------------------------------|
 | check         | Validate all profiles, or just =--profile NAME=                 |
-| list          | Selected declarations; groups expand with =--names=             |
+| list          | Selected package declarations             |
 | status        | Explicitly installed packages plus selected declarations       |
 | missing       | Declarations not satisfied by installed packages or providers  |
 | undeclared    | Undeclared explicit packages; =--all= includes dependencies     |
@@ -44,7 +44,6 @@ packages = ["base:111", "linux"]
 - Each profile has a distinct bit. Missing =on= inherits; explicit masks replace.
 - Package suffixes override node masks. =000= excludes all profiles; selected
   descendants can still be enabled below an excluded parent.
-- =groups= lists pacman groups and uses the node mask.
 - =directory= mounts another folder's =packages.toml=; relative paths use the
   source file's directory. =optional=true= permits a missing file.
 - =depends_on= names nodes in the same file that must already be selected;

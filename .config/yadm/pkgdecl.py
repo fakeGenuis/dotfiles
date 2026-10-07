@@ -35,12 +35,14 @@ def load_declaration_file(path, data, inherited, all_bits, mount="", stack=()):
 
     def read_node(table, inherited_mask, local):
         name = ".".join(part for part in (mount, local) if part)
+        if "groups" in table:
+            raise ValueError(f"{path} [{name}]: groups is no longer supported; list packages explicitly")
         mask = table.get("on", inherited_mask)
         if type(mask) is not int or mask < 0 or mask & ~all_bits:
             raise ValueError(f"{path} [{name}]: invalid on mask: {mask}")
         node = dict(
             file=str(path), node=name, local=local, on=mask,
-            packages=table.get("packages", []), groups=table.get("groups", []),
+            packages=table.get("packages", []),
             depends_on=table.get("depends_on", []), children=[],
         )
         scope[local] = node
@@ -84,18 +86,17 @@ def resolve_dependencies(scope, path):
 def node_entries(node, bit, width):
     """Select this node's entries, including per-package mask overrides."""
     entries = []
-    for kind, key in (("package", "packages"), ("group", "groups")):
-        for item in node[key]:
-            name, mask = item, node["on"]
-            if kind == "package" and ":" in item:
-                name, suffix = item.rsplit(":", 1)
-                if len(suffix) != width or set(suffix) - {"0", "1"}:
-                    raise ValueError(f"{node['file']} [{node['node']}]: invalid package suffix: {item}")
-                mask = int(suffix, 2)
-            if not mask & bit:
-                continue
-            source = dict(file=node["file"], node=node["node"], on=f"0b{mask:0{width}b}")
-            entries.append((kind, name, source))
+    for item in node["packages"]:
+        name, mask = item, node["on"]
+        if ":" in item:
+            name, suffix = item.rsplit(":", 1)
+            if len(suffix) != width or set(suffix) - {"0", "1"}:
+                raise ValueError(f"{node['file']} [{node['node']}]: invalid package suffix: {item}")
+            mask = int(suffix, 2)
+        if not mask & bit:
+            continue
+        source = dict(file=node["file"], node=node["node"], on=f"0b{mask:0{width}b}")
+        entries.append((name, source))
     return entries
 
 
@@ -119,12 +120,12 @@ def project(root, profile):
         return entries
 
     merged = {}
-    for kind, name, source in visit(root):
-        sources = merged.setdefault((kind, name), [])
+    for name, source in visit(root):
+        sources = merged.setdefault(name, [])
         if source not in sources:
             sources.append(source)
-    return [dict(kind=kind, name=name, sources=sources)
-            for (kind, name), sources in sorted(merged.items())]
+    return [dict(name=name, sources=sources)
+            for name, sources in sorted(merged.items())]
 
 
 def pacman(*args):
@@ -170,25 +171,6 @@ def installed_packages():
             required_by=package_words(fields, "Required By"),
             optional_for=package_words(fields, "Optional For"),
         )
-    return packages
-
-
-def expand_groups(entries):
-    groups, packages = {}, {}
-    if any(item["kind"] == "group" for item in entries):
-        for line in pacman("-Sgg").splitlines():
-            group, name = line.split()
-            groups.setdefault(group, []).append(name)
-    for item in entries:
-        names = [item["name"]] if item["kind"] == "package" else groups.get(item["name"], [])
-        if not names:
-            raise ValueError(f"Unknown repository group: {item['name']}")
-        for name in names:
-            sources = packages.setdefault(name, [])
-            for source in item["sources"]:
-                source = dict(source, group=item["name"]) if item["kind"] == "group" else source
-                if source not in sources:
-                    sources.append(source)
     return packages
 
 
@@ -323,14 +305,13 @@ def selected_declarations(args):
 def list_command(args):
     entries = selected_declarations(args)
     if args.names:
-        # Expand groups for package-manager pipelines.
-        for name in sorted(expand_groups(entries)):
-            print(name)
+        for item in entries:
+            print(item["name"])
         return
     if args.json:
         print(json.dumps(entries, indent=2))
         return
-    print_table(("PACKAGE", "KIND"), [(item["name"], item["kind"]) for item in entries])
+    print_table(("PACKAGE",), [(item["name"],) for item in entries])
 
 
 def filter_packages(rows, args):
@@ -352,7 +333,7 @@ def filter_packages(rows, args):
 
 
 def query_command(args):
-    declared = expand_groups(selected_declarations(args))
+    declared = {item["name"]: item["sources"] for item in selected_declarations(args)}
     rows = compare(declared, installed_packages())
     result = filter_packages(rows, args)
     print_packages(result, args)
@@ -384,8 +365,7 @@ def print_package_details(package):
             continue
         if key == "sources":
             for source in value:
-                group = f" (group: {source['group']})" if "group" in source else ""
-                print(f"  source: {source['file']} [{source['node']}] {source['on']}{group}")
+                print(f"  source: {source['file']} [{source['node']}] {source['on']}")
             continue
         text = ', '.join(value) if isinstance(value, list) else value
         print(f"  {key}: {text}")
