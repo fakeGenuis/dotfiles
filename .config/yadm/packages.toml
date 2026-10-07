@@ -109,7 +109,6 @@ packages = [
 
 [desktop.hyprland]
 directory="~/.config/hypr/"
-optional=true # This checkout may have no package manifest
 packages = [
     "hyprland",
     "dms-shell-hyprland",
@@ -434,4 +433,3 @@ packages=[
 
 [local.private]
 directory="~/.config/paru/"
-optional=true # Local private declarations may be absent

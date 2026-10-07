@@ -66,9 +66,15 @@ def load_declaration_file(path, data, inherited, all_bits, mount="", stack=()):
 def load_mount(table, source_path, mask, all_bits, name, stack):
     folder = Path(table["directory"]).expanduser()
     target = (source_path.parent / folder / "packages.toml").resolve()
-    if not target.exists() and table.get("optional", False):
+    try:
+        text = target.read_text()
+    except FileNotFoundError:
+        print(f"warning: {source_path} [{name}]: missing subtree: {target}", file=sys.stderr)
         return None
-    contents = tomllib.loads(target.read_text())
+    contents = tomllib.loads(text)
+    if not contents:
+        print(f"warning: {source_path} [{name}]: empty subtree: {target}", file=sys.stderr)
+        return None
     return load_declaration_file(target, contents, mask, all_bits, name, stack)
 
 

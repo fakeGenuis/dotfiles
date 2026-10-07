@@ -45,6 +45,8 @@ packages = ["base:111", "linux"]
 - Package suffixes override node masks. =000= excludes all profiles; selected
   descendants can still be enabled below an excluded parent.
 - =directory= mounts another folder's =packages.toml=; relative paths use the
-  source file's directory. =optional=true= permits a missing file.
+  source file's directory. Missing or empty mounted files produce a warning
+  on stderr and are skipped. Invalid files and cycles remain errors; the root
+  declaration file is required.
 - =depends_on= names nodes in the same file that must already be selected;
   it does not enable them. Cycles are rejected.
