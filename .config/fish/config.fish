@@ -11,11 +11,16 @@ end
 set -g fish_greeting
 
 # GPG ssh agent
-set -gx GPG_TTY (tty)
 if not set -q SSH_AUTH_SOCK
     set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 end
-gpg-connect-agent updatestartuptty /bye >/dev/null
+if status is-interactive; and isatty stdin
+    set -gx GPG_TTY (tty)
+    # Preserve GUI pinentry routing; background shells must not redirect it.
+    if set -q DISPLAY; and test -n "$DISPLAY"
+        gpg-connect-agent updatestartuptty /bye >/dev/null
+    end
+end
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
