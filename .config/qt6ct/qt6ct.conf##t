@@ -1,5 +1,5 @@
 [Appearance]
-color_scheme_path={{env.HOME}}/.local/share/color-schemes/DankMatugen.colors
+color_scheme_path={{env.HOME}}/.config/qt6ct/colors/matugen.conf
 custom_palette=true
 icon_theme=Papirus
 standard_dialogs=default
