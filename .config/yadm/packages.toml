@@ -175,7 +175,7 @@ packages=[
 [desktop.theme.shared]
 packages=[
     "papirus-icon-theme",
-    "bibata-cursor-theme-bin",
+    "breeze-cursors",
 ]
 
 [desktop.fonts]
