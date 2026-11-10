@@ -90,7 +90,7 @@ on = 0b110
 
 [desktop.dms]
 packages = [
-    "dms-shell",
+    "dux-shell",
     "python-pywal",
     "python-pywalfox-librewolf",
     "matugen"
@@ -100,7 +100,6 @@ packages = [
 on = 0b000
 packages = [
     "niri",
-    "dms-shell-niri",
     "xdg-desktop-portal-gtk",
     "gnome-keyring",
     "lxqt-policykit",
@@ -111,7 +110,6 @@ packages = [
 directory="~/.config/hypr/"
 packages = [
     "hyprland",
-    "dms-shell-hyprland",
     ["adw-gtk-theme", "dms GTK colors"],
     ["qt6ct-kde", "dms QT colors"]
 ]
