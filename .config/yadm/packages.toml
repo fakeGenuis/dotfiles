@@ -213,7 +213,6 @@ packages=["alacritty"]
 
 [desktop.capture]
 packages=[
-    "flameshot",
     "grim",
     "peek",
 ]
@@ -349,7 +348,7 @@ packages=[
 on = 0b110
 
 [apps.browser]
-packages=["librewolf-bin"]
+packages=["librewolf"]
 
 [apps.sync]
 packages=["syncthing", "nextcloud-client"]
@@ -367,6 +366,7 @@ packages=[
     "steam",
     "mangohud",
     "goverlay",
+    "gamemode",
     ["uudeck-bwrap", "multiplayer game delay reducing"],
 ]
 
