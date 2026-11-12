@@ -301,7 +301,9 @@ packages=[
     "cc-switch-bin",
     "claude-code",
     "openai-codex",
-    "opencode"
+    "opencode",
+    "deepseek-harness-bin",
+    "grok-build",
 ]
 
 [dev.vcs]
