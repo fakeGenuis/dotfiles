@@ -12,7 +12,7 @@ import sys
 import tomllib
 
 
-def load_tree(filename):
+def load_tree(filename, *, quiet=False):
     path = Path(filename).resolve()
     data = tomllib.loads(path.read_text())
     profiles = data.pop("profiles")
@@ -22,12 +22,12 @@ def load_tree(filename):
         raise ValueError("profiles must assign a distinct single bit to each device")
 
     all_bits = sum(bits)
-    root = load_declaration_file(path, data, all_bits, all_bits)
+    root = load_declaration_file(path, data, all_bits, all_bits, quiet=quiet)
     root["profiles"] = profiles
     return root
 
 
-def load_declaration_file(path, data, inherited, all_bits, mount="", stack=()):
+def load_declaration_file(path, data, inherited, all_bits, mount="", stack=(), *, quiet=False):
     """Read one file; dependency names are resolved only within this file."""
     if path in stack:
         raise ValueError(f"File cycle: {path}")
@@ -53,7 +53,7 @@ def load_declaration_file(path, data, inherited, all_bits, mount="", stack=()):
             node["children"].append(read_node(value, mask, child))
 
         if "directory" in table:
-            mounted = load_mount(table, path, mask, all_bits, name, (*stack, path))
+            mounted = load_mount(table, path, mask, all_bits, name, (*stack, path), quiet=quiet)
             if mounted is not None:
                 node["children"].append(mounted)
         return node
@@ -63,19 +63,21 @@ def load_declaration_file(path, data, inherited, all_bits, mount="", stack=()):
     return root
 
 
-def load_mount(table, source_path, mask, all_bits, name, stack):
+def load_mount(table, source_path, mask, all_bits, name, stack, *, quiet=False):
     folder = Path(table["directory"]).expanduser()
     target = (source_path.parent / folder / "packages.toml").resolve()
     try:
         text = target.read_text()
     except FileNotFoundError:
-        print(f"warning: {source_path} [{name}]: missing subtree: {target}", file=sys.stderr)
+        if not quiet:
+            print(f"warning: {source_path} [{name}]: missing subtree: {target}", file=sys.stderr)
         return None
     contents = tomllib.loads(text)
     if not contents:
-        print(f"warning: {source_path} [{name}]: empty subtree: {target}", file=sys.stderr)
+        if not quiet:
+            print(f"warning: {source_path} [{name}]: empty subtree: {target}", file=sys.stderr)
         return None
-    return load_declaration_file(target, contents, mask, all_bits, name, stack)
+    return load_declaration_file(target, contents, mask, all_bits, name, stack, quiet=quiet)
 
 
 def resolve_dependencies(scope, path):
@@ -321,7 +323,7 @@ def check_command(args):
 
 def selected_declarations(args):
     profile = args.profile if args.profile is not None else local_profile()
-    return project(load_tree(args.file), profile)
+    return project(load_tree(args.file, quiet=args.names), profile)
 
 
 def list_command(args):
