@@ -3,7 +3,9 @@ name: clover.extended
 version: "1"
 sort: by_weight
 import_tables:
-  - clover
+  - clover.base
+  - clover.phrase
+  - sogou_new_words
   - zhwiki
   - web-slang
 ...
