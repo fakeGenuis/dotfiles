@@ -1,0 +1,4 @@
+patch:
+  'switches/@1/reset': 0
+  'translator/dictionary': clover.extended
+  'translator/user_dict': clover
