@@ -303,6 +303,7 @@ packages=[
     "opencode",
     "deepseek-harness-bin",
     "grok-build",
+    "antigravity-cli",
 ]
 
 [dev.vcs]
@@ -358,6 +359,7 @@ on = 0b100
 packages=[
     "mpv",
     "qimgv",
+    "limusic-bin",
 ]
 
 [apps.gaming]
