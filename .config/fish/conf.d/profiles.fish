@@ -1,8 +1,6 @@
 # This file acts like ~/.profile and ~/.pam_enviroments in bash
 
 if status is-interactive
-    set -gx VISUAL "emacsclient -c -a= -F '((height . 50) (width . 150))'"
-    set -gx EDITOR "emacsclient -c -s utility -a= -nw"
     set -gx MANROFFOPT -c
     set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
 end
